@@ -31,6 +31,11 @@ final class PclInputStreamForFileInputStream implements PclInputStream {
     }
 
     @Override
+    public int read(byte[] b) throws IOException {
+        return this.input.read(b);
+    }
+    
+    @Override
     public int read(byte[] b, int off, int len) throws IOException {
         return this.input.read(b, off, len);
     }

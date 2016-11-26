@@ -39,7 +39,7 @@ subprojects {
 
     checkstyle {
         toolVersion = '7.1'
-        config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
+        configFile = new File(rootDir, "config/checkstyle.xml")
     }
 
     jacocoTestReport {

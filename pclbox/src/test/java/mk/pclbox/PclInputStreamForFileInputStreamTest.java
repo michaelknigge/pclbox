@@ -28,13 +28,17 @@ public final class PclInputStreamForFileInputStreamTest extends TestCase {
         assertEquals(84, pclStream.read());
         
         byte[] buffer = new byte[3];
-        pclStream.read(buffer, 0, 3);
+        assertEquals(3, pclStream.read(buffer, 0, 3));
         assertEquals(69, buffer[0]);
         assertEquals(83, buffer[1]);
         assertEquals(84, buffer[2]);
         
         pclStream.seek(1);
         assertEquals(69, pclStream.read());
+
+        assertEquals(2, pclStream.read(buffer));
+        assertEquals(83, buffer[0]);
+        assertEquals(84, buffer[1]);
         
         pclStream.close();
         
