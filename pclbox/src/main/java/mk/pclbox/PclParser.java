@@ -12,8 +12,6 @@ public final class PclParser implements AutoCloseable{
     
     private final PclInputStream input;
     
-    private boolean isClosed;
-    
     /**
      * Constructor for simple {@link InputStream} streams. If the given {@link InputStream} is a {@link FileInputStream},
      * then internally a special {@link PclInputStream} is created that uses a {@link FileChannel} to seek within the
@@ -24,8 +22,6 @@ public final class PclParser implements AutoCloseable{
         this.input = input instanceof FileInputStream 
                 ? new PclInputStreamForFileInputStream((FileInputStream) input) 
                 : new PclInputStreamForInputStream(input);
-
-        this.isClosed = false;
     }
     
     /**
@@ -33,7 +29,6 @@ public final class PclParser implements AutoCloseable{
      */
     public PclParser(final PclInputStream input) {
         this.input = input;
-        this.isClosed = false;
     }
 
     /**
@@ -56,13 +51,6 @@ public final class PclParser implements AutoCloseable{
 
     @Override
     public void close() throws Exception {
-        if (!this.isClosed) {
-            synchronized (this) {
-                if (!this.isClosed) {
-                    this.input.close();
-                    this.isClosed = true;
-                }
-            }
-        }
+        this.input.close();
     }
 }

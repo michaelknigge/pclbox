@@ -17,8 +17,11 @@ public final class PclInputStreamForFileInputStreamTest extends TestCase {
         testFile.deleteOnExit(); // in case this method throws an exception...
         
         FileOutputStream out = new FileOutputStream(testFile);
-        out.write("TEST".getBytes("utf-8"));
-        out.close();
+        try {
+            out.write("TEST".getBytes("utf-8"));
+        } finally {
+            out.close();
+        }
 
         PclInputStream pclStream = new PclInputStreamForFileInputStream(new FileInputStream(testFile));
         
@@ -35,7 +38,7 @@ public final class PclInputStreamForFileInputStreamTest extends TestCase {
         
         pclStream.close();
         
-        testFile.delete();
+        assertTrue(testFile.delete());
     }
     
 }
