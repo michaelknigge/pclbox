@@ -4,7 +4,7 @@ import java.io.IOException;
 
 /**
  * All reads and seeks performed by the {@link PclParser} are performed with a 
- * concrete implementations of a {@link PclInputStream}.
+ * concrete implementation of a {@link PclInputStream}.
  */
 public interface PclInputStream {
     

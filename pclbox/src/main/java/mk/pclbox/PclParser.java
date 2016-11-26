@@ -17,6 +17,8 @@ public final class PclParser implements AutoCloseable {
     /**
      * Constructor that internally creates a {@link FileInputStream} for reading and seeking
      * within the PCL data stream.
+     * 
+     * @param inputFile - the {@link File} that contains the PCL data stream.
      */
     public PclParser(final File inputFile) throws FileNotFoundException {
         this(new FileInputStream(inputFile));
@@ -25,6 +27,8 @@ public final class PclParser implements AutoCloseable {
     /**
      * Constructor that internally creates a {@link FileInputStream} for reading and seeking
      * within the PCL data stream.
+     * 
+     * @param inputFileName - the name of the file that contains the PCL data stream.
      */
     public PclParser(final String inputFileName) throws FileNotFoundException {
         this(new FileInputStream(inputFileName));
@@ -32,7 +36,9 @@ public final class PclParser implements AutoCloseable {
 
     /**
      * Constructor that uses the ready to use {@link PclInputStream} for reading and seeking within
-     * the PCL data stream.  
+     * the PCL data stream.
+     * 
+     * @param input - the {@link PclInputStream} that will be used to read the PCL data stream.
      */
     public PclParser(final PclInputStream input) {
         this.input = input;
@@ -41,6 +47,8 @@ public final class PclParser implements AutoCloseable {
     /**
      * Constructor that uses a {@link FileInputStream} for reading and seeking within the PCL data stream.
      * Seeking is done by using a {@link FileChannel} that is provided by the {@link FileInputStream}.   
+     * 
+     * @param input - the {@link FileInputStream} that will be used to read the PCL data stream.
      */
     public PclParser(final FileInputStream input) {
         this.input = new PclInputStreamForInputStream(input);
@@ -50,6 +58,8 @@ public final class PclParser implements AutoCloseable {
      * Constructor that uses a base {@link InputStream} for reading and seeking within the PCL data stream.
      * Seeking is done by using a {@link InputStream#reset()} and {@link InputStream#skip(long)} that may not
      * be very fast, depending of the implementation.
+     * 
+     * @param input - the {@link InputStream} that will be used to read the PCL data stream.
      */
     public PclParser(final InputStream input) {
         this.input = new PclInputStreamForInputStream(input);
@@ -57,6 +67,8 @@ public final class PclParser implements AutoCloseable {
 
     /**
      * Parses the next printer command. The read command will be returned as a {@link PrinterCommand} object.
+     * 
+     * @return the read {@link PrinterCommand}
      */
     public PrinterCommand parseNextPrinterCommand() {
         return null; // To be implemented..... soon.... I promise ;-)
@@ -64,10 +76,11 @@ public final class PclParser implements AutoCloseable {
 
     /**
      * Positions the current position within the stream to the given offset and parses the next printer command
-     * at this position. The read command will be returned as a {@link PrinterCommand} object. If the used
-     * {@link InputStream} is a {@link FileInputStream}, then the position within the file is changed using the
-     * {@link FileChannel}. Otherwise the {@link InputStream} is required to support the {@link InputStream#mark(int)}
-     * method for changing the position within the file.
+     * at this position. The read command will be returned as a {@link PrinterCommand} object.
+     *
+     * @param position - the position within the PCL data stream.
+     * 
+     * @return the read {@link PrinterCommand}
      */
     public PrinterCommand parseNextPrinterCommandAt(final long position) throws IOException {
         this.input.seek(position);
