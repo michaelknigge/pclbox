@@ -1,10 +1,27 @@
-language: java
+language:
+  java
 
-jdk:
-  - oraclejdk8
+script:
+  "./gradlew"
 
-os:
-  - linux
+before_script:
+  - pip install --user codecov
 
-notifications:
-  email: false
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "c9NnhDLWzQ5Wq97+/W+ktVEvGnLZ4WTRPovQaS3IdT7S8jrWN5FSWVv2KHvBgzMXwOFufWuykaDMxausd9o8CT18OCBJe4ztbd7aGe3SkvoQj48dJQnUMsQku4sq4cwbGAbmEd3LQ41BTUxw14GBn0ZKqoFGp2OfmUHnq2fvWNSy7LhAcc8ddWHftAaJB07bjgGPITSjuNYZ/2HxSecVCx+FfiB1shJogLqPlKP7ZwXnjAgAdZYJ9Mw5DXloS328ItU/E5aDYjiyvlYE8osI3lXrt5ko2eAL03xtLJ47yXmq5CyaQ9y4O4R+n64lhpwVolbshsAATNnSMqxYE9JlrnJEUhzNNZnBDM73XYf5YpgjF5yvtpxcoK7j7UMm5f09+rWM4a1+xt1AUf8UWtahNKnPyD8mjoNa/Vcm9lSAUnSz6+ciqhks9HXuHYKpRz/0gIOVrXP6ArBi73GwHbH7f23q9NCIOwm7KZjli4JbjzcDt1yRcj0vWHhp+LGQ/kbhPpiBrRZSKXVAPYtQvYpYUZqzHd9v2YLAuZq97TZOFuveQMEQT1Y8QGqA6uw4lXYbbSNjsfrM/eqOi540xOL7KwXg9sarVOXpDHkruYzWNOClVpRKBM+dq805ExWlXhqZiuMj/n+mWmOqKyrsAh32zIJbvVQjvjCPLShAuUeyyd0="
+
+addons:
+  coverity_scan:
+    project:
+      name: "michaelknigge/pclbox"
+      description: "Java PCL library"
+    notification_email: michael.knigge@gmx.de
+    build_command_prepend: "./gradlew clean"
+    build_command:   "./gradlew"
+    branch_pattern: coverity_scan
