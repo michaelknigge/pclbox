@@ -1,0 +1,51 @@
+defaultTasks 'clean', 'test', 'check', 'checkstyleMain', 'checkstyleTest', 'assemble'
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'checkstyle'
+    apply plugin: 'jacoco'
+    apply plugin: 'findbugs'
+	
+    check.dependsOn jacocoTestReport
+      
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        sourceCompatibility = '1.7'
+        targetCompatibility = '1.7'
+    }
+    
+    javadoc {
+        options.encoding = 'UTF-8'
+    }
+    
+    repositories {
+        jcenter()
+    }
+    
+    dependencies {
+        compile 'com.google.code.findbugs:annotations:3.0.1'
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+    }
+    
+    configurations {
+        checkstyleConfig
+    }
+    dependencies {
+        checkstyleConfig ("com.puppycrawl.tools:checkstyle:7.1") {
+            transitive = false
+        }
+    }    
+
+    checkstyle {
+        toolVersion = '7.1'
+        config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled = true
+            html.enabled = true
+        }
+    }
+}
