@@ -64,9 +64,9 @@ final class Pcl5Parser implements DataStreamParser {
                 } else {
                     return this.parseTextPrinterCommand(offset, firstByte);
                 }
-
             }
 
+            this.alreadyReadByte = firstByte;
             this.state = ParserState.ALREADY_READ_BYTE;
         }
 
