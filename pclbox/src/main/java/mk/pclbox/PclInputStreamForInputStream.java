@@ -5,18 +5,20 @@ import java.io.InputStream;
 
 /**
  * Implementation of {@link PclInputStream} for underlying {@link InputStream}s.
- * This implementation uses the {@link InputStream#reset()} and {@link InputStream#skip(long)} 
+ * This implementation uses the {@link InputStream#reset()} and {@link InputStream#skip(long)}
  * to seek within the file.
  */
 final class PclInputStreamForInputStream implements PclInputStream {
-    
+
     private final InputStream input;
+    private long position;
 
     /**
      * Constructor that is given the underlying {@link InputStream}.
      */
     PclInputStreamForInputStream(final InputStream input) {
         this.input = input;
+        this.position = 0;
     }
 
     @Override
@@ -26,17 +28,29 @@ final class PclInputStreamForInputStream implements PclInputStream {
 
     @Override
     public int read() throws IOException {
-        return this.input.read();
+        final int result = this.input.read();
+        if (result != -1) {
+            ++this.position;
+        }
+        return result;
     }
 
     @Override
     public int read(byte[] b) throws IOException {
-        return this.input.read(b);
+        final int result = this.input.read(b);
+        if (result != -1) {
+            this.position = this.position + result;
+        }
+        return result;
     }
 
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
-        return this.input.read(b, off, len);
+        final int result = this.input.read(b, off, len);
+        if (result != -1) {
+            this.position = this.position + result;
+        }
+        return result;
     }
 
     @Override
@@ -47,15 +61,21 @@ final class PclInputStreamForInputStream implements PclInputStream {
                     .append(this.input.getClass().getSimpleName())
                     .toString());
         }
-        
-        this.input.reset();
 
-        if (this.input.skip(offset) != offset) {
+        this.input.reset();
+        this.position = 0; // after reset() we are at offset 0
+        this.position = this.input.skip(offset); // now we are at the offset returned from skip
+
+        if (this.position != offset) {
             throw new IOException(new StringBuilder()
                     .append("An error occurred when trying to position to offset ")
                     .append(offset)
                     .toString());
         }
     }
-}
 
+    @Override
+    public long tell() throws IOException {
+        return this.position;
+    }
+}

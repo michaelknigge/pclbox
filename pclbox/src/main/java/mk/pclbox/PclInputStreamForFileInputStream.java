@@ -10,7 +10,7 @@ import java.nio.channels.FileChannel;
  * to seek within the file.
  */
 final class PclInputStreamForFileInputStream implements PclInputStream {
-    
+
     private final FileInputStream input;
 
     /**
@@ -34,7 +34,7 @@ final class PclInputStreamForFileInputStream implements PclInputStream {
     public int read(byte[] b) throws IOException {
         return this.input.read(b);
     }
-    
+
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
         return this.input.read(b, off, len);
@@ -43,5 +43,10 @@ final class PclInputStreamForFileInputStream implements PclInputStream {
     @Override
     public void seek(long offset) throws IOException {
         this.input.getChannel().position(offset);
+    }
+
+    @Override
+    public long tell() throws IOException {
+        return this.input.getChannel().position();
     }
 }

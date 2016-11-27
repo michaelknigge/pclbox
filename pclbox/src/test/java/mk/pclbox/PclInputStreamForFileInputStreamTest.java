@@ -6,43 +6,52 @@ import java.io.FileOutputStream;
 
 import junit.framework.TestCase;
 
+/**
+ * JUnit-Tests for {@link PclInputStreamForFileInputStream}.
+ */
 public final class PclInputStreamForFileInputStreamTest extends TestCase {
-    
+
     /**
      * Happy-Flow test with an {@link FileInputStream}.
      */
     public void testAllMethodsOfInterface() throws Exception {
-        
-        File testFile = File.createTempFile(this.getClass().getSimpleName(), null);
+
+        final File testFile = File.createTempFile(this.getClass().getSimpleName(), null);
         testFile.deleteOnExit(); // in case this method throws an exception...
-        
-        FileOutputStream out = new FileOutputStream(testFile);
+
+        final FileOutputStream out = new FileOutputStream(testFile);
         try {
             out.write("TEST".getBytes("utf-8"));
         } finally {
             out.close();
         }
 
-        PclInputStream pclStream = new PclInputStreamForFileInputStream(new FileInputStream(testFile));
-        
+        final PclInputStream pclStream = new PclInputStreamForFileInputStream(new FileInputStream(testFile));
+
+        assertEquals(0, pclStream.tell());
         assertEquals(84, pclStream.read());
-        
-        byte[] buffer = new byte[3];
+        assertEquals(1, pclStream.tell());
+
+        final byte[] buffer = new byte[3];
         assertEquals(3, pclStream.read(buffer, 0, 3));
         assertEquals(69, buffer[0]);
         assertEquals(83, buffer[1]);
         assertEquals(84, buffer[2]);
-        
+        assertEquals(4, pclStream.tell());
+
         pclStream.seek(1);
+        assertEquals(1, pclStream.tell());
         assertEquals(69, pclStream.read());
+        assertEquals(2, pclStream.tell());
 
         assertEquals(2, pclStream.read(buffer));
         assertEquals(83, buffer[0]);
         assertEquals(84, buffer[1]);
-        
+        assertEquals(4, pclStream.tell());
+
         pclStream.close();
-        
+
         assertTrue(testFile.delete());
     }
-    
+
 }

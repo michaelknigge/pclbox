@@ -7,14 +7,14 @@ import java.io.IOException;
  * concrete implementation of a {@link PclInputStream}.
  */
 public interface PclInputStream {
-    
+
     /**
      * Closes this input stream and releases any system resources associated with the stream.
      * The {@link PclParser} assumes that this method is idempotent ({@link PclParser} will not
      * ensure that {@link PclParser#close()} delegates to the underlying close() method only once).
      */
     public void close() throws IOException;
-    
+
     /**
      * Reads the next byte of data from this input stream. The value byte is returned as an int in the 
      * range 0 to 255. If no byte is available because the end of the stream has been reached,
@@ -54,4 +54,11 @@ public interface PclInputStream {
      * Sets the offset, measured from the beginning of this stream, at which the next read occurs.
      */
     public void seek(final long offset) throws IOException;
+
+    /**
+     * Gets the current offset, measured from the beginning of this stream, at which the next read will occur.
+     * 
+     * @return the current offset, measured from the beginning of the stream.
+     */
+    public long tell() throws IOException;
 }
