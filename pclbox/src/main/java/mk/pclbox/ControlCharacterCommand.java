@@ -22,4 +22,9 @@ public final class ControlCharacterCommand extends PrinterCommand {
     public byte getControlCharacter() {
         return this.controlCharacter;
     }
+
+    @Override
+    void accept(PrinterCommandVisitor visitor) {
+        visitor.handle(this);
+    }
 }

@@ -24,4 +24,8 @@ public final class TextCommand extends PrinterCommand {
         return this.text.clone();
     }
 
+    @Override
+    void accept(PrinterCommandVisitor visitor) {
+        visitor.handle(this);
+    }
 }
