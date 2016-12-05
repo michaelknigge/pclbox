@@ -15,7 +15,7 @@ final class PclParserContext implements Closeable {
     // parser is pushed on the stack. If the HP/GL2 is finished with its work, than the
     // parser is popped from the stack - now the PCL5 parser is the actual parser again...
     //
-    // This may sound oversized, but maybe we will support PCL-XL sometimes. Than PCL-XL
+    // This may sound oversized, but maybe we will support PCL-XL sometimes. Then PCL-XL
     // may contain PCL5 and the contained PCL5 may contain HP/GL2.... So at least then
     // the approach with this stacked parsers may be useful...
     final Stack<DataStreamParser> parsers;

@@ -71,7 +71,7 @@ public final class PclParser implements AutoCloseable {
      *
      * @return the read {@link PrinterCommand} or <code>null</code> if the end of the stream has been reached.
      */
-    public PrinterCommand parseNextPrinterCommand() throws IOException {
+    public PrinterCommand parseNextPrinterCommand() throws IOException, PclException {
         return this.context.getCurrentParser().parseNextPrinterCommand();
     }
 

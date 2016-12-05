@@ -12,7 +12,7 @@ interface DataStreamParser {
      *
      * @return the read {@link PrinterCommand} or <code>null</code> if the end of the stream has been reached.
      */
-    public PrinterCommand parseNextPrinterCommand() throws IOException;
+    public PrinterCommand parseNextPrinterCommand() throws IOException, PclException;
 
     /**
      * Closes the data stream from which the {@link DataStreamParser} reads.

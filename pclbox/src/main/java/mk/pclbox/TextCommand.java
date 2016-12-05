@@ -10,6 +10,12 @@ public final class TextCommand extends PrinterCommand {
 
     final byte[] text;
 
+    /**
+     * Constructor of the {@link TextCommand}.
+     *
+     * @param offset - position within the data stream
+     * @param text - the text
+     */
     public TextCommand(long offset, final byte[] text) {
         super(offset);
         this.text = text.clone();

@@ -6,6 +6,46 @@ package mk.pclbox;
  */
 public final class ControlCharacterCommand extends PrinterCommand {
 
+    /**
+     * Backspace. Moves the current active position (CAP) left a distance equal to
+     * the width of the last printed symbol or space.
+     */
+    public static final int BACKSPACE = 8;
+
+    /**
+     * Moves the current active position (CAP) to the next tab stop on the current line.
+     */
+    public static final int HORIZONTAL_TAB = 9;
+
+    /**
+     * Line feed. Advances the current active position (CAP) to the same horizontal
+     * position on the next line.
+     */
+    public static final int LINE_FEED = 10;
+
+    /**
+     * Form feed. Advances the current active position (CAP) to the same horizontal
+     * position at the top of the text area on the next page.
+     */
+    public static final int FORM_FEED = 12;
+
+    /**
+     * Carriage return. Moves the current active position (CAP) to the left
+     * margin on the current line.
+     */
+    public static final int CARRIAGE_RETURN = 13;
+
+    /**
+     * Shift out. Switch from the standard font to the alternate font.
+     */
+    public static final int SHIFT_OUT = 14;
+
+    /**
+     * Shift in. Switch from the alternate font to the standard font.
+     */
+    public static final int SHIFT_IN = 15;
+
+
     private final byte controlCharacter;
 
     /**
