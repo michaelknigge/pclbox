@@ -1,5 +1,21 @@
 package mk.pclbox;
 
+/*
+ * Copyright 2017 Michael Knigge
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,14 +33,14 @@ public final class PclInputStreamForInputStreamTest extends TestCase {
      */
     public void testWithMarkSupported() throws Exception {
 
-        ByteArrayInputStream in = new ByteArrayInputStream("TEST".getBytes("utf-8"));
-        PclInputStream pclStream = new PclInputStreamForInputStream(in);
+        final ByteArrayInputStream in = new ByteArrayInputStream("TEST".getBytes("utf-8"));
+        final PclInputStream pclStream = new PclInputStreamForInputStream(in);
 
         assertEquals(0, pclStream.tell());
         assertEquals(84, pclStream.read());
         assertEquals(1, pclStream.tell());
 
-        byte[] buffer = new byte[3];
+        final byte[] buffer = new byte[3];
         assertEquals(3, pclStream.read(buffer, 0, 3));
         assertEquals(69, buffer[0]);
         assertEquals(83, buffer[1]);
@@ -44,7 +60,7 @@ public final class PclInputStreamForInputStreamTest extends TestCase {
         try {
             pclStream.seek(5);
             fail("Seek should fail we tried to seek after the end of the file");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             assertTrue(e.getMessage().contains("to position to offset 5"));
         }
 
@@ -56,7 +72,7 @@ public final class PclInputStreamForInputStreamTest extends TestCase {
      */
     public void testWithMarkNotSupported() throws Exception {
 
-        PclInputStream pclStream = new PclInputStreamForInputStream(new InputStream() {
+        final PclInputStream pclStream = new PclInputStreamForInputStream(new InputStream() {
             @Override
             public int read() throws IOException {
                 return -1;
@@ -66,7 +82,7 @@ public final class PclInputStreamForInputStreamTest extends TestCase {
         try {
             pclStream.seek(1);
             fail("Seek should fail because mark() is not supported!");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             assertTrue(e.getMessage().contains("is not supported"));
         }
     }
