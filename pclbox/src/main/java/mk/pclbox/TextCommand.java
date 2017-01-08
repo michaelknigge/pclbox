@@ -1,6 +1,6 @@
 package mk.pclbox;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 
 /**
@@ -10,6 +10,8 @@ import java.util.Arrays;
  * in the data stream.
  */
 public final class TextCommand extends PrinterCommand {
+
+    private static final Charset ISO_8859_1 = Charset.forName("iso-8859-1");
 
     final byte[] text;
 
@@ -42,7 +44,7 @@ public final class TextCommand extends PrinterCommand {
 
     @Override
     public int hashCode() {
-        return this.getText().hashCode() ^ this.getOffsetHash();
+        return Arrays.hashCode(this.getText()) ^ this.getOffsetHash();
     }
 
     @Override
@@ -57,11 +59,6 @@ public final class TextCommand extends PrinterCommand {
 
     @Override
     public String toString() {
-        try {
-            return new String(this.getText(), "ISO-8859-1") + "@" + this.getOffset();
-        } catch (final UnsupportedEncodingException e) {
-            // Well.... this should really never get invoked...
-            return Arrays.toString(this.getText()) + "@" + this.getOffset();
-        }
+        return new String(this.getText(), ISO_8859_1);
     }
 }
