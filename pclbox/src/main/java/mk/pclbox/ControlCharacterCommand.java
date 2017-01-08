@@ -59,6 +59,11 @@ public final class ControlCharacterCommand extends PrinterCommand {
         this.controlCharacter = controlCharacter;
     }
 
+    /**
+     * Returns the control character byte of this {@link ControlCharacterCommand}.
+     *
+     * @return the control character byte
+     */
     public byte getControlCharacter() {
         return this.controlCharacter;
     }
@@ -66,5 +71,25 @@ public final class ControlCharacterCommand extends PrinterCommand {
     @Override
     void accept(PrinterCommandVisitor visitor) {
         visitor.handle(this);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getControlCharacter() ^ this.getOffsetHash();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (other instanceof ControlCharacterCommand) {
+            final ControlCharacterCommand o = (ControlCharacterCommand) other;
+            return o.getControlCharacter() == this.getControlCharacter() && o.getOffset() == this.getOffset();
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "<0x" + Integer.toHexString(this.getControlCharacter()) + ">@" + this.getOffset();
     }
 }

@@ -7,27 +7,9 @@ import java.io.IOException;
 /**
  * This {@link DataStreamParser} parses PCL5 printer data stream.
  */
-final class Pcl5Parser implements DataStreamParser {
-
-    private enum ParserState {
-        /**
-         * Start of the stream or of a PCL command.
-         */
-        START,
-
-        /**
-         * we've read the escape byte or control character already.
-         */
-        ALREADY_READ_BYTE,
-
-        /**
-         * we are "in the middle" of a sequence of multiple PCL commands.
-         */
-        IN_SEQUENCE
-    }
+final class Pcl5Parser extends DataStreamParser {
 
     private static final int END_OF_STREAM = -1;
-    private static final int UNDEFINED = -1;
 
     private static final int ESCAPE = 0x1B;
     private static final int VERTICAL_TAB = 0x0B;
@@ -47,59 +29,36 @@ final class Pcl5Parser implements DataStreamParser {
     private static final int TERMINATION_CHARACTER_MIN = 64;
     private static final int TERMINATION_CHARACTER_MAX = 94;
 
-    private final PclInputStream stream;
-
-    private ParserState state;
-    private int alreadyReadByte;
-    private int parameterizedCharacter;
-    private int groupCharacter;
 
     /**
      * Constructor. Just gets the stream.
      *
-     * @param stream - the stream that contains the PCL 5 commands.
+     * @param context - the {@link PclParserContext} that contains all needed stuff.
      */
-    Pcl5Parser(final PclInputStream stream) {
-        this.stream = stream;
-        this.state = ParserState.START;
+    Pcl5Parser(final PclParserContext context) {
+        super(context);
     }
 
     @Override
-    public PrinterCommand parseNextPrinterCommand() throws IOException, PclException {
+    int parse() throws IOException, PclException {
 
-        final long offset = this.state == ParserState.ALREADY_READ_BYTE ? this.stream.tell() - 1 : this.stream.tell();
+        int firstByte = this.getInputStream().read();
 
-        if (this.state == ParserState.START) {
-            final int firstByte = this.stream.read();
-            if (firstByte == END_OF_STREAM) {
-                return null;
-            }
+        while(firstByte != END_OF_STREAM) {
 
-            if (firstByte != ESCAPE) {
+            final long offset = this.getInputStream().tell() - 1;
+
+            if (firstByte == ESCAPE) {
+                firstByte = this.parsePclCommand(offset);
+            } else {
                 if (isControlCharacter(firstByte)) {
-                    return new ControlCharacterCommand(offset, (byte) firstByte);
+                    firstByte = this.handleReadControlCharacter(offset, firstByte);
                 } else {
-                    return this.parseTextPrinterCommand(offset, firstByte);
+                    firstByte = this.parseText(offset, firstByte);
                 }
             }
-
-            this.alreadyReadByte = firstByte;
-            this.parameterizedCharacter = UNDEFINED;
-            this.groupCharacter = UNDEFINED;
-
-            this.state = ParserState.ALREADY_READ_BYTE;
         }
-
-        assert this.state == ParserState.ALREADY_READ_BYTE || this.state == ParserState.IN_SEQUENCE;
-        if (this.state == ParserState.ALREADY_READ_BYTE) {
-            if (isControlCharacter(this.alreadyReadByte)) {
-                this.state = ParserState.START;
-                return new ControlCharacterCommand(offset, (byte) this.alreadyReadByte);
-            }
-            return this.parseEscapeSequenceFromTheBeginning(offset);
-        } else {
-            return this.continueParsingOfEscapeSequence(offset);
-        }
+        return END_OF_STREAM;
     }
 
     /**
@@ -118,156 +77,227 @@ final class Pcl5Parser implements DataStreamParser {
     }
 
     /**
-     * Parses a PCL5 command just from the beginning (means, that the previous read byte is the
-     * escape byte).
+     * Continues parsing of text in the data stream. The first character/byte has already been read and now this
+     * method parses up to the end of the text.
      *
-     * @param offset - offset of the previous read escape byte , measured from the beginning of the read data stream.
+     * @param offset - offset of the previous read character/byte, measured from the beginning of the read data stream.
+     * @param firstByte - the (already read) first byte of the text
      *
-     * @return a PclCommand object containing the parsed PCL command.
+     * @return the next byte after the read text, which is an escape, control character or just the end of the stream.
      */
-    private PrinterCommand parseEscapeSequenceFromTheBeginning(long offset) throws PclException, IOException {
-        assert this.alreadyReadByte == ESCAPE;
+    private int parseText(final long offset, final int firstByte) throws IOException {
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        out.write(firstByte);
 
-        // The first byte after the escape byte is the parameterized character.
-        this.parameterizedCharacter = this.stream.read();
-        if (this.parameterizedCharacter == END_OF_STREAM) {
-            throw new EOFException(String.format(
-                    "The PCL data stream unexpectedly ends at offset %1$d. The data stream may be corrupted.", offset));
+        int readByte = this.getInputStream().read();
+        while (readByte != END_OF_STREAM && readByte != ESCAPE && !isControlCharacter(readByte)) {
+            out.write(readByte);
+            readByte = this.getInputStream().read();
         }
 
-        if (this.parameterizedCharacter >= OPERATION_CHARACTER_MIN
-                && this.parameterizedCharacter <= OPERATION_CHARACTER_MAX) {
-            this.resetStateToStart();
-            return new TwoBytePclCommand(offset, this.parameterizedCharacter);
-        }
+        this.getPrinterCommandHandler().handlePrinterCommand(new TextCommand(offset, out.toByteArray()));
 
-        if (this.parameterizedCharacter < PARAMETERIZED_CHARACTER_MIN
-                || this.parameterizedCharacter > PARAMETERIZED_CHARACTER_MAX) {
-            throw new PclException(String.format(
-                    "The byte value of the parameterized character at offset %1$d is invalid", offset + 1));
-        }
-
-        // After the parameterized the group character follows...
-        this.groupCharacter = this.stream.read();
-        if (this.groupCharacter == END_OF_STREAM) {
-            throw new EOFException(String.format(
-                    "The PCL data stream unexpectedly ends at offset %1$d. The data stream may be corrupted.", offset));
-        }
-
-        if (this.groupCharacter < GROUP_CHARACTER_MIN || this.groupCharacter > GROUP_CHARACTER_MAX) {
-            throw new PclException(String.format(
-                    "The byte value of the group character at offset %1$d is invalid.", offset + 2));
-        }
-
-        return this.continueParsingOfEscapeSequence(offset);
+        return readByte;
     }
 
     /**
-     * Continues parsing of a PCL5 command after a group or parameter character.
+     * Handles the already read control character.
      *
-     * @param offset - offset to the start of the PCL command or of the part of the parameterized escape sequence
-     *     that gets parsed now - measured from the beginning of the read data stream.
+     * @param offset - offset of the previous read control character, measured from the beginning of the read data stream.
+     * @param firstByte - the (already read) control character
      *
-     * @return a PclCommand object containing the parsed PCL command.
+     * @return the next byte after the control character, which is an escape, control character, some text
+     *     or just the end of the stream.
      */
-    private PrinterCommand continueParsingOfEscapeSequence(long offset) throws IOException, PclException {
-        int readByte = this.stream.read();
-        if (readByte == END_OF_STREAM) {
-            // If we are "in the middle" of a parameterized escape sequence and we hit EOF here, we assume that
-            // the parameterized escape sequence is "just" incorrectly terminated with a lower case letter (this is
-            // not unusual "in the wild")...
-            if (this.state == ParserState.IN_SEQUENCE) {
-                return null;
-            }
+    private int handleReadControlCharacter(final long offset, final int controlCharacter) throws IOException {
+        this.getPrinterCommandHandler().handlePrinterCommand(
+                new ControlCharacterCommand(offset, (byte) controlCharacter));
 
+        return this.getInputStream().read();
+    }
+
+    /**
+     * Continues parsing of a PCL command . The first character/byte has already been read (the escape byte) and now
+     * this method parses the rest of the command or sequence.
+     *
+     * @param offset - offset of the previous read escape byte , measured from the beginning of the read data stream.
+     *
+     * @return the next byte after the read text, which is an escape, control character or just the end of the stream.
+     */
+    private int parsePclCommand(final long offset) throws IOException, PclException {
+
+        // The first byte after the escape byte is the parameterized character.
+        final int parameterizedCharacter = this.getInputStream().read();
+        if (parameterizedCharacter == END_OF_STREAM) {
             throw new EOFException(String.format(
-                    "The PCL data stream unexpectedly ends at offset %1$d. The data stream may be corrupted.", offset));
+                    "The PCL data stream unexpectedly ends at offset %1$d. The data stream may be corrupted.",
+                    this.getInputStream().tell()));
         }
 
-        // If we encounter an escape here, the previous PCL command may not have been ended correctly. "In the wild"
-        // it is not unlikely that a parameterized escape sequence is (incorrectly) ended with a lower case character
-        // (instead of an upper case character). So if we get an escape here, we assume that a new PCL command begins.
-        if (this.state == ParserState.IN_SEQUENCE && readByte == ESCAPE) {
-            this.state = ParserState.ALREADY_READ_BYTE;
-            this.alreadyReadByte = readByte;
-            this.parameterizedCharacter = UNDEFINED;
-            this.groupCharacter = UNDEFINED;
+        if (isOperationCharacter(parameterizedCharacter)) {
+            this.getPrinterCommandHandler().handlePrinterCommand(
+                    new TwoBytePclCommand(offset, parameterizedCharacter));
 
-            return this.parseEscapeSequenceFromTheBeginning(offset);
+            return this.getInputStream().read();
         }
 
-        // Now read the "value string". Note that a "value" may be omitted - then "0" is assumed....
-        final StringBuilder sb = new StringBuilder();
-        if (readByte == '+' || readByte == '-' || isValidValueCharacter(readByte)) {
-            sb.append((char) readByte);
-        } else {
-            // A termination character? Then a value is omitted and we've reached the end of the PCL command.
-            if (readByte >= TERMINATION_CHARACTER_MIN && readByte <= TERMINATION_CHARACTER_MAX) {
-                this.resetStateToStart();
-                return new ParameterizedPclCommand(
-                        offset,
-                        this.parameterizedCharacter,
-                        this.groupCharacter,
-                        "",
-                        readByte);
-            }
-
-            // A parameter character? Then a value is omitted and we're now in the middle of a PCL command.
-            if (readByte >= PARAMETER_CHARACTER_MIN && readByte <= PARAMETER_CHARACTER_MAX) {
-                this.state = ParserState.IN_SEQUENCE;
-                return new ParameterizedPclCommand(
-                        offset,
-                        this.parameterizedCharacter,
-                        this.groupCharacter,
-                        "",
-                        readByte - 32);
-            }
-
+        if (!isParameterizedCharacter(parameterizedCharacter)) {
             throw new PclException(String.format(
-                    "The PCL data stream contains an invalid value at offset %1$d.", offset));
+                    "The byte value of the parameterized character at offset %1$d is invalid",
+                    this.getInputStream().tell() - 1));
         }
 
-        readByte = this.stream.read();
-        while (isValidValueCharacter(readByte)) {
-            sb.append((char) readByte);
-            readByte = this.stream.read();
-        }
-
+        // After the parameterized character the group character follows...
+        int readByte = this.getInputStream().read();
         if (readByte == END_OF_STREAM) {
             throw new EOFException(String.format(
-                    "The PCL data stream unexpectedly ends at offset %1$d. The data stream may be corrupted.", offset));
+                    "The PCL data stream unexpectedly ends at offset %1$d. The data stream may be corrupted.",
+                    this.getInputStream().tell()));
         }
 
-        // A termination character? Then we've reached the end of the PCL command.
-        if (readByte >= TERMINATION_CHARACTER_MIN && readByte <= TERMINATION_CHARACTER_MAX) {
-            this.resetStateToStart();
-            return new ParameterizedPclCommand(
-                    offset,
-                    this.parameterizedCharacter,
-                    this.groupCharacter,
-                    sb.toString(),
-                    readByte);
+        // But note that the group character (and even the "value") is optional - depending on the command!
+        // Most common example is the command "<escape>%-12345X" that does not have a group character...
+        final int groupCharacter = isGroupCharacter(readByte) ? readByte : 0x00;
+
+        // Now parse the rest of the command or sequence... Note that the value may be omitted (according to the
+        // PCL specification, the value is optional). One of the most common commands that has no value is the
+        // command "<escape>&d@" (Disable Underline).
+        if (isGroupCharacter(readByte)) {
+            readByte = this.getInputStream().read();
+            if (readByte == END_OF_STREAM) {
+                throw new EOFException(String.format(
+                        "The PCL data stream unexpectedly ends at offset %1$d. The data stream may be corrupted.",
+                        this.getInputStream().tell()));
+            }
         }
 
-        // A parameter character? Then we're now in the middle of a PCL command.
-        if (readByte >= PARAMETER_CHARACTER_MIN && readByte <= PARAMETER_CHARACTER_MAX) {
-            this.state = ParserState.IN_SEQUENCE;
-            return new ParameterizedPclCommand(
-                    offset,
-                    this.parameterizedCharacter,
-                    this.groupCharacter,
-                    sb.toString(),
-                    readByte - 32);
+        if (readByte == ESCAPE) {
+            throw new PclException(String.format(
+                    "The byte at offset %1$d is invalid (unexpected escape)", this.getInputStream().tell() - 1));
         }
 
-        throw new PclException(String.format(
-                "The PCL data stream contains an invalid value at offset %1$d.", offset));
+        final StringBuilder sb = new StringBuilder();
+        long currentCommandOffset = offset;
+        while (readByte != ESCAPE && readByte != END_OF_STREAM) {
+
+            // If we encounter a termination character, we've reached the end of the PCL sequence or command...
+            if (isTerminationCharacter(readByte)) {
+                this.getPrinterCommandHandler().handlePrinterCommand(
+                        new ParameterizedPclCommand(
+                                currentCommandOffset,
+                                parameterizedCharacter,
+                                groupCharacter,
+                                sb.toString(),
+                                readByte));
+
+                return this.getInputStream().read();
+            }
+
+            // If we encounter a parameter character, we've parsed one part of a PCL escape sequence...
+            if (isParameterCharacter(readByte)) {
+                this.getPrinterCommandHandler().handlePrinterCommand(
+                        new ParameterizedPclCommand(
+                                currentCommandOffset,
+                                parameterizedCharacter,
+                                groupCharacter,
+                                sb.toString(),
+                                parameterCharacterToTerminationCharacter(readByte)));
+
+                sb.setLength(0);
+                currentCommandOffset = this.getInputStream().tell();
+            } else {
+                if (!isValidValueCharacter(readByte)) {
+                    throw new PclException(String.format(
+                            "The byte value of the character at offset %1$d is invalid.",
+                            this.getInputStream().tell() - 1));
+                }
+
+                sb.append((char) readByte);
+            }
+
+            readByte = this.getInputStream().read();
+        }
+
+        if (sb.length() != 0) {
+            throw new EOFException(String.format(
+                    "The PCL data stream unexpectedly ends at offset %1$d. The data stream may be corrupted.",
+                    this.getInputStream().tell()));
+        }
+
+        return readByte;
+    }
+
+    /**
+     * Transforms the given parameter character to a termination character.
+     *
+     * @param parameterCharacter - the value of the parameter character
+     *
+     * @return the termination character that corresponds to the parameter character
+     */
+    private static int parameterCharacterToTerminationCharacter(final int parameterCharacter) {
+        assert isParameterCharacter(parameterCharacter);
+        return parameterCharacter - 32;
+    }
+
+    /**
+     * Returns true if the given value is valid for a parameter character.
+     *
+     * @param value - the value to be checked.
+     *
+     * @return true true if the given value is valid for a parameter character.
+     */
+    private static boolean isParameterCharacter(final int value) {
+        return value >= PARAMETER_CHARACTER_MIN && value <= PARAMETER_CHARACTER_MAX;
+    }
+
+    /**
+     * Returns true if the given value is valid for a parameterized character.
+     *
+     * @param value - the value to be checked.
+     *
+     * @return true true if the given value is valid for a parameterized character.
+     */
+    private static boolean isParameterizedCharacter(final int value) {
+        return value >= PARAMETERIZED_CHARACTER_MIN && value <= PARAMETERIZED_CHARACTER_MAX;
+    }
+
+    /**
+     * Returns true if the given value is valid for a operation character.
+     *
+     * @param value - the value to be checked.
+     *
+     * @return true true if the given value is valid for a operation character.
+     */
+    private static boolean isOperationCharacter(final int value) {
+        return value >= OPERATION_CHARACTER_MIN && value <= OPERATION_CHARACTER_MAX;
+    }
+
+    /**
+     * Returns true if the given value is valid for a group character.
+     *
+     * @param value - the value to be checked.
+     *
+     * @return true true if the given value is valid for a group character.
+     */
+    private static boolean isGroupCharacter(final int value) {
+        return value >= GROUP_CHARACTER_MIN && value <= GROUP_CHARACTER_MAX;
+    }
+
+    /**
+     * Returns true if the given value is valid for a termination character.
+     *
+     * @param value - the value to be checked.
+     *
+     * @return true true if the given value is valid for a termination character.
+     */
+    private static boolean isTerminationCharacter(final int value) {
+        return value >= TERMINATION_CHARACTER_MIN && value <= TERMINATION_CHARACTER_MAX;
     }
 
     /**
      * Returns true if the given value is valid for a "value", which means that values
-     * between '0' (0x30) and '9' (0x39) are avlid, as well als the decimal point '.'.
-     * Note that "+" and "-" are not considered valid!
+     * between '0' (0x30) and '9' (0x39) are valid, as well als the decimal point '.'
+     * and "+" and "-".
      *
      * @param value - the value to be checked.
      *
@@ -277,45 +307,7 @@ final class Pcl5Parser implements DataStreamParser {
         if (value >= '0' && value <= '9') {
             return true;
         } else {
-            return value == '.';
+            return value == '.' || value == '-' || value == '+';
         }
-    }
-
-    /**
-     * Resets the internal state to "start from the beginning" (of a PCL command).
-     */
-    private void resetStateToStart() {
-        this.state = ParserState.START;
-        this.alreadyReadByte = UNDEFINED;
-    }
-
-    /**
-     * Parses text from the data stream.
-     *
-     * @param offset - position within the data stream where the text starts
-     * @param firstByte - the first byte of the text
-     *
-     * @return a TextCommand object containing the parsed text
-     */
-    private PrinterCommand parseTextPrinterCommand(final long offset, final int firstByte)
-            throws IOException {
-        final ByteArrayOutputStream out = new ByteArrayOutputStream();
-        out.write(firstByte);
-
-        int readByte = this.stream.read();
-        while (readByte != END_OF_STREAM && readByte != ESCAPE && !isControlCharacter(readByte)) {
-            out.write(readByte);
-            readByte = this.stream.read();
-        }
-
-        this.alreadyReadByte = readByte;
-        this.state = readByte == END_OF_STREAM ? ParserState.START : ParserState.ALREADY_READ_BYTE;
-
-        return new TextCommand(offset, out.toByteArray());
-    }
-
-    @Override
-    public void close() throws IOException {
-        this.stream.close();
     }
 }

@@ -3,19 +3,46 @@ package mk.pclbox;
 import java.io.IOException;
 
 /**
- * Interface that every printer data stream parser implements.
+ * Superclass of all printer data stream parsers.
  */
-interface DataStreamParser {
+abstract class DataStreamParser {
+
+    private final PclParserContext ctx;
 
     /**
-     * Parses the next printer command. The read command will be returned as a {@link PrinterCommand} object.
+     * Constructor.
      *
-     * @return the read {@link PrinterCommand} or <code>null</code> if the end of the stream has been reached.
+     * @param ctx - the {@link PclParserContext} that holds all information that is required
+     *     by the concrete {@link DataStreamParser}.
      */
-    public PrinterCommand parseNextPrinterCommand() throws IOException, PclException;
+    DataStreamParser(final PclParserContext ctx) {
+        this.ctx = ctx;
+    }
 
     /**
-     * Closes the data stream from which the {@link DataStreamParser} reads.
+     * Gets the {@link PclInputStream} to read from.
+     *
+     * @return the {@link PclInputStream} to read from.
      */
-    public void close() throws IOException;
+    PclInputStream getInputStream() {
+        return this.ctx.getInputStream();
+    }
+
+    /**
+     * Gets the {@link PrinterCommandHandler} that handles the read {@link PrinterCommand}.
+     *
+     * @return the {@link PrinterCommandHandler}.
+     */
+    PrinterCommandHandler getPrinterCommandHandler() {
+        return this.ctx.getPrinterCommandHandler();
+    }
+
+    /**
+     * Parses the data stream. For every parsed {@link PrinterCommand} the {@link PrinterCommandHandler} is invoked.
+     *
+     * @return the last byte read from the data stream that has caused the parser to stop (i. e. the PJL parser
+     * will return 0x1B if it hits the first PCL command). This may also be -1 if the end of the data stream
+     * has been reached.
+     */
+    abstract int parse() throws IOException, PclException;
 }

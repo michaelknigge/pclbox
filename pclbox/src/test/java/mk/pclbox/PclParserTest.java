@@ -20,10 +20,10 @@ public final class PclParserTest extends TestCase {
         final File testFile = File.createTempFile(this.getClass().getSimpleName(), null);
         testFile.deleteOnExit(); // in case this method throws an exception...
 
-        new PclParser(testFile.getAbsolutePath()).close();
-        new PclParser(testFile).close();
-        new PclParser(new FileInputStream(testFile)).close();
-        new PclParser(new ByteArrayInputStream(new byte[0])).close();
+        new PclParser(testFile.getAbsolutePath(), null).close();
+        new PclParser(testFile, null).close();
+        new PclParser(new FileInputStream(testFile), null).close();
+        new PclParser(new ByteArrayInputStream(new byte[0]), null).close();
 
         new PclParser(new PclInputStream() {
 
@@ -54,6 +54,6 @@ public final class PclParserTest extends TestCase {
             @Override
             public void close() throws IOException {
             }
-        }).close();
+        }, null).close();
     }
 }

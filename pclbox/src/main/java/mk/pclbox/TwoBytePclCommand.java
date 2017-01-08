@@ -18,8 +18,6 @@ public final class TwoBytePclCommand extends PclCommand {
      */
     public TwoBytePclCommand(long offset, final int operationCharacter) {
         super(offset);
-
-        assert operationCharacter >= 48 && operationCharacter <= 126;
         this.operationCharacter = operationCharacter;
     }
 
@@ -34,6 +32,31 @@ public final class TwoBytePclCommand extends PclCommand {
 
     @Override
     void accept(PrinterCommandVisitor visitor) {
-        visitor.accept(this);
+        visitor.handle(this);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getOperationCharacter() ^ this.getOffsetHash();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (other instanceof TwoBytePclCommand) {
+            final TwoBytePclCommand o = (TwoBytePclCommand) other;
+            return o.getOperationCharacter() == this.getOperationCharacter() && o.getOffset() == this.getOffset();
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("<esc>");
+        sb.append((char) this.getOperationCharacter());
+        sb.append("@");
+        sb.append(this.getOffset());
+        return sb.toString();
     }
 }

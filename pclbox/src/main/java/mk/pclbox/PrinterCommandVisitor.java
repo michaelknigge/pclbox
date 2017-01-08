@@ -18,10 +18,15 @@ public interface PrinterCommandVisitor {
     /**
      * Handle method for {@link TwoBytePclCommand} objects.
      */
-    void accept(final TwoBytePclCommand twoBytePclCommand);
+    void handle(final TwoBytePclCommand twoBytePclCommand);
 
     /**
      * Handle method for {@link ParameterizedPclCommand} objects.
      */
-    void accept(final ParameterizedPclCommand parameterizedPclCommand);
+    void handle(final ParameterizedPclCommand parameterizedPclCommand);
+
+    /**
+     * Handle method for {@link PjlCommand} objects.
+     */
+    void handle(final PjlCommand pjlCommand);
 }

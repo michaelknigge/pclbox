@@ -27,6 +27,15 @@ abstract class PrinterCommand {
     }
 
     /**
+     * Calculates a hash for the offset.
+     *
+     * @return the hash code (32bit) for the offset (64 bit).
+     */
+    protected int getOffsetHash() {
+        return (int) (this.offset ^ (this.offset >>> 32));
+    }
+
+    /**
      * Delegates the concrete {@link PrinterCommand} to the corresponding handle
      * method of the {@link PrinterCommandVisitor}.
      *

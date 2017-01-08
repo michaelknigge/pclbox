@@ -23,8 +23,9 @@ public final class ParameterizedPclCommand extends PclCommand {
      *
      * @param offset - position within the data stream
      * @param parameterizedCharacter - the parameterized character of the PCL command (ASCII range 33 to 47)
-     * @param groupCharacter - the group character of the PCL command (ASCII range 96 to 126)
-     * @param value - the value string
+     * @param groupCharacter - the group character of the PCL command (ASCII range 96 to 126) or 0 if the
+     *     PCL command does not contain a group character.
+     * @param value - the value string. If an empty string is given "0" is used as the value
      * @param terminationCharacter - the termination character of the PCL command (ASCII range 64 to 94)
      */
     public ParameterizedPclCommand(
@@ -38,7 +39,7 @@ public final class ParameterizedPclCommand extends PclCommand {
 
         this.parameterizedCharacter = parameterizedCharacter;
         this.groupCharacter = groupCharacter;
-        this.value = value;
+        this.value = value.isEmpty() ? "0" : value;
         this.terminationCharacter = terminationCharacter;
     }
 
@@ -52,9 +53,10 @@ public final class ParameterizedPclCommand extends PclCommand {
     }
 
     /**
-     * Returns the group character of the PCL command (ASCII range 96 to 126).
+     * Returns the group character of the PCL command (ASCII range 96 to 126) or 0 if the
+     * PCL command does not contain a group character.
      *
-     * @return the group character
+     * @return the group character or 0 if the PCL command does not contain a group character.
      */
     public int getGroupCharacter() {
         return this.groupCharacter;
@@ -80,6 +82,47 @@ public final class ParameterizedPclCommand extends PclCommand {
 
     @Override
     void accept(PrinterCommandVisitor visitor) {
-        visitor.accept(this);
+        visitor.handle(this);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getValue().hashCode() ^
+                this.getParameterizedCharacter() ^
+                this.getGroupCharacter() ^
+                this.getTerminationCharacter() ^
+                this.getOffsetHash();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (other instanceof ParameterizedPclCommand) {
+            final ParameterizedPclCommand o = (ParameterizedPclCommand) other;
+            return o.getValue().equals(this.getValue())
+                    && o.getParameterizedCharacter() == this.getParameterizedCharacter()
+                    && o.getGroupCharacter() == this.getGroupCharacter()
+                    && o.getTerminationCharacter() == this.getTerminationCharacter()
+                    && o.getOffset() == this.getOffset();
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("<esc>");
+        sb.append((char) this.getParameterizedCharacter());
+
+        if (this.getGroupCharacter() != 0x00) {
+            sb.append((char) this.getGroupCharacter());
+        }
+
+        sb.append(this.getValue());
+        sb.append((char) this.getTerminationCharacter());
+        sb.append("@");
+        sb.append(this.getOffset());
+
+        return sb.toString();
     }
 }
