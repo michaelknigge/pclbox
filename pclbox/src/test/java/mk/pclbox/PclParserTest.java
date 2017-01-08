@@ -13,6 +13,16 @@ import junit.framework.TestCase;
 public final class PclParserTest extends TestCase {
 
     /**
+     * Just invokes the parse() method. This test is more or less useless - it is just
+     * here to pimp the code coverage...
+     */
+    public void testParser() throws Exception {
+        final PclParser pclParser = new PclParser(new ByteArrayInputStream(new byte[0]), null);
+        pclParser.parse();
+        pclParser.close();
+    }
+
+    /**
      * Just invokes every constructor once. This test is more or less useless - it is just
      * here to pimp the code coverage...
      */
@@ -24,6 +34,7 @@ public final class PclParserTest extends TestCase {
         new PclParser(testFile, null).close();
         new PclParser(new FileInputStream(testFile), null).close();
         new PclParser(new ByteArrayInputStream(new byte[0]), null).close();
+        new PclParser(new ByteArrayInputStream(new byte[0]), null, true).close();
 
         new PclParser(new PclInputStream() {
 

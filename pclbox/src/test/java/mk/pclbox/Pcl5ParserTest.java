@@ -291,4 +291,22 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
                         new ParameterizedPclCommand(8, '(', 's', "", 'H')),
                 COMMANDS);
     }
+
+    /**
+     * Checks that a value with sign and/or decimal places is is ok (see "Vertical Cursor
+     * Positioning (Rows) Command" PCL command).
+     */
+    public void testSignAndDecimalPlaces() throws Exception {
+        this.getPcl5ParserFor("~&a100R~&a+100R~&a-100R~&a100.5R~&a-100.541R~&a+100.001R").parse();
+
+        assertEquals(
+                buildExpected(
+                        new ParameterizedPclCommand(0, '&', 'a', "100", 'R'),
+                        new ParameterizedPclCommand(7, '&', 'a', "+100", 'R'),
+                        new ParameterizedPclCommand(15, '&', 'a', "-100", 'R'),
+                        new ParameterizedPclCommand(23, '&', 'a', "100.5", 'R'),
+                        new ParameterizedPclCommand(32, '&', 'a', "-100.541", 'R'),
+                        new ParameterizedPclCommand(44, '&', 'a', "+100.001", 'R')),
+                COMMANDS);
+    }
 }

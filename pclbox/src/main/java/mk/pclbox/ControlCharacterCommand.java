@@ -90,6 +90,6 @@ public final class ControlCharacterCommand extends PrinterCommand {
 
     @Override
     public String toString() {
-        return "<0x" + Integer.toHexString(this.getControlCharacter()) + ">@" + this.getOffset();
+        return String.format("<0x%02X>@%d", this.getControlCharacter(), this.getOffset());
     }
 }
