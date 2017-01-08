@@ -44,7 +44,7 @@ final class Pcl5Parser extends DataStreamParser {
 
         int firstByte = this.getInputStream().read();
 
-        while(firstByte != END_OF_STREAM) {
+        while (firstByte != END_OF_STREAM) {
 
             final long offset = this.getInputStream().tell() - 1;
 
@@ -103,7 +103,7 @@ final class Pcl5Parser extends DataStreamParser {
     /**
      * Handles the already read control character.
      *
-     * @param offset - offset of the previous read control character, measured from the beginning of the read data stream.
+     * @param offset - offset of the previous read control character, measured from the beginning of the data stream.
      * @param firstByte - the (already read) control character
      *
      * @return the next byte after the control character, which is an escape, control character, some text

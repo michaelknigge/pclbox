@@ -87,11 +87,11 @@ public final class ParameterizedPclCommand extends PclCommand {
 
     @Override
     public int hashCode() {
-        return this.getValue().hashCode() ^
-                this.getParameterizedCharacter() ^
-                this.getGroupCharacter() ^
-                this.getTerminationCharacter() ^
-                this.getOffsetHash();
+        return this.getValue().hashCode()
+                ^ this.getParameterizedCharacter()
+                ^ this.getGroupCharacter()
+                ^ this.getTerminationCharacter()
+                ^ this.getOffsetHash();
     }
 
     @Override

@@ -22,7 +22,7 @@ public final class PclParser implements AutoCloseable {
      * within the PCL data stream.
      *
      * @param inputFile - the {@link File} that contains the PCL data stream.
-     * @param commandHandler - the {@link PrinterCommandHandler} that is invoked for every parsed {@link PrinterCommand}.
+     * @param commandHandler - the {@link PrinterCommandHandler} that is invoked for every {@link PrinterCommand}.
      */
     public PclParser(final File inputFile, final PrinterCommandHandler commandHandler) throws FileNotFoundException {
         this(new FileInputStream(inputFile), commandHandler, true);
@@ -33,7 +33,7 @@ public final class PclParser implements AutoCloseable {
      * within the PCL data stream.
      *
      * @param inputFileName - the name of the file that contains the PCL data stream.
-     * @param commandHandler - the {@link PrinterCommandHandler} that is invoked for every parsed {@link PrinterCommand}.
+     * @param commandHandler - the {@link PrinterCommandHandler} that is invoked for every {@link PrinterCommand}.
      */
     public PclParser(final String inputFileName, final PrinterCommandHandler commandHandler)
             throws FileNotFoundException {
@@ -45,7 +45,7 @@ public final class PclParser implements AutoCloseable {
      * the PCL data stream.
      *
      * @param input - the {@link PclInputStream} that will be used to read the PCL data stream.
-     * @param commandHandler - the {@link PrinterCommandHandler} that is invoked for every parsed {@link PrinterCommand}.
+     * @param commandHandler - the {@link PrinterCommandHandler} that is invoked for every {@link PrinterCommand}.
      */
     public PclParser(final PclInputStream input, final PrinterCommandHandler commandHandler) {
         this(input, commandHandler, false);
@@ -71,7 +71,7 @@ public final class PclParser implements AutoCloseable {
      * Seeking is done by using a {@link FileChannel} that is provided by the {@link FileInputStream}.
      *
      * @param input - the {@link FileInputStream} that will be used to read the PCL data stream.
-     * @param commandHandler - the {@link PrinterCommandHandler} that is invoked for every parsed {@link PrinterCommand}.
+     * @param commandHandler - the {@link PrinterCommandHandler} that is invoked for every {@link PrinterCommand}.
      */
     public PclParser(final FileInputStream input, final PrinterCommandHandler commandHandler) {
         this(new PclInputStreamForInputStream(input), commandHandler, false);
@@ -82,7 +82,7 @@ public final class PclParser implements AutoCloseable {
      * Seeking is done by using a {@link FileChannel} that is provided by the {@link FileInputStream}.
      *
      * @param input - the {@link FileInputStream} that will be used to read the PCL data stream.
-     * @param commandHandler - the {@link PrinterCommandHandler} that is invoked for every parsed {@link PrinterCommand}.
+     * @param commandHandler - the {@link PrinterCommandHandler} that is invoked for every {@link PrinterCommand}.
      * @param closeStream - true if the {@link PclInputStream} should be closed by the {@link PclParser}.
      */
     public PclParser(final FileInputStream input, final PrinterCommandHandler commandHandler,
@@ -99,7 +99,7 @@ public final class PclParser implements AutoCloseable {
      * {@link InputStream#reset()} or {@link InputStream#skip(long)} on the given stream.
      *
      * @param input - the {@link InputStream} that will be used to read the PCL data stream.
-     * @param commandHandler - the {@link PrinterCommandHandler} that is invoked for every parsed {@link PrinterCommand}.
+     * @param commandHandler - the {@link PrinterCommandHandler} that is invoked for every {@link PrinterCommand}.
      */
     public PclParser(final InputStream input, final PrinterCommandHandler commandHandler) {
         this(new PclInputStreamForInputStream(input), commandHandler, false);
@@ -112,7 +112,7 @@ public final class PclParser implements AutoCloseable {
      * {@link InputStream#reset()} or {@link InputStream#skip(long)} on the given stream.
      *
      * @param input - the {@link InputStream} that will be used to read the PCL data stream.
-     * @param commandHandler - the {@link PrinterCommandHandler} that is invoked for every parsed {@link PrinterCommand}.
+     * @param commandHandler - the {@link PrinterCommandHandler} that is invoked for every {@link PrinterCommand}.
      * @param closeStream - true if the {@link PclInputStream} should be closed by the {@link PclParser}.
      */
     public PclParser(final InputStream input, final PrinterCommandHandler commandHandler, final boolean closeStream) {
@@ -127,7 +127,8 @@ public final class PclParser implements AutoCloseable {
     public void parse() throws IOException, PclException {
         final int lastReadBye = new Pcl5Parser(new PclParserContext(this.stream, this.commandHandler)).parse();
         if (lastReadBye != -1) {
-            throw new PclException("The Pcl5Parser unexpectedly returned before the end of the data stream has been reached");
+            throw new PclException(
+                    "The Pcl5Parser unexpectedly returned before the end of the data stream has been reached");
         }
     }
 

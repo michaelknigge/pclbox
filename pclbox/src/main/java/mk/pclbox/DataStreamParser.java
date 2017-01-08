@@ -41,8 +41,8 @@ abstract class DataStreamParser {
      * Parses the data stream. For every parsed {@link PrinterCommand} the {@link PrinterCommandHandler} is invoked.
      *
      * @return the last byte read from the data stream that has caused the parser to stop (i. e. the PJL parser
-     * will return 0x1B if it hits the first PCL command). This may also be -1 if the end of the data stream
-     * has been reached.
+     *     will return 0x1B if it hits the first PCL command). This may also be -1 if the end of the data stream
+     *     has been reached.
      */
     abstract int parse() throws IOException, PclException;
 }
