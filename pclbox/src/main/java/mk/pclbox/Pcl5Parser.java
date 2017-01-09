@@ -198,15 +198,21 @@ final class Pcl5Parser extends DataStreamParser {
 
             // If we encounter a termination character, we've reached the end of the PCL sequence or command...
             if (isTerminationCharacter(readByte)) {
-                this.getPrinterCommandHandler().handlePrinterCommand(
-                        new ParameterizedPclCommand(
-                                currentCommandOffset,
-                                parameterizedCharacter,
-                                groupCharacter,
-                                sb.toString(),
-                                readByte));
+                final ParameterizedPclCommand command = new ParameterizedPclCommand(
+                        currentCommandOffset,
+                        parameterizedCharacter,
+                        groupCharacter,
+                        sb.toString(),
+                        readByte);
 
-                return this.getInputStream().read();
+                this.getPrinterCommandHandler().handlePrinterCommand(command);
+
+                // If we've read a "Universal Exit Language Command", we have to switch to PJL...
+                if (isUniversalExitLanguageCommand(command)) {
+                    return new PjlParser(this.getContext()).parse();
+                } else {
+                    return this.getInputStream().read();
+                }
             }
 
             // If we encounter a parameter character, we've parsed one part of a PCL escape sequence...
@@ -256,11 +262,25 @@ final class Pcl5Parser extends DataStreamParser {
     }
 
     /**
+     * Returns true if the given {@link ParameterizedPclCommand} is a UEL command.
+     *
+     * @param command - the {@link ParameterizedPclCommand} to be checked.
+     *
+     * @return true if the given {@link ParameterizedPclCommand} is a UEL command.
+     */
+    private boolean isUniversalExitLanguageCommand(ParameterizedPclCommand command) {
+        return command.getGroupCharacter() == 0x00
+                && command.getParameterizedCharacter() == '%'
+                && command.getValue().equals("-12345")
+                && command.getTerminationCharacter() == 'X';
+    }
+
+    /**
      * Returns true if the given value is valid for a parameter character.
      *
      * @param value - the value to be checked.
      *
-     * @return true true if the given value is valid for a parameter character.
+     * @return true if the given value is valid for a parameter character.
      */
     private static boolean isParameterCharacter(final int value) {
         return value >= PARAMETER_CHARACTER_MIN && value <= PARAMETER_CHARACTER_MAX;
@@ -282,7 +302,7 @@ final class Pcl5Parser extends DataStreamParser {
      *
      * @param value - the value to be checked.
      *
-     * @return true true if the given value is valid for a operation character.
+     * @return true if the given value is valid for a operation character.
      */
     private static boolean isOperationCharacter(final int value) {
         return value >= OPERATION_CHARACTER_MIN && value <= OPERATION_CHARACTER_MAX;
@@ -304,7 +324,7 @@ final class Pcl5Parser extends DataStreamParser {
      *
      * @param value - the value to be checked.
      *
-     * @return true true if the given value is valid for a termination character.
+     * @return true if the given value is valid for a termination character.
      */
     private static boolean isTerminationCharacter(final int value) {
         return value >= TERMINATION_CHARACTER_MIN && value <= TERMINATION_CHARACTER_MAX;
@@ -317,7 +337,7 @@ final class Pcl5Parser extends DataStreamParser {
      *
      * @param value - the value to be checked.
      *
-     * @return true true if the given value is valid for a "value".
+     * @return true if the given value is valid for a "value".
      */
     private static boolean isValidValueCharacter(final int value) {
         if (value >= '0' && value <= '9') {

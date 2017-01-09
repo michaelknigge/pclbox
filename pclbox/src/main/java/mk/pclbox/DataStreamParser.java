@@ -36,6 +36,15 @@ abstract class DataStreamParser {
     }
 
     /**
+     * Gets the {@link PclParserContext}.
+     *
+     * @return the {@link PclParserContext}.
+     */
+    PclParserContext getContext() {
+        return this.ctx;
+    }
+
+    /**
      * Gets the {@link PclInputStream} to read from.
      *
      * @return the {@link PclInputStream} to read from.

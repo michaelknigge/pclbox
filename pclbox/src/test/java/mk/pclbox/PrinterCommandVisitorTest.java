@@ -92,10 +92,10 @@ public final class PrinterCommandVisitorTest extends DataStreamParserTest {
 
         pclStream.close();
 
-        assertEquals(2, VISITOR.textCommandCounter); // TODO Fixme: 1 as soon as we support PJL!
-        assertEquals(3, VISITOR.controlCharacterCounter); // TODO Fixme: 1 as soon as we support PJL!
+        assertEquals(1, VISITOR.textCommandCounter);
+        assertEquals(1, VISITOR.controlCharacterCounter);
         assertEquals(1, VISITOR.twoBytePclCommandCounter);
         assertEquals(1, VISITOR.parameterizedPclCommand);
-        assertEquals(0, VISITOR.pjlCommand); // TODO Fixme: 1 as soon as we support PJL!
+        assertEquals(1, VISITOR.pjlCommand);
     }
 }

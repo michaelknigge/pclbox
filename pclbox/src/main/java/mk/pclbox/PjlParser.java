@@ -84,6 +84,7 @@ final class PjlParser extends DataStreamParser {
      * @param command - the PJL command including the prefix "@PJL"
      */
     private void invokeHandler(final long offset, final String command) throws PclException {
+        // TODO Check for "ENTER LANGUAGE" command - if not "PCL", then throw an exception!
         if (command.startsWith(PJL_PREFIX)) {
             this.getPrinterCommandHandler().handlePrinterCommand(new PjlCommand(offset, command.trim()));
         } else {
