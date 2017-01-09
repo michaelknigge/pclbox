@@ -51,9 +51,9 @@ public final class TextCommandTest extends TestCase {
      * Checks the method toString.
      */
     public void testToString() {
-        assertEquals("A", TEXT_A_AT_1.toString());
-        assertEquals("A", TEXT_A_AT_2.toString());
-        assertEquals("B", TEXT_B_AT_1.toString());
-        assertEquals("B", TEXT_B_AT_2.toString());
+        assertEquals("A@1", TEXT_A_AT_1.toString());
+        assertEquals("A@2", TEXT_A_AT_2.toString());
+        assertEquals("B@1", TEXT_B_AT_1.toString());
+        assertEquals("B@2", TEXT_B_AT_2.toString());
     }
 }

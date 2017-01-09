@@ -75,6 +75,6 @@ public final class TextCommand extends PrinterCommand {
 
     @Override
     public String toString() {
-        return new String(this.getText(), ISO_8859_1);
+        return new String(this.getText(), ISO_8859_1) + "@" + this.getOffset();
     }
 }
