@@ -64,7 +64,7 @@ public final class PjlCommand extends PrinterCommand {
 
     @Override
     public String toString() {
-        return this.getCommand();
+        return this.getCommand() + "@" + this.getOffset();
     }
 
 }

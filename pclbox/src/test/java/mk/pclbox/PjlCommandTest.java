@@ -51,9 +51,9 @@ public final class PjlCommandTest extends TestCase {
      * Checks the method toString.
      */
     public void testToString() {
-        assertEquals("@PJL COMMENT FOO", COMMENT_AT_1.toString());
-        assertEquals("@PJL COMMENT FOO", COMMENT_AT_2.toString());
-        assertEquals("@PJL ENTER LANGUAGE=PCL", ENTER_AT_1.toString());
-        assertEquals("@PJL ENTER LANGUAGE=PCL", ENTER_AT_2.toString());
+        assertEquals("@PJL COMMENT FOO@1", COMMENT_AT_1.toString());
+        assertEquals("@PJL COMMENT FOO@2", COMMENT_AT_2.toString());
+        assertEquals("@PJL ENTER LANGUAGE=PCL@1", ENTER_AT_1.toString());
+        assertEquals("@PJL ENTER LANGUAGE=PCL@2", ENTER_AT_2.toString());
     }
 }

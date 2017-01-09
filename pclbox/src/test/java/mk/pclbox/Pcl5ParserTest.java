@@ -19,41 +19,11 @@ package mk.pclbox;
 import java.io.ByteArrayInputStream;
 import java.io.EOFException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-
-import junit.framework.TestCase;
 
 /**
  * JUnit-Tests for {@link Pcl5Parser}.
  */
-public final class Pcl5ParserTest extends TestCase implements PrinterCommandHandler {
-
-    private static final List<PrinterCommand> COMMANDS = new ArrayList<PrinterCommand>();
-
-    @Override
-    protected void setUp() {
-        COMMANDS.clear();
-    }
-
-    @Override
-    protected void tearDown() {
-        COMMANDS.clear();
-    }
-
-    @Override
-    public void handlePrinterCommand(PrinterCommand command) {
-        assert command != null;
-        COMMANDS.add(command);
-    }
-
-    private static List<PrinterCommand> buildExpected(final PrinterCommand... commands) {
-        final List<PrinterCommand> result = new ArrayList<>();
-        for (final PrinterCommand command : commands) {
-            result.add(command);
-        }
-        return result;
-    }
+public final class Pcl5ParserTest extends DataStreamParserTest {
 
     /**
      * Creates a {@link Pcl5Parser} for parsing the given PCL data stream. The data stream
@@ -77,7 +47,7 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
         final PclInputStreamForInputStream pclStream = new PclInputStreamForInputStream(data);
         new Pcl5Parser(new PclParserContext(pclStream, this)).parse();
 
-        assertTrue(COMMANDS.isEmpty());
+        assertTrue(this.getCommands().isEmpty());
     }
 
     /**
@@ -91,7 +61,7 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
         assertEquals(
                 buildExpected(
                         new ControlCharacterCommand(0, (byte) 0x0C)),
-                COMMANDS);
+                this.getCommands());
     }
 
     /**
@@ -106,7 +76,7 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
         assertEquals(
                 buildExpected(
                         new TextCommand(0, text)),
-                COMMANDS);
+                this.getCommands());
     }
 
     /**
@@ -125,7 +95,7 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
                         new ControlCharacterCommand(4, (byte) 0x0A),
                         new TextCommand(5, new byte[] { 0x34, 0x35, 0x36 }),
                         new ControlCharacterCommand(8, (byte) 0x0C)),
-                COMMANDS);
+                this.getCommands());
     }
 
     /**
@@ -139,7 +109,7 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
         assertEquals(
                 buildExpected(
                         new TextCommand(0, new byte[] { 0x0B })),
-                COMMANDS);
+                this.getCommands());
     }
 
     /**
@@ -157,7 +127,7 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
                         new TwoBytePclCommand(2, 0x45),
                         new TextCommand(4, new byte[] { 0x20, 0x20 }),
                         new TwoBytePclCommand(6, 0x39)),
-                COMMANDS);
+                this.getCommands());
     }
 
     /**
@@ -170,7 +140,7 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
                 buildExpected(
                         new TwoBytePclCommand(0, 'E'),
                         new ParameterizedPclCommand(2, '&', 'u', "300", 'D')),
-                COMMANDS);
+                this.getCommands());
     }
 
     /**
@@ -184,7 +154,7 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
                         new TwoBytePclCommand(0, 'E'),
                         new ParameterizedPclCommand(2, '&', 'u', "300", 'D'),
                         new ParameterizedPclCommand(9, '&', 'u', "600", 'D')),
-                COMMANDS);
+                this.getCommands());
     }
 
     /**
@@ -198,7 +168,7 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
                         new TwoBytePclCommand(0, 'E'),
                         new ParameterizedPclCommand(2, '*', 'p', "100", 'X'),
                         new ParameterizedPclCommand(9, '*', 'p', "200", 'Y')),
-                COMMANDS);
+                this.getCommands());
     }
 
     /**
@@ -215,7 +185,7 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
         assertEquals(
                 buildExpected(
                         new TwoBytePclCommand(0, 'E')),
-                COMMANDS);
+                this.getCommands());
     }
 
     /**
@@ -229,7 +199,7 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
             assertTrue(e.getMessage().contains("unexpectedly ends"));
         }
 
-        assertTrue(COMMANDS.isEmpty());
+        assertTrue(this.getCommands().isEmpty());
     }
 
     /**
@@ -243,7 +213,7 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
             assertTrue(e.getMessage().contains("unexpectedly ends"));
         }
 
-        assertTrue(COMMANDS.isEmpty());
+        assertTrue(this.getCommands().isEmpty());
     }
 
     /**
@@ -257,7 +227,7 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
             assertTrue(e.getMessage().contains("unexpectedly ends"));
         }
 
-        assertTrue(COMMANDS.isEmpty());
+        assertTrue(this.getCommands().isEmpty());
     }
 
     /**
@@ -274,7 +244,7 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
         assertEquals(
                 buildExpected(
                         new TwoBytePclCommand(0, 'E')),
-                COMMANDS);
+                this.getCommands());
     }
 
     /**
@@ -291,7 +261,7 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
         assertEquals(
                 buildExpected(
                         new TwoBytePclCommand(0, 'E')),
-                COMMANDS);
+                this.getCommands());
     }
 
     /**
@@ -305,7 +275,7 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
                         new ParameterizedPclCommand(0, '&', 'd', "", '@'),
                         new ParameterizedPclCommand(4, '(', 's', "", 'P'),
                         new ParameterizedPclCommand(8, '(', 's', "", 'H')),
-                COMMANDS);
+                this.getCommands());
     }
 
     /**
@@ -323,6 +293,6 @@ public final class Pcl5ParserTest extends TestCase implements PrinterCommandHand
                         new ParameterizedPclCommand(23, '&', 'a', "100.5", 'R'),
                         new ParameterizedPclCommand(32, '&', 'a', "-100.541", 'R'),
                         new ParameterizedPclCommand(44, '&', 'a', "+100.001", 'R')),
-                COMMANDS);
+                this.getCommands());
     }
 }

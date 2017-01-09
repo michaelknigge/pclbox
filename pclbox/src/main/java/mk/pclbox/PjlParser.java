@@ -25,6 +25,13 @@ import java.io.IOException;
  */
 final class PjlParser extends DataStreamParser {
 
+    private static final int END_OF_STREAM = -1;
+    private static final int ESCAPE = 0x1B;
+    private static final int CARRIAGE_RETURN = 0x0D;
+    private static final int LINE_FEED = 0x0A;
+
+    private static final String PJL_PREFIX = "@PJL";
+
     /**
      * Constructor. Just gets the stream.
      *
@@ -36,7 +43,51 @@ final class PjlParser extends DataStreamParser {
 
     @Override
     public int parse() throws IOException, PclException {
-        // TODO implement PJL parser!
-        return -1;
+        final StringBuilder sb = new StringBuilder();
+
+        long offset = this.getInputStream().tell();
+        int readByte = this.getInputStream().read();
+
+        while (readByte != END_OF_STREAM && readByte != ESCAPE) {
+
+            // we check the first byte to be sure that we start parsing a PJL command...
+            if (sb.length() == 0 && readByte != '@') {
+                throw new PclException("No PJL command is found at offset " + offset);
+            }
+
+            // The carriage return is optional and stripped...
+            if (readByte != CARRIAGE_RETURN) {
+                if (readByte == LINE_FEED) {
+                    this.invokeHandler(offset, sb.toString());
+                    offset = this.getInputStream().tell();
+                    sb.setLength(0);
+                } else {
+                    sb.append((char) readByte);
+                }
+            }
+
+            readByte = this.getInputStream().read();
+        }
+
+        if (sb.length() != 0) {
+            throw new PclException(String.format(
+                    "The PJL command at offset %d is not properly terminated with a line feed", offset));
+        }
+
+        return readByte;
+    }
+
+    /**
+     * Invokes the {@link PrinterCommandHandler}.
+     *
+     * @param offset - the start offset of the PJL command
+     * @param command - the PJL command including the prefix "@PJL"
+     */
+    private void invokeHandler(final long offset, final String command) throws PclException {
+        if (command.startsWith(PJL_PREFIX)) {
+            this.getPrinterCommandHandler().handlePrinterCommand(new PjlCommand(offset, command.trim()));
+        } else {
+            throw new PclException("No PJL command is found at offset " + offset);
+        }
     }
 }

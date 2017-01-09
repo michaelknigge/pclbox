@@ -18,28 +18,13 @@ package mk.pclbox;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import junit.framework.TestCase;
 
 /**
  * JUnit-Tests for {@link PrinterCommandVisitor}.
  */
-public final class PrinterCommandVisitorTest extends TestCase implements PrinterCommandHandler {
+public final class PrinterCommandVisitorTest extends DataStreamParserTest {
 
-    private static final List<PrinterCommand> COMMANDS = new ArrayList<PrinterCommand>();
     private static final CountingVisitor VISITOR = new CountingVisitor();
-
-    @Override
-    protected void setUp() {
-        COMMANDS.clear();
-    }
-
-    @Override
-    protected void tearDown() {
-        COMMANDS.clear();
-    }
 
     @Override
     public void handlePrinterCommand(PrinterCommand command) {
