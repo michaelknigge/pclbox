@@ -45,6 +45,8 @@ public final class TextCommandTest extends TestCase {
      * Checks the method equals.
      */
     public void testEquals() {
+        assertFalse(TEXT_A_AT_1.equals("DUMMY")); // equals with object of other class
+
         assertFalse(TEXT_A_AT_1.equals(TEXT_A_AT_2)); // same text, different offset
         assertFalse(TEXT_A_AT_1.equals(TEXT_B_AT_1)); // different text, same offset
         assertTrue(TEXT_A_AT_1.equals(new TextCommand(1, new byte[] { 65 })));

@@ -45,6 +45,8 @@ public final class ControlCharacterCommandTest extends TestCase {
      * Checks the method equals.
      */
     public void testEquals() {
+        assertFalse(CR_AT_1.equals("DUMMY")); // equals with object of other class
+
         assertFalse(CR_AT_1.equals(CR_AT_2)); // same char, different offset
         assertFalse(CR_AT_1.equals(TAB_AT_1)); // different char, same offset
         assertTrue(CR_AT_1.equals(new ControlCharacterCommand(1, (byte) 0x0D)));

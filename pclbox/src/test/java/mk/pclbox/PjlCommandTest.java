@@ -45,6 +45,8 @@ public final class PjlCommandTest extends TestCase {
      * Checks the method equals.
      */
     public void testEquals() {
+        assertFalse(COMMENT_AT_1.equals("DUMMY")); // equals with object of other class
+
         assertFalse(COMMENT_AT_1.equals(COMMENT_AT_2)); // same command, different offset
         assertFalse(COMMENT_AT_1.equals(ENTER_AT_1)); // different command, same offset
         assertTrue(COMMENT_AT_1.equals(new PjlCommand(1, "@PJL COMMENT FOO")));

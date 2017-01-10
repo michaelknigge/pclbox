@@ -45,6 +45,8 @@ public final class TwoBytePclCommandTest extends TestCase {
      * Checks the method equals.
      */
     public void testEquals() {
+        assertFalse(ESC_E_AT_1.equals("DUMMY")); // equals with object of other class
+
         assertFalse(ESC_E_AT_1.equals(ESC_E_AT_2)); // same command, different offset
         assertFalse(ESC_E_AT_1.equals(ESC_9_AT_1)); // different command, same offset
         assertTrue(ESC_E_AT_1.equals(new TwoBytePclCommand(1, (byte) 0x45)));

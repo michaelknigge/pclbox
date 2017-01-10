@@ -59,6 +59,8 @@ public final class ParameterizedPclCommandTest extends TestCase {
      * Checks the method equals.
      */
     public void testEquals() {
+        assertFalse(SIMPLEX_AT_1.equals("DUMMY")); // equals with object of other class
+
         assertFalse(SIMPLEX_AT_1.equals(SIMPLEX_AT_2)); // same command, different offset
         assertFalse(SIMPLEX_AT_1.equals(DUPLEX_AT_1)); // different command, same offset
         assertTrue(SIMPLEX_AT_1.equals(new ParameterizedPclCommand(1, '&', 'l', "0", 'S')));
