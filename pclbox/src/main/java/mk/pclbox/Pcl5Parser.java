@@ -145,9 +145,7 @@ final class Pcl5Parser extends DataStreamParser {
         // The first byte after the escape byte is the parameterized character.
         final int parameterizedCharacter = this.getInputStream().read();
         if (parameterizedCharacter == END_OF_STREAM) {
-            throw new EOFException(String.format(
-                    "The PCL data stream unexpectedly ends at offset %1$d. The data stream may be corrupted.",
-                    this.getInputStream().tell()));
+            throw this.createEndOfFileException();
         }
 
         if (isOperationCharacter(parameterizedCharacter)) {
@@ -166,9 +164,7 @@ final class Pcl5Parser extends DataStreamParser {
         // After the parameterized character the group character follows...
         int readByte = this.getInputStream().read();
         if (readByte == END_OF_STREAM) {
-            throw new EOFException(String.format(
-                    "The PCL data stream unexpectedly ends at offset %1$d. The data stream may be corrupted.",
-                    this.getInputStream().tell()));
+            throw this.createEndOfFileException();
         }
 
         // But note that the group character (and even the "value") is optional - depending on the command!
@@ -181,9 +177,7 @@ final class Pcl5Parser extends DataStreamParser {
         if (isGroupCharacter(readByte)) {
             readByte = this.getInputStream().read();
             if (readByte == END_OF_STREAM) {
-                throw new EOFException(String.format(
-                        "The PCL data stream unexpectedly ends at offset %1$d. The data stream may be corrupted.",
-                        this.getInputStream().tell()));
+                throw this.createEndOfFileException();
             }
         }
 
@@ -198,13 +192,44 @@ final class Pcl5Parser extends DataStreamParser {
 
             // If we encounter a termination character, we've reached the end of the PCL sequence or command...
             if (isTerminationCharacter(readByte)) {
-                // TODO Handle PCL-Commands that have a "data section" (like "Font Header")...
+                final byte[] dataSection;
+                // Some PCL commands have a data section (means, some binary data that follows immediately
+                // the termination character....
+                if (isCommandWithDataSection(parameterizedCharacter, groupCharacter, readByte)) {
+                    final int dataSectionSize;
+                    try {
+                        dataSectionSize = Integer.parseInt(sb.toString());
+                    } catch (final NumberFormatException e) {
+                        throw new PclException(String.format(
+                                "The PCL command at offset %1$d contains the invalid value %2$s.",
+                                currentCommandOffset,
+                                sb.toString()));
+                    }
+
+                    if (dataSectionSize < 0 || dataSectionSize > 32767) {
+                        throw new PclException(String.format(
+                                "The PCL command at offset %1$d contains the invalid value %2$s.",
+                                currentCommandOffset,
+                                sb.toString()));
+                    }
+
+                    dataSection = new byte[dataSectionSize];
+                    final int read = this.getInputStream().read(dataSection);
+
+                    if (read != dataSectionSize) {
+                        throw this.createEndOfFileException();
+                    }
+                } else {
+                    dataSection = null;
+                }
+
                 final ParameterizedPclCommand command = new ParameterizedPclCommand(
                         currentCommandOffset,
                         parameterizedCharacter,
                         groupCharacter,
                         sb.toString(),
-                        readByte);
+                        readByte,
+                        dataSection);
 
                 this.getPrinterCommandHandler().handlePrinterCommand(command);
 
@@ -243,12 +268,16 @@ final class Pcl5Parser extends DataStreamParser {
         }
 
         if (sb.length() != 0) {
-            throw new EOFException(String.format(
-                    "The PCL data stream unexpectedly ends at offset %1$d. The data stream may be corrupted.",
-                    this.getInputStream().tell()));
+            throw this.createEndOfFileException();
         }
 
         return readByte;
+    }
+
+    private EOFException createEndOfFileException() throws IOException {
+        return new EOFException(String.format(
+                "The PCL data stream unexpectedly ends at offset %1$d. The data stream may be corrupted.",
+                this.getInputStream().tell()));
     }
 
     /**
@@ -261,6 +290,41 @@ final class Pcl5Parser extends DataStreamParser {
     private static int parameterCharacterToTerminationCharacter(final int parameterCharacter) {
         assert isParameterCharacter(parameterCharacter);
         return parameterCharacter - 32;
+    }
+
+    /**
+     * Returns true if a PCL command with the specified parameterizedCharacter, groupCharacter and terminationCharacter
+     * is a command that has a "data section" (means, that there is data immediately following the PCL command that
+     * belongs to the PCL command (i. e. the binary data that follows the PCL command "Font Header")...
+     *
+     * @param parameterizedCharacter - the parameterized character of the PCL command (ASCII range 33 to 47)
+     * @param groupCharacter - the group character of the PCL command (ASCII range 96 to 126)
+     * @param terminationCharacter - the termination character of the PCL command (ASCII range 64 to 94)
+     *
+     * @return true if a PCL command with the specified characteristics contains a data section.
+     */
+    private static boolean isCommandWithDataSection(
+            final int parameterizedCharacter,
+            final int groupCharacter,
+            final int terminationCharacter) {
+
+        // Every PCL-Command that ends with an "W" has a data section (like "Transfer Raster Data (by Row)"
+        // or "Font Header"....
+        if (terminationCharacter == 'W') {
+            return true;
+        }
+
+        // Transparent Print Data Command
+        if (parameterizedCharacter == '&' && groupCharacter == 'p' && terminationCharacter == 'X') {
+            return true;
+        }
+
+        // Transfer Raster (by Plane)
+        if (parameterizedCharacter == '*' && groupCharacter == 'b' && terminationCharacter == 'V') {
+            return true;
+        }
+
+        return false;
     }
 
     /**

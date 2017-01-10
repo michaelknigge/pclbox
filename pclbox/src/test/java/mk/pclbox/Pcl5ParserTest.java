@@ -295,4 +295,43 @@ public final class Pcl5ParserTest extends DataStreamParserTest {
                         new ParameterizedPclCommand(44, '&', 'a', "+100.001", 'R')),
                 this.getCommands());
     }
+
+    /**
+     * Checks that a truncated PCL command triggers an exception.
+     */
+    public void testTruncatedDataSection() throws Exception {
+        try {
+            this.getPcl5ParserFor("~&p999Xaaaaaa").parse();
+            fail("Should fail because the PCL command is truncated.");
+        } catch (final EOFException e) {
+            assertTrue(e.getMessage().startsWith("The PCL data stream unexpectedly ends at"));
+        }
+    }
+
+    /**
+     * Checks that a invalid size for a data section triggers an exception.
+     */
+    public void testInvalidDataSectionSize() throws Exception {
+        try {
+            this.getPcl5ParserFor("~&p-5Xaaaaaa").parse();
+            fail("Should fail because the length of the PCL data secion is invalid (nagative).");
+        } catch (final PclException e) {
+            System.out.println(e.getMessage());
+            assertTrue(e.getMessage().contains("The PCL command at offset 0 contains the invalid value -5"));
+        }
+
+        try {
+            this.getPcl5ParserFor("~&p32768Xaaaaaa").parse();
+            fail("Should fail because the length of the PCL data secion is invalid (0 - 32767).");
+        } catch (final PclException e) {
+            assertTrue(e.getMessage().contains("The PCL command at offset 0 contains the invalid value 32768"));
+        }
+
+        try {
+            this.getPcl5ParserFor("~&p12.45Xaaaaaa").parse();
+            fail("Should fail because the length of the PCL data secion is invalid (0 - 32767, no decimal digits).");
+        } catch (final PclException e) {
+            assertTrue(e.getMessage().contains("The PCL command at offset 0 contains the invalid value 12.45"));
+        }
+    }
 }

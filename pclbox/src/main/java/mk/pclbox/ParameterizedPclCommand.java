@@ -3,6 +3,7 @@ package mk.pclbox;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 /*
  * Copyright 2017 Michael Knigge
@@ -39,9 +40,10 @@ public final class ParameterizedPclCommand extends PclCommand {
     private final int groupCharacter;
     private final int terminationCharacter;
     private final String value;
+    private final byte[] dataSection;
 
     /**
-     * Constructor of the {@link ParameterizedPclCommand}.
+     * Constructor of a {@link ParameterizedPclCommand}.
      *
      * @param offset - position within the data stream
      * @param parameterizedCharacter - the parameterized character of the PCL command (ASCII range 33 to 47)
@@ -57,12 +59,35 @@ public final class ParameterizedPclCommand extends PclCommand {
             final String value,
             final int terminationCharacter) {
 
+        this(offset, parameterizedCharacter, groupCharacter, value, terminationCharacter, null);
+    }
+
+    /**
+     * Constructor of a {@link ParameterizedPclCommand} that has a data section.
+     *
+     * @param offset - position within the data stream
+     * @param parameterizedCharacter - the parameterized character of the PCL command (ASCII range 33 to 47)
+     * @param groupCharacter - the group character of the PCL command (ASCII range 96 to 126) or 0 if the
+     *     PCL command does not contain a group character.
+     * @param value - the value string. If an empty string is given "0" is used as the value
+     * @param terminationCharacter - the termination character of the PCL command (ASCII range 64 to 94)
+     * @param dataSection - some binary data that belongs to the PCL command (i. e. a binary font header)
+     */
+    public ParameterizedPclCommand(
+            final long offset,
+            final int parameterizedCharacter,
+            final int groupCharacter,
+            final String value,
+            final int terminationCharacter,
+            final byte[] dataSection) {
+
         super(offset);
 
         this.parameterizedCharacter = parameterizedCharacter;
         this.groupCharacter = groupCharacter;
         this.value = value.isEmpty() ? "0" : value;
         this.terminationCharacter = terminationCharacter;
+        this.dataSection = dataSection == null ? null : dataSection.clone();
     }
 
     /**
@@ -102,6 +127,15 @@ public final class ParameterizedPclCommand extends PclCommand {
         return this.value;
     }
 
+    /**
+     * Gets the data section of the PCL command if the PCL command contains such a data section.
+     *
+     * @return the data section or <code>null</code> if the PCL command does not contain a data section.
+     */
+    public byte[] getDataSection() {
+        return this.dataSection.clone();
+    }
+
     @Override
     void accept(PrinterCommandVisitor visitor) {
         visitor.handle(this);
@@ -113,7 +147,8 @@ public final class ParameterizedPclCommand extends PclCommand {
                 ^ this.getParameterizedCharacter()
                 ^ this.getGroupCharacter()
                 ^ this.getTerminationCharacter()
-                ^ this.getOffsetHash();
+                ^ this.getOffsetHash()
+                ^ Arrays.hashCode(this.dataSection); //do not use the getter - the getter clones!
     }
 
     @Override
@@ -124,7 +159,8 @@ public final class ParameterizedPclCommand extends PclCommand {
                     && o.getParameterizedCharacter() == this.getParameterizedCharacter()
                     && o.getGroupCharacter() == this.getGroupCharacter()
                     && o.getTerminationCharacter() == this.getTerminationCharacter()
-                    && o.getOffset() == this.getOffset();
+                    && o.getOffset() == this.getOffset()
+                    && Arrays.equals(o.dataSection, this.dataSection); //do not use the getter - the getter clones!
         } else {
             return false;
         }
@@ -181,10 +217,19 @@ public final class ParameterizedPclCommand extends PclCommand {
     byte[] toByteArray() {
         final String asString = this.toDisplayString();
         final byte[] asByteArray = asString.getBytes(ISO_8859_1);
-        final byte[] result = new byte[asByteArray.length + 1];
+
+        final int resultSize = 1 // for the escape byte
+                + asByteArray.length
+                + (this.dataSection != null ? this.dataSection.length : 0);
+
+        final byte[] result = new byte[resultSize];
 
         result[0] = 0x1B;
         System.arraycopy(asByteArray, 0, result, 1, asByteArray.length);
+
+        if (this.dataSection != null) {
+            System.arraycopy(this.dataSection, 0, result, asByteArray.length, this.dataSection.length);
+        }
 
         return result;
     }
