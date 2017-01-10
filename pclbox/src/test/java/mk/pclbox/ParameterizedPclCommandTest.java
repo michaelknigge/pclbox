@@ -42,6 +42,12 @@ public final class ParameterizedPclCommandTest extends TestCase {
     private static final ParameterizedPclCommand TRANSPARENT_DATA_2 =
             new ParameterizedPclCommand(0, '&', 'p', "2", 'X', new byte[] { 'A', 'B' });
 
+    private static final ParameterizedPclCommand RASTER_DATA_BY_PLANE =
+            new ParameterizedPclCommand(0, '*', 'b', "2", 'V', new byte[] { 0x00, 0x01 });
+
+    private static final ParameterizedPclCommand FONT_HEADER =
+            new ParameterizedPclCommand(0, ')', 's', "4", 'W', new byte[] { 0x11, 0x22, 0x33, 0x44 });
+
     /**
      * Checks the method getDataSection.
      */
@@ -52,6 +58,8 @@ public final class ParameterizedPclCommandTest extends TestCase {
         assertTrue(Arrays.equals(new byte[0], TRANSPARENT_DATA_0.getDataSection()));
         assertTrue(Arrays.equals(new byte[] { 'A' }, TRANSPARENT_DATA_1.getDataSection()));
         assertTrue(Arrays.equals(new byte[] { 'A', 'B' }, TRANSPARENT_DATA_2.getDataSection()));
+        assertTrue(Arrays.equals(new byte[] { 0x00, 0x01 }, RASTER_DATA_BY_PLANE.getDataSection()));
+        assertTrue(Arrays.equals(new byte[] { 0x11, 0x22, 0x33, 0x44 }, FONT_HEADER.getDataSection()));
     }
 
     /**
