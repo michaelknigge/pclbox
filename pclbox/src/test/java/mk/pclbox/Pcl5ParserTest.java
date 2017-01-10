@@ -299,12 +299,19 @@ public final class Pcl5ParserTest extends DataStreamParserTest {
     /**
      * Checks that a truncated PCL command triggers an exception.
      */
-    public void testTruncatedDataSection() throws Exception {
+    public void testTruncatedCommand() throws Exception {
         try {
             this.getPcl5ParserFor("~&p999Xaaaaaa").parse();
             fail("Should fail because the PCL command is truncated.");
         } catch (final EOFException e) {
             assertTrue(e.getMessage().startsWith("The PCL data stream unexpectedly ends at"));
+        }
+
+        try {
+            this.getPcl5ParserFor("~&p~").parse();
+            fail("Should fail because the PCL command is truncated.");
+        } catch (final PclException e) {
+            assertTrue(e.getMessage().contains("(unexpected escape)"));
         }
     }
 
