@@ -1,5 +1,9 @@
 package mk.pclbox;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -20,6 +24,8 @@ package mk.pclbox;
  * A {@link PjlCommand} describes a PJL command.
  */
 public final class PjlCommand extends PrinterCommand {
+
+    private static final Charset ISO_8859_1 = Charset.forName("iso-8859-1");
 
     final String commandString;
 
@@ -65,6 +71,29 @@ public final class PjlCommand extends PrinterCommand {
     @Override
     public String toString() {
         return this.getCommand() + "@" + this.getOffset();
+    }
+
+    @Override
+    String toCommandString() {
+        // We currently do not parse the PJL-Commands, so we use a static "command string" for all
+        // PJL commands.... Remember: The primary use of the toCommandString() method is to provide a
+        // "key" for HashMaps....
+        return "PJL";
+    }
+
+    @Override
+    String toDisplayString() {
+        return this.getCommand();
+    }
+
+    @Override
+    byte[] toByteArray() {
+        return this.getCommand().getBytes(ISO_8859_1);
+    }
+
+    @Override
+    void writeTo(OutputStream out) throws IOException {
+        out.write(this.toByteArray());
     }
 
 }

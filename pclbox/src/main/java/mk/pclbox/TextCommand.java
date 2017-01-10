@@ -1,5 +1,8 @@
 package mk.pclbox;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -23,7 +26,7 @@ import java.util.Arrays;
  * A {@link TextCommand} contains text that has to be printed by the printer. The text
  * is handled as a byte[] and not a string because decoding of the byte[] depends on
  * the text parsing method that (maybe) has been set by a "Text Parsing Method" PCL command
- * in the data stream.
+ * in the data stream (so the text may be encoded 8 Bit, UTF-8 or whatever).
  */
 public final class TextCommand extends PrinterCommand {
 
@@ -76,5 +79,27 @@ public final class TextCommand extends PrinterCommand {
     @Override
     public String toString() {
         return new String(this.getText(), ISO_8859_1) + "@" + this.getOffset();
+    }
+
+    @Override
+    String toCommandString() {
+        // The primary use of the toCommandString() method is to provide a "key" for HashMaps....
+        // So we use a static string as a "placeholder" for all TextCommands
+        return "TEXT";
+    }
+
+    @Override
+    String toDisplayString() {
+        return new String(this.getText(), ISO_8859_1);
+    }
+
+    @Override
+    byte[] toByteArray() {
+        return this.getText().clone();
+    }
+
+    @Override
+    void writeTo(OutputStream out) throws IOException {
+        out.write(this.getText());
     }
 }

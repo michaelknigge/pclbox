@@ -1,5 +1,8 @@
 package mk.pclbox;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -107,5 +110,25 @@ public final class ControlCharacterCommand extends PrinterCommand {
     @Override
     public String toString() {
         return String.format("<0x%02X>@%d", this.getControlCharacter(), this.getOffset());
+    }
+
+    @Override
+    String toCommandString() {
+        return String.format("0x%02X", this.getControlCharacter());
+    }
+
+    @Override
+    String toDisplayString() {
+        return String.format("0x%02X", this.getControlCharacter());
+    }
+
+    @Override
+    byte[] toByteArray() {
+        return new byte[] { this.getControlCharacter() };
+    }
+
+    @Override
+    void writeTo(OutputStream out) throws IOException {
+        out.write(this.getControlCharacter());
     }
 }

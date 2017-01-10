@@ -1,5 +1,8 @@
 package mk.pclbox;
 
+import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
+
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -27,6 +30,7 @@ public final class ParameterizedPclCommandTest extends TestCase {
     private static final ParameterizedPclCommand SIMPLEX_AT_2 = new ParameterizedPclCommand(2, '&', 'l', "0", 'S');
     private static final ParameterizedPclCommand DUPLEX_AT_1 = new ParameterizedPclCommand(1, '&', 'l', "1", 'S');
     private static final ParameterizedPclCommand DUPLEX_AT_2 = new ParameterizedPclCommand(2, '&', 'l', "1", 'S');
+    private static final ParameterizedPclCommand UEL_AT_0 = new ParameterizedPclCommand(0, '%', 0x00, "-12345", 'X');
 
     /**
      * Checks the method hashCode.
@@ -59,5 +63,41 @@ public final class ParameterizedPclCommandTest extends TestCase {
         assertEquals("<esc>&l0S@2", SIMPLEX_AT_2.toString());
         assertEquals("<esc>&l1S@1", DUPLEX_AT_1.toString());
         assertEquals("<esc>&l1S@2", DUPLEX_AT_2.toString());
+        assertEquals("<esc>%-12345X@0", UEL_AT_0.toString());
+    }
+
+    /**
+     * Checks the method toCommandString.
+     */
+    public void testToCommandString() {
+        assertEquals("&lS", SIMPLEX_AT_1.toCommandString());
+        assertEquals("&lS", DUPLEX_AT_1.toCommandString());
+        assertEquals("%X", UEL_AT_0.toCommandString());
+    }
+
+    /**
+     * Checks the method toDisplayString.
+     */
+    public void testToDisplayString() {
+        assertEquals("&l0S", SIMPLEX_AT_1.toDisplayString());
+        assertEquals("&l1S", DUPLEX_AT_1.toDisplayString());
+        assertEquals("%-12345X", UEL_AT_0.toDisplayString());
+    }
+
+    /**
+     * Checks the method toByteArray and writeTo.
+     */
+    public void testToBinary() throws Exception {
+        final ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+        SIMPLEX_AT_1.writeTo(baos1);
+        Arrays.equals(SIMPLEX_AT_1.toByteArray(), baos1.toByteArray());
+
+        final ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+        DUPLEX_AT_1.writeTo(baos2);
+        Arrays.equals(DUPLEX_AT_1.toByteArray(), baos2.toByteArray());
+
+        final ByteArrayOutputStream baos3 = new ByteArrayOutputStream();
+        UEL_AT_0.writeTo(baos3);
+        Arrays.equals(UEL_AT_0.toByteArray(), baos3.toByteArray());
     }
 }

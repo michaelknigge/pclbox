@@ -1,5 +1,8 @@
 package mk.pclbox;
 
+import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
+
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -55,5 +58,34 @@ public final class TwoBytePclCommandTest extends TestCase {
         assertEquals("<esc>E@2", ESC_E_AT_2.toString());
         assertEquals("<esc>9@1", ESC_9_AT_1.toString());
         assertEquals("<esc>9@2", ESC_9_AT_2.toString());
+    }
+
+    /**
+     * Checks the method toCommandString.
+     */
+    public void testToCommandString() {
+        assertEquals("E", ESC_E_AT_1.toCommandString());
+        assertEquals("9", ESC_9_AT_1.toCommandString());
+    }
+
+    /**
+     * Checks the method toDisplayString.
+     */
+    public void testToDisplayString() {
+        assertEquals("E", ESC_E_AT_1.toDisplayString());
+        assertEquals("9", ESC_9_AT_1.toDisplayString());
+    }
+
+    /**
+     * Checks the method toByteArray and writeTo.
+     */
+    public void testToBinary() throws Exception {
+        final ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+        ESC_E_AT_1.writeTo(baos1);
+        Arrays.equals(ESC_E_AT_1.toByteArray(), baos1.toByteArray());
+
+        final ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+        ESC_9_AT_1.writeTo(baos2);
+        Arrays.equals(ESC_9_AT_1.toByteArray(), baos2.toByteArray());
     }
 }

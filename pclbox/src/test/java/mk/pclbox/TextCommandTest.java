@@ -1,5 +1,8 @@
 package mk.pclbox;
 
+import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
+
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -55,5 +58,34 @@ public final class TextCommandTest extends TestCase {
         assertEquals("A@2", TEXT_A_AT_2.toString());
         assertEquals("B@1", TEXT_B_AT_1.toString());
         assertEquals("B@2", TEXT_B_AT_2.toString());
+    }
+
+    /**
+     * Checks the method toCommandString.
+     */
+    public void testToCommandString() {
+        assertEquals("TEXT", TEXT_A_AT_1.toCommandString());
+        assertEquals("TEXT", TEXT_B_AT_1.toCommandString());
+    }
+
+    /**
+     * Checks the method toDisplayString.
+     */
+    public void testToDisplayString() {
+        assertEquals("A", TEXT_A_AT_1.toDisplayString());
+        assertEquals("B", TEXT_B_AT_1.toDisplayString());
+    }
+
+    /**
+     * Checks the method toByteArray and writeTo.
+     */
+    public void testToBinary() throws Exception {
+        final ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+        TEXT_A_AT_1.writeTo(baos1);
+        Arrays.equals(TEXT_A_AT_1.toByteArray(), baos1.toByteArray());
+
+        final ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+        TEXT_B_AT_1.writeTo(baos2);
+        Arrays.equals(TEXT_B_AT_1.toByteArray(), baos2.toByteArray());
     }
 }

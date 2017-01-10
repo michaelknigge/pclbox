@@ -1,5 +1,8 @@
 package mk.pclbox;
 
+import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
+
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -55,5 +58,34 @@ public final class PjlCommandTest extends TestCase {
         assertEquals("@PJL COMMENT FOO@2", COMMENT_AT_2.toString());
         assertEquals("@PJL ENTER LANGUAGE=PCL@1", ENTER_AT_1.toString());
         assertEquals("@PJL ENTER LANGUAGE=PCL@2", ENTER_AT_2.toString());
+    }
+
+    /**
+     * Checks the method toCommandString.
+     */
+    public void testToCommandString() {
+        assertEquals("PJL", COMMENT_AT_1.toCommandString());
+        assertEquals("PJL", ENTER_AT_1.toCommandString());
+    }
+
+    /**
+     * Checks the method toDisplayString.
+     */
+    public void testToDisplayString() {
+        assertEquals("@PJL COMMENT FOO", COMMENT_AT_1.toDisplayString());
+        assertEquals("@PJL ENTER LANGUAGE=PCL", ENTER_AT_1.toDisplayString());
+    }
+
+    /**
+     * Checks the method toByteArray and writeTo.
+     */
+    public void testToBinary() throws Exception {
+        final ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+        COMMENT_AT_1.writeTo(baos1);
+        Arrays.equals(COMMENT_AT_1.toByteArray(), baos1.toByteArray());
+
+        final ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+        ENTER_AT_1.writeTo(baos2);
+        Arrays.equals(ENTER_AT_1.toByteArray(), baos2.toByteArray());
     }
 }

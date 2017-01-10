@@ -1,5 +1,9 @@
 package mk.pclbox;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -28,6 +32,8 @@ package mk.pclbox;
  * commands.
  */
 public final class ParameterizedPclCommand extends PclCommand {
+
+    private static final Charset ISO_8859_1 = Charset.forName("iso-8859-1");
 
     private final int parameterizedCharacter;
     private final int groupCharacter;
@@ -140,5 +146,51 @@ public final class ParameterizedPclCommand extends PclCommand {
         sb.append(this.getOffset());
 
         return sb.toString();
+    }
+
+    @Override
+    String toCommandString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append((char) this.getParameterizedCharacter());
+
+        if (this.getGroupCharacter() != 0x00) {
+            sb.append((char) this.getGroupCharacter());
+        }
+
+        sb.append((char) this.getTerminationCharacter());
+
+        return sb.toString();
+    }
+
+    @Override
+    String toDisplayString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append((char) this.getParameterizedCharacter());
+
+        if (this.getGroupCharacter() != 0x00) {
+            sb.append((char) this.getGroupCharacter());
+        }
+
+        sb.append(this.getValue());
+        sb.append((char) this.getTerminationCharacter());
+
+        return sb.toString();
+    }
+
+    @Override
+    byte[] toByteArray() {
+        final String asString = this.toDisplayString();
+        final byte[] asByteArray = asString.getBytes(ISO_8859_1);
+        final byte[] result = new byte[asByteArray.length + 1];
+
+        result[0] = 0x1B;
+        System.arraycopy(asByteArray, 0, result, 1, asByteArray.length);
+
+        return result;
+    }
+
+    @Override
+    void writeTo(OutputStream out) throws IOException {
+        out.write(this.toByteArray());
     }
 }

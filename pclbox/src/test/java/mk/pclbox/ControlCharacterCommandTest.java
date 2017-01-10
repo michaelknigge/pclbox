@@ -1,5 +1,8 @@
 package mk.pclbox;
 
+import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
+
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -55,5 +58,34 @@ public final class ControlCharacterCommandTest extends TestCase {
         assertEquals("<0x0D>@2", CR_AT_2.toString());
         assertEquals("<0x09>@1", TAB_AT_1.toString());
         assertEquals("<0x09>@2", TAB_AT_2.toString());
+    }
+
+    /**
+     * Checks the method toCommandString.
+     */
+    public void testToCommandString() {
+        assertEquals("0x0D", CR_AT_1.toCommandString());
+        assertEquals("0x09", TAB_AT_1.toCommandString());
+    }
+
+    /**
+     * Checks the method toDisplayString.
+     */
+    public void testToDisplayString() {
+        assertEquals("0x0D", CR_AT_1.toDisplayString());
+        assertEquals("0x09", TAB_AT_1.toDisplayString());
+    }
+
+    /**
+     * Checks the method toByteArray and writeTo.
+     */
+    public void testToBinary() throws Exception {
+        final ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+        CR_AT_1.writeTo(baos1);
+        Arrays.equals(CR_AT_1.toByteArray(), baos1.toByteArray());
+
+        final ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+        CR_AT_1.writeTo(baos2);
+        Arrays.equals(TAB_AT_1.toByteArray(), baos2.toByteArray());
     }
 }

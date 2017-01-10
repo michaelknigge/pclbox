@@ -198,6 +198,7 @@ final class Pcl5Parser extends DataStreamParser {
 
             // If we encounter a termination character, we've reached the end of the PCL sequence or command...
             if (isTerminationCharacter(readByte)) {
+                // TODO Handle PCL-Commands that have a "data section" (like "Font Header")...
                 final ParameterizedPclCommand command = new ParameterizedPclCommand(
                         currentCommandOffset,
                         parameterizedCharacter,
@@ -208,9 +209,10 @@ final class Pcl5Parser extends DataStreamParser {
                 this.getPrinterCommandHandler().handlePrinterCommand(command);
 
                 // If we've read a "Universal Exit Language Command", we have to switch to PJL...
-                if (isUniversalExitLanguageCommand(command)) {
+                if (this.isUniversalExitLanguageCommand(command)) {
                     return new PjlParser(this.getContext()).parse();
                 } else {
+                    // TODO Handle "Enter HP/GL Mode" command
                     return this.getInputStream().read();
                 }
             }

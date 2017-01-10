@@ -1,5 +1,9 @@
 package mk.pclbox;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -23,6 +27,8 @@ package mk.pclbox;
  * Reset", which is the escape byte followed by a "E".
  */
 public final class TwoBytePclCommand extends PclCommand {
+
+    private static final Charset ISO_8859_1 = Charset.forName("iso-8859-1");
 
     private final int operationCharacter;
 
@@ -74,5 +80,25 @@ public final class TwoBytePclCommand extends PclCommand {
         sb.append("@");
         sb.append(this.getOffset());
         return sb.toString();
+    }
+
+    @Override
+    String toCommandString() {
+        return new String(new byte[] { (byte) this.getOperationCharacter() }, ISO_8859_1);
+    }
+
+    @Override
+    String toDisplayString() {
+        return new String(new byte[] { (byte) this.getOperationCharacter() }, ISO_8859_1);
+    }
+
+    @Override
+    byte[] toByteArray() {
+        return new byte[] { (byte) this.getOperationCharacter() };
+    }
+
+    @Override
+    void writeTo(OutputStream out) throws IOException {
+        out.write(this.getOperationCharacter());
     }
 }

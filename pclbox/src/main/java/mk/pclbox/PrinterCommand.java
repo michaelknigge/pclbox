@@ -1,5 +1,8 @@
 package mk.pclbox;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -58,4 +61,35 @@ abstract class PrinterCommand {
      * @param visitor a {@link PrinterCommandVisitor}.
      */
     abstract void accept(PrinterCommandVisitor visitor);
+
+    /**
+     * Returns a short a {@link String} representation of the {@link PrinterCommand}. This String contains
+     * the command without any parameter values or additional data (so the return of this method may be used
+     * as a unique key for a HashMap).
+     *
+     * @return a short {@link String} representation of the {@link PrinterCommand}.
+     */
+    abstract String toCommandString();
+
+    /**
+     * Returns a {@link String} representation of the {@link PrinterCommand}. This String contains the command
+     * and parameter value, but no additional data (like the binary data of a PCL Font Header command.
+     *
+     * @return a displayable {@link String} representation of the {@link PrinterCommand}.
+     */
+    abstract String toDisplayString();
+
+    /**
+     * Returns the complete {@link PrinterCommand} as a byte array.
+     *
+     * @return the complete {@link PrinterCommand} as a byte array.
+     */
+    abstract byte[] toByteArray();
+
+    /**
+     * Writes the complete {@link PrinterCommand} to the given {@link OutputStream}.
+     *
+     * @param out - the {@link OutputStream} to where the {@link PrinterCommand} gets written to.
+     */
+    abstract void writeTo(final OutputStream out) throws IOException;
 }
