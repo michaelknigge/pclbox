@@ -133,7 +133,7 @@ public final class ParameterizedPclCommand extends PclCommand {
      * @return the data section or <code>null</code> if the PCL command does not contain a data section.
      */
     public byte[] getDataSection() {
-        return this.dataSection.clone();
+        return this.dataSection == null ? null : this.dataSection.clone();
     }
 
     @Override

@@ -43,6 +43,18 @@ public final class ParameterizedPclCommandTest extends TestCase {
             new ParameterizedPclCommand(0, '&', 'p', "2", 'X', new byte[] { 'A', 'B' });
 
     /**
+     * Checks the method getDataSection.
+     */
+    public void testGetDataSecion() {
+        assertNull(SIMPLEX_AT_1.getDataSection());
+        assertNull(UEL_AT_0.getDataSection());
+
+        assertTrue(Arrays.equals(new byte[0], TRANSPARENT_DATA_0.getDataSection()));
+        assertTrue(Arrays.equals(new byte[] { 'A' }, TRANSPARENT_DATA_1.getDataSection()));
+        assertTrue(Arrays.equals(new byte[] { 'A', 'B' }, TRANSPARENT_DATA_2.getDataSection()));
+    }
+
+    /**
      * Checks the method hashCode.
      */
     public void testHashCode() {
