@@ -39,6 +39,25 @@ public final class PjlParserTest extends DataStreamParserTest {
     }
 
     /**
+     * Checks that invalid PJL commands trigger an exception.
+     */
+    public void testInvalidDataTriggersException() throws Exception {
+        try {
+            this.getPjlParserFor("XPJL").parse();
+            fail("Should fail because the PJL command does not start with a @");
+        } catch (final PclException e) {
+            assertTrue(e.getMessage().startsWith("No PJL command is found at offset 0"));
+        }
+
+        try {
+            this.getPjlParserFor("@PJX\r\n").parse();
+            fail("Should fail because the PJL command does not start with @PJL");
+        } catch (final PclException e) {
+            assertTrue(e.getMessage().startsWith("No PJL command is found at offset 0"));
+        }
+    }
+
+    /**
      * Checks parsing of a stream that contains just a (properly ended) PJL prefix.
      */
     public void testSimplePjl() throws Exception {
