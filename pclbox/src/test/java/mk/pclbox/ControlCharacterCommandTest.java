@@ -84,10 +84,10 @@ public final class ControlCharacterCommandTest extends TestCase {
     public void testToBinary() throws Exception {
         final ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
         CR_AT_1.writeTo(baos1);
-        Arrays.equals(CR_AT_1.toByteArray(), baos1.toByteArray());
+        assertTrue(Arrays.equals(CR_AT_1.toByteArray(), baos1.toByteArray()));
 
         final ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
-        CR_AT_1.writeTo(baos2);
-        Arrays.equals(TAB_AT_1.toByteArray(), baos2.toByteArray());
+        TAB_AT_1.writeTo(baos2);
+        assertTrue(Arrays.equals(TAB_AT_1.toByteArray(), baos2.toByteArray()));
     }
 }

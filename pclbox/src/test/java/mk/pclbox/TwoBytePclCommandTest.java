@@ -84,10 +84,10 @@ public final class TwoBytePclCommandTest extends TestCase {
     public void testToBinary() throws Exception {
         final ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
         ESC_E_AT_1.writeTo(baos1);
-        Arrays.equals(ESC_E_AT_1.toByteArray(), baos1.toByteArray());
+        assertTrue(Arrays.equals(ESC_E_AT_1.toByteArray(), baos1.toByteArray()));
 
         final ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
         ESC_9_AT_1.writeTo(baos2);
-        Arrays.equals(ESC_9_AT_1.toByteArray(), baos2.toByteArray());
+        assertTrue(Arrays.equals(ESC_9_AT_1.toByteArray(), baos2.toByteArray()));
     }
 }

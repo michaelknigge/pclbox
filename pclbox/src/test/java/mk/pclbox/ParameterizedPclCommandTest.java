@@ -136,26 +136,26 @@ public final class ParameterizedPclCommandTest extends TestCase {
     public void testToBinary() throws Exception {
         final ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
         SIMPLEX_AT_1.writeTo(baos1);
-        Arrays.equals(SIMPLEX_AT_1.toByteArray(), baos1.toByteArray());
+        assertTrue(Arrays.equals(SIMPLEX_AT_1.toByteArray(), baos1.toByteArray()));
 
         final ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
         DUPLEX_AT_1.writeTo(baos2);
-        Arrays.equals(DUPLEX_AT_1.toByteArray(), baos2.toByteArray());
+        assertTrue(Arrays.equals(DUPLEX_AT_1.toByteArray(), baos2.toByteArray()));
 
         final ByteArrayOutputStream baos3 = new ByteArrayOutputStream();
         UEL_AT_0.writeTo(baos3);
-        Arrays.equals(UEL_AT_0.toByteArray(), baos3.toByteArray());
+        assertTrue(Arrays.equals(UEL_AT_0.toByteArray(), baos3.toByteArray()));
 
         final ByteArrayOutputStream baos4 = new ByteArrayOutputStream();
         TRANSPARENT_DATA_0.writeTo(baos4);
-        Arrays.equals(TRANSPARENT_DATA_0.toByteArray(), baos4.toByteArray());
+        assertTrue(Arrays.equals(TRANSPARENT_DATA_0.toByteArray(), baos4.toByteArray()));
 
         final ByteArrayOutputStream baos5 = new ByteArrayOutputStream();
         TRANSPARENT_DATA_1.writeTo(baos5);
-        Arrays.equals(TRANSPARENT_DATA_1.toByteArray(), baos5.toByteArray());
+        assertTrue(Arrays.equals(TRANSPARENT_DATA_1.toByteArray(), baos5.toByteArray()));
 
         final ByteArrayOutputStream baos6 = new ByteArrayOutputStream();
         TRANSPARENT_DATA_2.writeTo(baos6);
-        Arrays.equals(TRANSPARENT_DATA_2.toByteArray(), baos6.toByteArray());
+        assertTrue(Arrays.equals(TRANSPARENT_DATA_2.toByteArray(), baos6.toByteArray()));
     }
 }

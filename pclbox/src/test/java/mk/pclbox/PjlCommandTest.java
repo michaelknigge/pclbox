@@ -84,10 +84,10 @@ public final class PjlCommandTest extends TestCase {
     public void testToBinary() throws Exception {
         final ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
         COMMENT_AT_1.writeTo(baos1);
-        Arrays.equals(COMMENT_AT_1.toByteArray(), baos1.toByteArray());
+        assertTrue(Arrays.equals(COMMENT_AT_1.toByteArray(), baos1.toByteArray()));
 
         final ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
         ENTER_AT_1.writeTo(baos2);
-        Arrays.equals(ENTER_AT_1.toByteArray(), baos2.toByteArray());
+        assertTrue(Arrays.equals(ENTER_AT_1.toByteArray(), baos2.toByteArray()));
     }
 }

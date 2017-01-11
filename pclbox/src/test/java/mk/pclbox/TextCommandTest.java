@@ -84,10 +84,10 @@ public final class TextCommandTest extends TestCase {
     public void testToBinary() throws Exception {
         final ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
         TEXT_A_AT_1.writeTo(baos1);
-        Arrays.equals(TEXT_A_AT_1.toByteArray(), baos1.toByteArray());
+        assertTrue(Arrays.equals(TEXT_A_AT_1.toByteArray(), baos1.toByteArray()));
 
         final ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
         TEXT_B_AT_1.writeTo(baos2);
-        Arrays.equals(TEXT_B_AT_1.toByteArray(), baos2.toByteArray());
+        assertTrue(Arrays.equals(TEXT_B_AT_1.toByteArray(), baos2.toByteArray()));
     }
 }
