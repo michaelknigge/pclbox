@@ -341,4 +341,21 @@ public final class Pcl5ParserTest extends DataStreamParserTest {
             assertTrue(e.getMessage().contains("The PCL command at offset 0 contains the invalid value 12.45"));
         }
     }
+
+    /**
+     * Checks that commands with a "data section" are parsed correctly.
+     */
+    public void testParseCommandsWithDataSecion() throws Exception {
+        this.getPcl5ParserFor("~E~)s3Wxyz~&u300D~&p5Xabcde~*b2Via~E").parse();
+
+        assertEquals(
+                buildExpected(
+                        new TwoBytePclCommand(0, 'E'),
+                        new ParameterizedPclCommand(2, ')', 's', "3", 'W', new byte[] { 'x', 'y', 'z' }),
+                        new ParameterizedPclCommand(10, '&', 'u', "300", 'D'),
+                        new ParameterizedPclCommand(17, '&', 'p', "5", 'X', new byte[] { 'a', 'b', 'c', 'd', 'e' }),
+                        new ParameterizedPclCommand(27, '*', 'b', "2", 'V', new byte[] { 'i', 'a' }),
+                        new TwoBytePclCommand(34, 'E')),
+                this.getCommands());
+    }
 }

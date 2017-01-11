@@ -47,7 +47,7 @@ final class Pcl5Parser extends DataStreamParser {
 
 
     /**
-     * Constructor. Just gets the stream.
+     * Constructor. Just gets the {@link PclParserContext}.
      *
      * @param context - the {@link PclParserContext} that contains all needed stuff.
      */
@@ -274,6 +274,12 @@ final class Pcl5Parser extends DataStreamParser {
         return readByte;
     }
 
+    /**
+     * Returns a new {@link EOFException} that contains the offset at which the data stream
+     * hits unexpectedly the end.
+     *
+     * @return a new {@link EOFException}.
+     */
     private EOFException createEndOfFileException() throws IOException {
         return new EOFException(String.format(
                 "The PCL data stream unexpectedly ends at offset %1$d. The data stream may be corrupted.",

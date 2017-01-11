@@ -33,9 +33,9 @@ final class PjlParser extends DataStreamParser {
     private static final String PJL_PREFIX = "@PJL";
 
     /**
-     * Constructor. Just gets the stream.
+     * Constructor. Just gets the {@link PclParserContext}.
      *
-     * @param stream - the stream that contains the PJL commands.
+     * @param context - the {@link PclParserContext} that contains all needed stuff.
      */
     PjlParser(final PclParserContext context) {
         super(context);
