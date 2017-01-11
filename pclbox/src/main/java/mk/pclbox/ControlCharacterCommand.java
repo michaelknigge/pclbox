@@ -1,8 +1,5 @@
 package mk.pclbox;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -18,6 +15,9 @@ import java.io.OutputStream;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * A {@link ControlCharacterCommand} describes a PCL 5 control character like form feed,

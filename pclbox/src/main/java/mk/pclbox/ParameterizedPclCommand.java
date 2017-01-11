@@ -1,10 +1,5 @@
 package mk.pclbox;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.util.Arrays;
-
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -20,6 +15,11 @@ import java.util.Arrays;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.util.Arrays;
 
 /**
  * The {@link ParameterizedPclCommand} is a {@link PclCommand} that has a parameterized character

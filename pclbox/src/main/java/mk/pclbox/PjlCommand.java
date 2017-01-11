@@ -1,9 +1,5 @@
 package mk.pclbox;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -19,6 +15,10 @@ import java.nio.charset.Charset;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
 
 /**
  * A {@link PjlCommand} describes a PJL command.

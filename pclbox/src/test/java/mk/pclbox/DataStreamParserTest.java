@@ -1,10 +1,5 @@
 package mk.pclbox;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import junit.framework.TestCase;
-
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -20,6 +15,11 @@ import junit.framework.TestCase;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import java.util.ArrayList;
+import java.util.List;
+
+import junit.framework.TestCase;
 
 /**
  * The abstract superclass of all TestCase classes that require a {@link PrinterCommandHandler}.

@@ -1,8 +1,5 @@
 package mk.pclbox;
 
-import java.io.ByteArrayOutputStream;
-import java.util.Arrays;
-
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -18,6 +15,9 @@ import java.util.Arrays;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 
