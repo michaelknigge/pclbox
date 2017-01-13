@@ -236,8 +236,9 @@ final class Pcl5Parser extends DataStreamParser {
                 // If we've read a "Universal Exit Language Command", we have to switch to PJL...
                 if (this.isUniversalExitLanguageCommand(command)) {
                     return new PjlParser(this.getContext()).parse();
+                } else if (this.isEnterHpglModeCommand(command)) {
+                    return new HpglParser(this.getContext()).parse();
                 } else {
-                    // TODO Handle "Enter HP/GL Mode" command
                     return this.getInputStream().read();
                 }
             }
@@ -346,6 +347,20 @@ final class Pcl5Parser extends DataStreamParser {
                 && command.getValue().equals("-12345")
                 && command.getTerminationCharacter() == 'X';
     }
+
+    /**
+     * Returns true if the given {@link ParameterizedPclCommand} is a "Enter HP/GL Mode" command.
+     *
+     * @param command - the {@link ParameterizedPclCommand} to be checked.
+     *
+     * @return true if the given {@link ParameterizedPclCommand} is a "Enter HP/GL Mode" command.
+     */
+    private boolean isEnterHpglModeCommand(ParameterizedPclCommand command) {
+        return command.getGroupCharacter() == 0x00
+                && command.getParameterizedCharacter() == '%'
+                && command.getTerminationCharacter() == 'B';
+    }
+
 
     /**
      * Returns true if the given value is valid for a parameter character.

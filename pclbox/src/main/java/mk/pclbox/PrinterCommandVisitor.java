@@ -45,4 +45,9 @@ public interface PrinterCommandVisitor {
      * Handle method for {@link PjlCommand} objects.
      */
     void handle(final PjlCommand pjlCommand);
+
+    /**
+     * Handle method for {@link HpglCommand} objects.
+     */
+    void handle(final HpglCommand hpglCommand);
 }

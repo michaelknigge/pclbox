@@ -41,6 +41,7 @@ public final class PrinterCommandVisitorTest extends DataStreamParserTest {
         private int twoBytePclCommandCounter = 0;
         private int parameterizedPclCommand = 0;
         private int pjlCommand = 0;
+        private int hpglCommand = 0;
 
         @Override
         public void handle(TextCommand command) {
@@ -66,6 +67,11 @@ public final class PrinterCommandVisitorTest extends DataStreamParserTest {
         public void handle(PjlCommand pjlCommand) {
             ++this.pjlCommand;
         }
+
+        @Override
+        public void handle(HpglCommand hpglCommand) {
+            ++this.hpglCommand;
+        }
     }
 
     /**
@@ -74,16 +80,22 @@ public final class PrinterCommandVisitorTest extends DataStreamParserTest {
      */
     public void testVisitor() throws Exception {
 
-        final byte[] twoByteCommandContent = { 0x1B, 0x45 };
-        final byte[] textCommandContent = { 0x31, 0x32, 0x33 };
+        final byte[] twoByteCommandContent = { 0x1B, 'E' };
+        final byte[] textCommandContent = { '1', '2', '3' };
         final byte[] controlCharacterContent = { 0x0C };
-        final byte[] parameterizedPclCommandContent = { 0x1B, 0x25, 0x2D, 0x31, 0x32, 0x33, 0x34, 0x35, 0x58 };
+        final byte[] parameterizedPclCommandContent = { 0x1B, '%', '-', '1', '2', '3', '4', '5', 'X' };
+        final byte[] enterHpglMode = { 0x1B, '%', '0', 'B' };
+        final byte[] enterPclMode = { 0x1B, '%', '0', 'A' };
+        final byte[] hpglCommand = { 'I', 'N', ';' };
 
         final ByteArrayOutputStream work = new ByteArrayOutputStream();
         work.write(parameterizedPclCommandContent);
         work.write("@PJL ENTER LANGUAGE=PCL\r\n".getBytes("iso-8859-1"));
         work.write(twoByteCommandContent);
         work.write(textCommandContent);
+        work.write(enterHpglMode);
+        work.write(hpglCommand);
+        work.write(enterPclMode);
         work.write(controlCharacterContent);
 
         final ByteArrayInputStream data = new ByteArrayInputStream(work.toByteArray());
@@ -95,7 +107,8 @@ public final class PrinterCommandVisitorTest extends DataStreamParserTest {
         assertEquals(1, VISITOR.textCommandCounter);
         assertEquals(1, VISITOR.controlCharacterCounter);
         assertEquals(1, VISITOR.twoBytePclCommandCounter);
-        assertEquals(1, VISITOR.parameterizedPclCommand);
+        assertEquals(3, VISITOR.parameterizedPclCommand);
         assertEquals(1, VISITOR.pjlCommand);
+        assertEquals(1, VISITOR.hpglCommand);
     }
 }
