@@ -22,7 +22,7 @@ import java.nio.charset.Charset;
 
 /**
  * The {@link TwoBytePclCommand} is a {@link PclCommand} that consists of just two bytes:
- * The introducting escape byte (0x1B), followed by a single byte within the range
+ * The introducing escape byte (0x1B), followed by a single byte within the range
  * 48 to 126 decimal. The most known two byte command is probably the command "Printer
  * Reset", which is the escape byte followed by a "E".
  */
