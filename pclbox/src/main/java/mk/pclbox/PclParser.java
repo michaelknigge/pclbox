@@ -111,7 +111,7 @@ public final class PclParser implements AutoCloseable {
     /**
      * Constructor that uses a base {@link InputStream} for reading and seeking within the PCL data stream.
      * Seeking is done by using a {@link InputStream#reset()} and {@link InputStream#skip(long)} that may not
-     * be very fast, depending of the implementation. Also note that you must not invoke {@link InputStream#mark()},
+     * be very fast, depending of the implementation. Also note that you must not invoke {@link InputStream#mark(int)},
      * {@link InputStream#reset()} or {@link InputStream#skip(long)} on the given stream.
      *
      * @param input - the {@link InputStream} that will be used to read the PCL data stream.
@@ -124,7 +124,7 @@ public final class PclParser implements AutoCloseable {
     /**
      * Constructor that uses a base {@link InputStream} for reading and seeking within the PCL data stream.
      * Seeking is done by using a {@link InputStream#reset()} and {@link InputStream#skip(long)} that may not
-     * be very fast, depending of the implementation. Also note that you must not invoke {@link InputStream#mark()},
+     * be very fast, depending of the implementation. Also note that you must not invoke {@link InputStream#mark(int)},
      * {@link InputStream#reset()} or {@link InputStream#skip(long)} on the given stream.
      *
      * @param input - the {@link InputStream} that will be used to read the PCL data stream.
