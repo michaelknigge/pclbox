@@ -38,7 +38,7 @@ final class HpglParser extends DataStreamParser {
     /**
      * Constructor. Just gets the {@link PclParserContext}.
      *
-     * @param context - the {@link PclParserContext} that contains all needed stuff.
+     * @param context   the {@link PclParserContext} that contains all needed stuff.
      */
     HpglParser(PclParserContext ctx) {
         super(ctx);
@@ -77,7 +77,7 @@ final class HpglParser extends DataStreamParser {
      * Parses the HP/GL command from the data Stream. The first two Bytes of the command have been read
      * already, so this method reads the rest of the command - at least if the command is no "two byte command".
      *
-     * @param command - the HP/GL command (in upper case)
+     * @param command   the HP/GL command (in upper case)
      *
      * @return the value of the last read byte that has been read from the stream
      */

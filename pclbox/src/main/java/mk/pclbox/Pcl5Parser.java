@@ -49,7 +49,7 @@ final class Pcl5Parser extends DataStreamParser {
     /**
      * Constructor. Just gets the {@link PclParserContext}.
      *
-     * @param context - the {@link PclParserContext} that contains all needed stuff.
+     * @param context   the {@link PclParserContext} that contains all needed stuff.
      */
     Pcl5Parser(final PclParserContext context) {
         super(context);
@@ -80,7 +80,7 @@ final class Pcl5Parser extends DataStreamParser {
     /**
      * Checks if a byte with the given value is a PCL5 control character.
      *
-     * @param byteToCheck - the byte to be checked
+     * @param byteToCheck   the byte to be checked
      *
      * @return true if the given byte is a control character.
      */
@@ -96,8 +96,8 @@ final class Pcl5Parser extends DataStreamParser {
      * Continues parsing of text in the data stream. The first character/byte has already been read and now this
      * method parses up to the end of the text.
      *
-     * @param offset - offset of the previous read character/byte, measured from the beginning of the read data stream.
-     * @param firstByte - the (already read) first byte of the text
+     * @param offset   offset of the previous read character/byte, measured from the beginning of the read data stream.
+     * @param firstByte   the (already read) first byte of the text
      *
      * @return the next byte after the read text, which is an escape, control character or just the end of the stream.
      */
@@ -119,8 +119,8 @@ final class Pcl5Parser extends DataStreamParser {
     /**
      * Handles the already read control character.
      *
-     * @param offset - offset of the previous read control character, measured from the beginning of the data stream.
-     * @param firstByte - the (already read) control character
+     * @param offset   offset of the previous read control character, measured from the beginning of the data stream.
+     * @param firstByte   the (already read) control character
      *
      * @return the next byte after the control character, which is an escape, control character, some text
      *     or just the end of the stream.
@@ -136,7 +136,7 @@ final class Pcl5Parser extends DataStreamParser {
      * Continues parsing of a PCL command . The first character/byte has already been read (the escape byte) and now
      * this method parses the rest of the command or sequence.
      *
-     * @param offset - offset of the previous read escape byte , measured from the beginning of the read data stream.
+     * @param offset   offset of the previous read escape byte , measured from the beginning of the read data stream.
      *
      * @return the next byte after the read text, which is an escape, control character or just the end of the stream.
      */
@@ -290,7 +290,7 @@ final class Pcl5Parser extends DataStreamParser {
     /**
      * Transforms the given parameter character to a termination character.
      *
-     * @param parameterCharacter - the value of the parameter character
+     * @param parameterCharacter   the value of the parameter character
      *
      * @return the termination character that corresponds to the parameter character
      */
@@ -304,9 +304,9 @@ final class Pcl5Parser extends DataStreamParser {
      * is a command that has a "data section" (means, that there is data immediately following the PCL command that
      * belongs to the PCL command (i. e. the binary data that follows the PCL command "Font Header")...
      *
-     * @param parameterizedCharacter - the parameterized character of the PCL command (ASCII range 33 to 47)
-     * @param groupCharacter - the group character of the PCL command (ASCII range 96 to 126)
-     * @param terminationCharacter - the termination character of the PCL command (ASCII range 64 to 94)
+     * @param parameterizedCharacter   the parameterized character of the PCL command (ASCII range 33 to 47)
+     * @param groupCharacter   the group character of the PCL command (ASCII range 96 to 126)
+     * @param terminationCharacter   the termination character of the PCL command (ASCII range 64 to 94)
      *
      * @return true if a PCL command with the specified characteristics contains a data section.
      */
@@ -337,7 +337,7 @@ final class Pcl5Parser extends DataStreamParser {
     /**
      * Returns true if the given {@link ParameterizedPclCommand} is a UEL command.
      *
-     * @param command - the {@link ParameterizedPclCommand} to be checked.
+     * @param command   the {@link ParameterizedPclCommand} to be checked.
      *
      * @return true if the given {@link ParameterizedPclCommand} is a UEL command.
      */
@@ -351,7 +351,7 @@ final class Pcl5Parser extends DataStreamParser {
     /**
      * Returns true if the given {@link ParameterizedPclCommand} is a "Enter HP/GL Mode" command.
      *
-     * @param command - the {@link ParameterizedPclCommand} to be checked.
+     * @param command   the {@link ParameterizedPclCommand} to be checked.
      *
      * @return true if the given {@link ParameterizedPclCommand} is a "Enter HP/GL Mode" command.
      */
@@ -365,7 +365,7 @@ final class Pcl5Parser extends DataStreamParser {
     /**
      * Returns true if the given value is valid for a parameter character.
      *
-     * @param value - the value to be checked.
+     * @param value   the value to be checked.
      *
      * @return true if the given value is valid for a parameter character.
      */
@@ -376,7 +376,7 @@ final class Pcl5Parser extends DataStreamParser {
     /**
      * Returns true if the given value is valid for a parameterized character.
      *
-     * @param value - the value to be checked.
+     * @param value   the value to be checked.
      *
      * @return true true if the given value is valid for a parameterized character.
      */
@@ -387,7 +387,7 @@ final class Pcl5Parser extends DataStreamParser {
     /**
      * Returns true if the given value is valid for a operation character.
      *
-     * @param value - the value to be checked.
+     * @param value   the value to be checked.
      *
      * @return true if the given value is valid for a operation character.
      */
@@ -398,7 +398,7 @@ final class Pcl5Parser extends DataStreamParser {
     /**
      * Returns true if the given value is valid for a group character.
      *
-     * @param value - the value to be checked.
+     * @param value   the value to be checked.
      *
      * @return true true if the given value is valid for a group character.
      */
@@ -409,7 +409,7 @@ final class Pcl5Parser extends DataStreamParser {
     /**
      * Returns true if the given value is valid for a termination character.
      *
-     * @param value - the value to be checked.
+     * @param value   the value to be checked.
      *
      * @return true if the given value is valid for a termination character.
      */
@@ -422,7 +422,7 @@ final class Pcl5Parser extends DataStreamParser {
      * between '0' (0x30) and '9' (0x39) are valid, as well als the decimal point '.'
      * and "+" and "-".
      *
-     * @param value - the value to be checked.
+     * @param value   the value to be checked.
      *
      * @return true if the given value is valid for a "value".
      */

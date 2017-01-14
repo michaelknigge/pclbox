@@ -70,8 +70,8 @@ public final class ControlCharacterCommand extends PrinterCommand {
     /**
      * Constructor of the {@link ControlCharacterCommand}.
      *
-     * @param offset - position within the data stream
-     * @param controlCharacter - the control character
+     * @param offset   position within the data stream
+     * @param controlCharacter   the control character
      */
     public ControlCharacterCommand(final long offset, final byte controlCharacter) {
         super(offset);

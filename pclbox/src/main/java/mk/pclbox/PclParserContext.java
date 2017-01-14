@@ -29,7 +29,7 @@ final class PclParserContext {
      * Constructor. Gets the {@link PclInputStream} we read from and initializes the
      * parser stack (pushes a {@link Pcl5Parser} on top of the stack).
      *
-     * @param stream - the stream that contains the PCL printer data stream.
+     * @param stream   the stream that contains the PCL printer data stream.
      */
     PclParserContext(final PclInputStream stream, final PrinterCommandHandler commandHandler) {
         this.stream = stream;

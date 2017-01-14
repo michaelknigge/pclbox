@@ -53,8 +53,8 @@ public final class TextCommand extends PrinterCommand {
     /**
      * Constructor of the {@link TextCommand}.
      *
-     * @param offset - position within the data stream
-     * @param text - the text
+     * @param offset   position within the data stream
+     * @param text  the text
      */
     public TextCommand(long offset, final byte[] text) {
         super(offset);

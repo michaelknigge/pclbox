@@ -33,9 +33,9 @@ public final class HpglCommand extends PrinterCommand {
     /**
      * Constructor of the {@link HpglCommand}.
      *
-     * @param offset - position within the data stream
-     * @param command - The two character HP/GL command (upper case)
-     * @param parameters - the parameters to this command (or empty string)
+     * @param offset   position within the data stream
+     * @param command   The two character HP/GL command (upper case)
+     * @param parameters   the parameters to this command (or empty string)
      */
     public HpglCommand(final long offset, final String command, final String parameters) {
         super(offset);

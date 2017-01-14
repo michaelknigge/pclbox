@@ -29,7 +29,7 @@ abstract class PrinterCommand {
     /**
      * Constructor. Gets just the offset of the {@link PrinterCommand}.
      *
-     * @param offset - offset of this {@link PrinterCommand}, measured from the beginning of the read data stream.
+     * @param offset   offset of this {@link PrinterCommand}, measured from the beginning of the read data stream.
      */
     public PrinterCommand(final long offset) {
         this.offset = offset;
@@ -58,7 +58,7 @@ abstract class PrinterCommand {
      * Delegates the concrete {@link PrinterCommand} to the corresponding handle
      * method of the {@link PrinterCommandVisitor}.
      *
-     * @param visitor a {@link PrinterCommandVisitor}.
+     * @param visitor   a {@link PrinterCommandVisitor}.
      */
     abstract void accept(PrinterCommandVisitor visitor);
 
@@ -89,7 +89,7 @@ abstract class PrinterCommand {
     /**
      * Writes the complete {@link PrinterCommand} to the given {@link OutputStream}.
      *
-     * @param out - the {@link OutputStream} to where the {@link PrinterCommand} gets written to.
+     * @param out   the {@link OutputStream} to where the {@link PrinterCommand} gets written to.
      */
     abstract void writeTo(final OutputStream out) throws IOException;
 }

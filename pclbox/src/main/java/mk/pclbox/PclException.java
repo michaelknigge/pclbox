@@ -26,7 +26,7 @@ public final class PclException extends Exception {
     /**
      * Constructs an {@code PclException} with the specified detail message.
      *
-     * @param message - the detail message.
+     * @param message   the detail message.
      */
     public PclException(final String message) {
         super(message);

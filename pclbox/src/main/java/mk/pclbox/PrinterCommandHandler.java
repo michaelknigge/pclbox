@@ -23,6 +23,8 @@ public interface PrinterCommandHandler {
 
     /**
      * Handles the {@link PrinterCommand}.
+     * 
+     * @param command   a concrete {@link PrinterCommand} to be handled. 
      */
     void handlePrinterCommand(final PrinterCommand command);
 }

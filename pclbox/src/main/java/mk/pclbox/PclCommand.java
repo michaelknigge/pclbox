@@ -24,7 +24,7 @@ abstract class PclCommand extends PrinterCommand {
     /**
      * Constructor for the {@link PclCommand}.
      *
-     * @param offset - position within the data stream
+     * @param offset   position within the data stream
      */
     public PclCommand(long offset) {
         super(offset);

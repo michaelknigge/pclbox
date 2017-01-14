@@ -45,12 +45,12 @@ public final class ParameterizedPclCommand extends PclCommand {
     /**
      * Constructor of a {@link ParameterizedPclCommand}.
      *
-     * @param offset - position within the data stream
-     * @param parameterizedCharacter - the parameterized character of the PCL command (ASCII range 33 to 47)
-     * @param groupCharacter - the group character of the PCL command (ASCII range 96 to 126) or 0 if the
+     * @param offset   position within the data stream
+     * @param parameterizedCharacter   the parameterized character of the PCL command (ASCII range 33 to 47)
+     * @param groupCharacter   the group character of the PCL command (ASCII range 96 to 126) or 0 if the
      *     PCL command does not contain a group character.
-     * @param value - the value string. If an empty string is given "0" is used as the value
-     * @param terminationCharacter - the termination character of the PCL command (ASCII range 64 to 94)
+     * @param value   the value string. If an empty string is given "0" is used as the value
+     * @param terminationCharacter   the termination character of the PCL command (ASCII range 64 to 94)
      */
     public ParameterizedPclCommand(
             final long offset,
@@ -65,13 +65,13 @@ public final class ParameterizedPclCommand extends PclCommand {
     /**
      * Constructor of a {@link ParameterizedPclCommand} that has a data section.
      *
-     * @param offset - position within the data stream
-     * @param parameterizedCharacter - the parameterized character of the PCL command (ASCII range 33 to 47)
-     * @param groupCharacter - the group character of the PCL command (ASCII range 96 to 126) or 0 if the
+     * @param offset   position within the data stream
+     * @param parameterizedCharacter   the parameterized character of the PCL command (ASCII range 33 to 47)
+     * @param groupCharacter   the group character of the PCL command (ASCII range 96 to 126) or 0 if the
      *     PCL command does not contain a group character.
-     * @param value - the value string. If an empty string is given "0" is used as the value
-     * @param terminationCharacter - the termination character of the PCL command (ASCII range 64 to 94)
-     * @param dataSection - some binary data that belongs to the PCL command (i. e. a binary font header)
+     * @param value   the value string. If an empty string is given "0" is used as the value
+     * @param terminationCharacter   the termination character of the PCL command (ASCII range 64 to 94)
+     * @param dataSection   some binary data that belongs to the PCL command (i. e. a binary font header)
      */
     public ParameterizedPclCommand(
             final long offset,

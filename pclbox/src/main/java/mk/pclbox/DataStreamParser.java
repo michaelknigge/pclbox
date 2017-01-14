@@ -28,7 +28,7 @@ abstract class DataStreamParser {
     /**
      * Constructor.
      *
-     * @param ctx - the {@link PclParserContext} that holds all information that is required
+     * @param ctx   the {@link PclParserContext} that holds all information that is required
      *     by the concrete {@link DataStreamParser}.
      */
     DataStreamParser(final PclParserContext ctx) {

@@ -35,7 +35,7 @@ final class PjlParser extends DataStreamParser {
     /**
      * Constructor. Just gets the {@link PclParserContext}.
      *
-     * @param context - the {@link PclParserContext} that contains all needed stuff.
+     * @param context   the {@link PclParserContext} that contains all needed stuff.
      */
     PjlParser(final PclParserContext context) {
         super(context);
@@ -80,8 +80,8 @@ final class PjlParser extends DataStreamParser {
     /**
      * Invokes the {@link PrinterCommandHandler}.
      *
-     * @param offset - the start offset of the PJL command
-     * @param command - the PJL command including the prefix "@PJL"
+     * @param offset   the start offset of the PJL command
+     * @param command   the PJL command including the prefix "@PJL"
      */
     private void invokeHandler(final long offset, final String command) throws PclException {
         // TODO Check for "ENTER LANGUAGE" command - if not "PCL", then throw an exception!

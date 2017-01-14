@@ -32,7 +32,8 @@ public final class PjlCommand extends PrinterCommand {
     /**
      * Constructor for the {@link PjlCommand}.
      *
-     * @param offset - position within the data stream
+     * @param offset   position within the data stream
+     * @param commandString   the complete PJL command including the "@PJL" prefix
      */
     public PjlCommand(final long offset, final String commandString) {
         super(offset);
@@ -40,7 +41,7 @@ public final class PjlCommand extends PrinterCommand {
     }
 
     /**
-     * Gets the command string, not including the "@PJL " prefix.
+     * Gets the command string including the "@PJL" prefix.
      *
      * @return the command string.
      */

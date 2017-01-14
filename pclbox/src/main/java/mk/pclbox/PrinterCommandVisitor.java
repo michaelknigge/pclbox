@@ -23,31 +23,43 @@ public interface PrinterCommandVisitor {
 
     /**
      * Handle method for {@link TextCommand} objects.
+     * 
+     * @param command   a {@link TextCommand} to be handled.
      */
     void handle(final TextCommand command);
 
     /**
      * Handle method for {@link ControlCharacterCommand} objects.
+     * 
+     * @param command   a {@link ControlCharacterCommand} to be handled.
      */
     void handle(final ControlCharacterCommand command);
 
     /**
      * Handle method for {@link TwoBytePclCommand} objects.
+     * 
+     * @param command   a {@link TwoBytePclCommand} to be handled.
      */
-    void handle(final TwoBytePclCommand twoBytePclCommand);
+    void handle(final TwoBytePclCommand command);
 
     /**
      * Handle method for {@link ParameterizedPclCommand} objects.
+     * 
+     * @param command   a {@link ParameterizedPclCommand} to be handled.
      */
-    void handle(final ParameterizedPclCommand parameterizedPclCommand);
+    void handle(final ParameterizedPclCommand command);
 
     /**
      * Handle method for {@link PjlCommand} objects.
+     * 
+     * @param command   a {@link PjlCommand} to be handled.
      */
-    void handle(final PjlCommand pjlCommand);
+    void handle(final PjlCommand command);
 
     /**
      * Handle method for {@link HpglCommand} objects.
+     * 
+     * @param command   a {@link HpglCommand} to be handled.
      */
-    void handle(final HpglCommand hpglCommand);
+    void handle(final HpglCommand command);
 }

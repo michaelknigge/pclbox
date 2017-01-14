@@ -35,8 +35,8 @@ public final class TwoBytePclCommand extends PclCommand {
     /**
      * Constructor of the {@link TwoBytePclCommand}.
      *
-     * @param offset - position within the data stream
-     * @param operationCharacter - the operation character (ASCII range 48 to 126, which is "0" to "~").
+     * @param offset   position within the data stream
+     * @param operationCharacter   the operation character (ASCII range 48 to 126, which is "0" to "~").
      */
     public TwoBytePclCommand(long offset, final int operationCharacter) {
         super(offset);
