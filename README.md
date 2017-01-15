@@ -1,8 +1,8 @@
 # pclbox [![Build Status](https://travis-ci.org/michaelknigge/pclbox.svg?branch=master)](https://travis-ci.org/michaelknigge/pclbox) [![codecov.io](https://codecov.io/github/michaelknigge/pclbox/coverage.svg?branch=master)](https://codecov.io/github/michaelknigge/pclbox?branch=master) [![Coverity Status](https://scan.coverity.com/projects/10949/badge.svg)](https://scan.coverity.com/projects/10949)
 
-Java library for parsing [PCL](https://en.wikipedia.org/wiki/Printer_Command_Language) printer data streams. The library supports [PCL](https://en.wikipedia.org/wiki/Printer_Command_Language) up to version 5 as well as [PJL](https://en.wikipedia.org/wiki/Printer_Job_Language) and [HP/GL2](https://en.wikipedia.org/wiki/HPGL). PCL version 6 (aka PCL-XL) is currently not supported.
+Java library for parsing [PCL](https://en.wikipedia.org/wiki/Printer_Command_Language) printer data streams. The library supports [PCL](https://en.wikipedia.org/wiki/Printer_Command_Language) up to version 5 as well as [PJL](https://en.wikipedia.org/wiki/Printer_Job_Language) and [HP/GL2](https://en.wikipedia.org/wiki/HPGL). [PCL](https://en.wikipedia.org/wiki/Printer_Command_Language) version 6 (aka PCL-XL) is currently not supported.
 
-Note that the support of HP/GL2 is somehow limited. The HP/GL commands need to be terminated by a semicolon, which is not enforced by the specification.
+Note that the support of [HP/GL2](https://en.wikipedia.org/wiki/HPGL) is somehow limited. The [HP/GL2](https://en.wikipedia.org/wiki/HPGL) commands need to be terminated by a semicolon, which is not enforced by the specification.
 
 # Dependencies
 pclbox has no runtime dependencies on other libraries. This was a design decision and will (hopefully) never change.
@@ -17,7 +17,7 @@ If you want to contribute to pclbox, you're welcome. But please make sure that y
 
 It is easy to check this - just build the source with `gradle` before creating a pull request. The gradle default tasks will run [checkstyle](http://checkstyle.sourceforge.net/), [findbugs](http://findbugs.sourceforge.net/) and build the JavaDoc. If everything goes well, you're welcome to create a pull request.
 
-Hint: If you use Eclipse as your IDE, you can simply run `gradle eclipse` to create the Eclipse project files. Furthermore you can import Eclipse formatter settings (see file `config/eclipse-formatter.xml`) that will assis you in formatting the pclbox source code according the used coding conventions used (no tabs, UTF-8 encoding, indent by 4 spaces, no line longer that 120 characters, etc.).
+Hint: If you use [Eclipse](https://eclipse.org/) as your IDE, you can simply run `gradle eclipse` to create the Eclipse project files. Furthermore you can import Eclipse formatter settings (see file `config/eclipse-formatter.xml`) that will assis you in formatting the pclbox source code according the used coding conventions used (no tabs, UTF-8 encoding, indent by 4 spaces, no line longer that 120 characters, etc.).
 
 # Manuals
 The following reference materials were used to implement this parser:
