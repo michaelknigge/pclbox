@@ -1,14 +1,30 @@
 defaultTasks 'clean', 'javadoc', 'test', 'check', 'checkstyleMain', 'checkstyleTest', 'assemble'
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'net.researchgate:gradle-release:2.4.0'
+    }
+}
+
 subprojects {
     apply plugin: 'java'
     apply plugin: 'eclipse'
     apply plugin: 'checkstyle'
     apply plugin: 'jacoco'
     apply plugin: 'findbugs'
-	
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
+    apply plugin: 'com.jfrog.bintray'
+    apply plugin: 'net.researchgate.release'
+
     check.dependsOn jacocoTestReport
-      
+
+    bintrayUpload.dependsOn 'jar', 'sourceJar', 'javadocJar'
+
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
         sourceCompatibility = '1.7'
@@ -22,15 +38,15 @@ subprojects {
     repositories {
         jcenter()
     }
-    
+
     dependencies {
-        compile 'com.google.code.findbugs:annotations:3.0.1'
         testCompile group: 'junit', name: 'junit', version: '4.12'
     }
-    
+
     configurations {
         checkstyleConfig
     }
+
     dependencies {
         checkstyleConfig ("com.puppycrawl.tools:checkstyle:7.1") {
             transitive = false
@@ -46,6 +62,71 @@ subprojects {
         reports {
             xml.enabled = true
             html.enabled = true
+        }
+    }
+
+    release {
+        failOnUnversionedFiles = false
+    }
+
+    bintray {
+        user = project.hasProperty('bintray.user') ? project.property('bintray.user') : System.getenv('BINTRAY_USER')
+        key = project.hasProperty('bintray.key') ? project.property('bintray.key') : System.getenv('BINTRAY_KEY')
+
+        publications = ['maven']
+        publish = true
+        pkg {
+            repo = 'maven'
+            name = 'pclbox'
+            licenses = ['Apache-2.0']
+            vcsUrl = 'https://github.com/michaelknigge/pclbox.git'
+            websiteUrl = 'https://github.com/michaelknigge/pclbox'
+            issueTrackerUrl = 'https://github.com/michaelknigge/pclbox/issues'
+            labels = ['pcl','pjl','hpgl']
+            publicDownloadNumbers = true
+
+            githubRepo = 'michaelknigge/pclbox'
+
+            version {
+                name = project.version
+                desc = "pclbox version ${project.version}"
+                released = new Date()
+                vcsTag = "${project.version}"
+
+                gpg {
+                    sign = true
+                }
+            
+        }
+    }
+
+    task sourceJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allJava
+    }
+
+    task javadocJar (type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.java
+
+                artifact sourceJar {
+                    classifier 'sources'
+                }
+
+                artifact (javadocJar) {
+                    classifier = 'javadoc'
+                }
+
+                groupId 'mk.pclbox'
+                artifactId 'pclbox'
+                version '1.0'
+            }
         }
     }
 }
