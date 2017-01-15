@@ -1,6 +1,6 @@
 # pclbox [![Build Status](https://travis-ci.org/michaelknigge/pclbox.svg?branch=master)](https://travis-ci.org/michaelknigge/pclbox) [![codecov.io](https://codecov.io/github/michaelknigge/pclbox/coverage.svg?branch=master)](https://codecov.io/github/michaelknigge/pclbox?branch=master) [![Coverity Status](https://scan.coverity.com/projects/10949/badge.svg)](https://scan.coverity.com/projects/10949)
 
-Java library for parsing [PCL](https://en.wikipedia.org/wiki/Printer_Command_Language) printer data streams. The library supports PCL up to version 5 as well as [PJL](https://en.wikipedia.org/wiki/Printer_Job_Language) and [HP/GL2](https://en.wikipedia.org/wiki/HPGL). PCL version 6 (aka PCL-XL) is currently not supported.
+Java library for parsing [PCL](https://en.wikipedia.org/wiki/Printer_Command_Language) printer data streams. The library supports [PCL](https://en.wikipedia.org/wiki/Printer_Command_Language) up to version 5 as well as [PJL](https://en.wikipedia.org/wiki/Printer_Job_Language) and [HP/GL2](https://en.wikipedia.org/wiki/HPGL). PCL version 6 (aka PCL-XL) is currently not supported.
 
 Note that the support of HP/GL2 is somehow limited. The HP/GL commands need to be terminated by a semicolon, which is not enforced by the specification.
 
