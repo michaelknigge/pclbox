@@ -22,7 +22,7 @@ import java.io.OutputStream;
 /**
  * Abstract class that every {@link PrinterCommand} has to implement.
  */
-abstract class PrinterCommand {
+public abstract class PrinterCommand {
 
     private final long offset;
 
