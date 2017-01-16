@@ -31,3 +31,5 @@ The following reference materials were used to implement this parser:
 * [HP-GL/2 reference](http://www.hpmuseum.net/document.php?catfile=213)
 * [HP PCL/PJL Reference: Printer Job Language Technical Reference Manual](http://h20000.www2.hp.com/bc/docs/support/SupportManual/bpl13208/bpl13208.pdf)
 * [HP PCL/PJL Reference: Printer Job Language Technical Reference Addendum](http://h20000.www2.hp.com/bc/docs/support/SupportManual/bpl13207/bpl13207.pdf)
+* [HP DeskJet 400 Technical Manual](https://www.manualslib.com/manual/702162/Hp-Deskjet-400.html)
+* [Undocumented Printing](http://www.undocprint.org/formats/page_description_languages/pcl)
