@@ -20,6 +20,8 @@ subprojects {
     apply plugin: 'maven-publish'
     apply plugin: 'com.jfrog.bintray'
     apply plugin: 'net.researchgate.release'
+	
+	version = "1.0"
 
     check.dependsOn jacocoTestReport
 
