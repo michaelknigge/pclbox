@@ -21,12 +21,12 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 /**
- * The {@link TwoBytePclCommand} is a {@link PclCommand} that consists of just two bytes:
+ * The {@link TwoBytePclCommand} is a {@link Pcl5Command} that consists of just two bytes:
  * The introducing escape byte (0x1B), followed by a single byte within the range
  * 48 to 126 decimal. The most known two byte command is probably the command "Printer
  * Reset", which is the escape byte followed by a "E".
  */
-public final class TwoBytePclCommand extends PclCommand {
+public final class TwoBytePclCommand extends Pcl5Command {
 
     private static final Charset ISO_8859_1 = Charset.forName("iso-8859-1");
 

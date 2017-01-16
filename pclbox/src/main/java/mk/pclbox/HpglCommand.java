@@ -63,6 +63,11 @@ public final class HpglCommand extends PrinterCommand {
     }
 
     @Override
+    String getTextualDescription() {
+        return HpglCommands.getCommandDescriptionFor(this);
+    }
+
+    @Override
     void accept(PrinterCommandVisitor visitor) {
         visitor.handle(this);
     }

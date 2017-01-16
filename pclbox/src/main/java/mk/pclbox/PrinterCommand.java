@@ -55,6 +55,15 @@ abstract class PrinterCommand {
     }
 
     /**
+     * Returns a textual description of the {@link PrinterCommand}.
+     *
+     * @param command   the {@link PrinterCommand} for which a textual description shall be returned.
+     *
+     * @return a textual description the the {@link PrinterCommand}.
+     */
+    abstract String getTextualDescription();
+
+    /**
      * Delegates the concrete {@link PrinterCommand} to the corresponding handle
      * method of the {@link PrinterCommandVisitor}.
      *

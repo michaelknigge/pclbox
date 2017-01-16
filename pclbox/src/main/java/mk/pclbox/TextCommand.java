@@ -73,6 +73,11 @@ public final class TextCommand extends PrinterCommand {
     }
 
     @Override
+    String getTextualDescription() {
+        return "Text";
+    }
+
+    @Override
     void accept(PrinterCommandVisitor visitor) {
         visitor.handle(this);
     }

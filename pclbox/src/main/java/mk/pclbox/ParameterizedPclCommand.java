@@ -22,7 +22,7 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 
 /**
- * The {@link ParameterizedPclCommand} is a {@link PclCommand} that has a parameterized character
+ * The {@link ParameterizedPclCommand} is a {@link Pcl5Command} that has a parameterized character
  * (ASCII range 33 to 47 decimal), followed by a group character (ASCII range 96 to 126 decimal).
  * After that two characters a numerical value is followed (a string that may be started with a
  * "+" or "-" and may also contain a decimal "."). After that value a termination character
@@ -32,7 +32,7 @@ import java.util.Arrays;
  * sequence, but pclbox transforms those sequences into multiple {@link ParameterizedPclCommand}
  * commands.
  */
-public final class ParameterizedPclCommand extends PclCommand {
+public final class ParameterizedPclCommand extends Pcl5Command {
 
     private static final Charset ISO_8859_1 = Charset.forName("iso-8859-1");
 

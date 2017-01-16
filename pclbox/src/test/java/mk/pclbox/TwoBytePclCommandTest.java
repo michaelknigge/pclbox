@@ -69,6 +69,15 @@ public final class TwoBytePclCommandTest extends TestCase {
     }
 
     /**
+     * Checks the method getTextualDescription.
+     */
+    public void testGetTextualDescription() {
+        assertEquals("Printer Reset", ESC_E_AT_2.getTextualDescription());
+        assertEquals("Clear Horizontal Margins", ESC_9_AT_1.getTextualDescription());
+        assertEquals("Unknown PCL-Command 3", new TwoBytePclCommand(1, (byte) 0x33).getTextualDescription());
+    }
+
+    /**
      * Checks the method toString.
      */
     public void testToString() {

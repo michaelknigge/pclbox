@@ -69,6 +69,14 @@ public final class TextCommandTest extends TestCase {
     }
 
     /**
+     * Checks the method getTextualDescription.
+     */
+    public void testGetTextualDescription() {
+        assertEquals("Text", TEXT_A_AT_2.getTextualDescription());
+        assertEquals("Text", TEXT_B_AT_1.getTextualDescription());
+    }
+
+    /**
      * Checks the method toString.
      */
     public void testToString() {

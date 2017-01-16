@@ -88,6 +88,28 @@ public final class ControlCharacterCommand extends PrinterCommand {
     }
 
     @Override
+    String getTextualDescription() {
+        switch (this.getControlCharacter()) {
+        case CARRIAGE_RETURN:
+            return "Carriage Return";
+        case FORM_FEED:
+            return "Form Feed";
+        case LINE_FEED:
+            return "Line Feed";
+        case HORIZONTAL_TAB:
+            return "Horizontal Tab";
+        case BACKSPACE:
+            return "Backspace";
+        case SHIFT_IN:
+            return "Shift In";
+        case SHIFT_OUT:
+            return "Shift Out";
+        default:
+            return String.format("Unknown Control Character 0x%02X", this.getControlCharacter());
+        }
+    }
+
+    @Override
     void accept(PrinterCommandVisitor visitor) {
         visitor.handle(this);
     }

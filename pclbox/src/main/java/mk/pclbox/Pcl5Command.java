@@ -17,16 +17,21 @@ package mk.pclbox;
  */
 
 /**
- * A {@link PclCommand} describes a PCL 5 command.
+ * A {@link Pcl5Command} describes a PCL 5 command.
  */
-abstract class PclCommand extends PrinterCommand {
+abstract class Pcl5Command extends PrinterCommand {
 
     /**
-     * Constructor for the {@link PclCommand}.
+     * Constructor for the {@link Pcl5Command}.
      *
      * @param offset   position within the data stream
      */
-    public PclCommand(long offset) {
+    public Pcl5Command(long offset) {
         super(offset);
+    }
+
+    @Override
+    String getTextualDescription() {
+        return Pcl5Commands.getCommandDescriptionFor(this);
     }
 }

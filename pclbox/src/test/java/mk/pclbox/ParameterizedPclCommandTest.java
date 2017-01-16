@@ -95,6 +95,18 @@ public final class ParameterizedPclCommandTest extends TestCase {
     }
 
     /**
+     * Checks the method getTextualDescription.
+     */
+    public void testGetTextualDescription() {
+        assertEquals("Transparent Print Data", TRANSPARENT_DATA_0.getTextualDescription());
+        assertEquals("Simplex/Duplex Print", DUPLEX_AT_1.getTextualDescription());
+
+        assertEquals(
+                "Unknown PCL-Command *tZ",
+                new ParameterizedPclCommand(1, '*', 't', "0", 'Z').getTextualDescription());
+    }
+
+    /**
      * Checks the method toString.
      */
     public void testToString() {

@@ -75,7 +75,7 @@ public final class PrinterCommandVisitorTest extends DataStreamParserTest {
     }
 
     /**
-     * Parses a PCL data stream that contains just one concrete {@link PclCommand} of every type. Checks if
+     * Parses a PCL data stream that contains just one concrete {@link Pcl5Command} of every type. Checks if
      * the visitor is invoked for every type once.
      */
     public void testVisitor() throws Exception {

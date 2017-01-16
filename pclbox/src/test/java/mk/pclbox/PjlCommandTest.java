@@ -69,6 +69,14 @@ public final class PjlCommandTest extends TestCase {
     }
 
     /**
+     * Checks the method getTextualDescription.
+     */
+    public void testGetTextualDescription() {
+        assertEquals("PJL Command", ENTER_AT_1.getTextualDescription());
+        assertEquals("PJL Command", COMMENT_AT_1.getTextualDescription());
+    }
+
+    /**
      * Checks the method toString.
      */
     public void testToString() {

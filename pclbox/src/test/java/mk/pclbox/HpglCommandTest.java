@@ -57,6 +57,18 @@ public final class HpglCommandTest extends TestCase {
     }
 
     /**
+     * Checks the method getTextualDescription.
+     */
+    public void testGetTextualDescription() {
+        assertEquals("Initialize", IN_AT_1.getTextualDescription());
+        assertEquals("Comment", CO_AT_1.getTextualDescription());
+
+        assertEquals(
+                "Unknown HP/GL-Command ZZ",
+                new HpglCommand(2, "ZZ", "").getTextualDescription());
+    }
+
+    /**
      * Checks the method toString.
      */
     public void testToString() {

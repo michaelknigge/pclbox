@@ -50,6 +50,11 @@ public final class PjlCommand extends PrinterCommand {
     }
 
     @Override
+    String getTextualDescription() {
+        return "PJL Command";
+    }
+
+    @Override
     void accept(PrinterCommandVisitor visitor) {
         visitor.handle(this);
     }

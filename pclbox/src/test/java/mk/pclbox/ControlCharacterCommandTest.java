@@ -69,6 +69,18 @@ public final class ControlCharacterCommandTest extends TestCase {
     }
 
     /**
+     * Checks the method getTextualDescription.
+     */
+    public void testGetTextualDescription() {
+        assertEquals("Carriage Return", CR_AT_1.getTextualDescription());
+        assertEquals("Horizontal Tab", TAB_AT_1.getTextualDescription());
+
+        assertEquals(
+                "Unknown Control Character 0x33",
+                new ControlCharacterCommand(0, (byte) 0x33).getTextualDescription());
+    }
+
+    /**
      * Checks the method toString.
      */
     public void testToString() {
