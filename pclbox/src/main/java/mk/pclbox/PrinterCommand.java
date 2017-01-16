@@ -61,7 +61,7 @@ public abstract class PrinterCommand {
      *
      * @return a textual description the the {@link PrinterCommand}.
      */
-    abstract String getTextualDescription();
+    public abstract String getTextualDescription();
 
     /**
      * Delegates the concrete {@link PrinterCommand} to the corresponding handle
@@ -69,7 +69,7 @@ public abstract class PrinterCommand {
      *
      * @param visitor   a {@link PrinterCommandVisitor}.
      */
-    abstract void accept(PrinterCommandVisitor visitor);
+    public abstract void accept(PrinterCommandVisitor visitor);
 
     /**
      * Returns a short a {@link String} representation of the {@link PrinterCommand}. This String contains
@@ -78,7 +78,7 @@ public abstract class PrinterCommand {
      *
      * @return a short {@link String} representation of the {@link PrinterCommand}.
      */
-    abstract String toCommandString();
+    public abstract String toCommandString();
 
     /**
      * Returns a {@link String} representation of the {@link PrinterCommand}. This String contains the command
@@ -86,19 +86,19 @@ public abstract class PrinterCommand {
      *
      * @return a displayable {@link String} representation of the {@link PrinterCommand}.
      */
-    abstract String toDisplayString();
+    public abstract String toDisplayString();
 
     /**
      * Returns the complete {@link PrinterCommand} as a byte array.
      *
      * @return the complete {@link PrinterCommand} as a byte array.
      */
-    abstract byte[] toByteArray();
+    public abstract byte[] toByteArray();
 
     /**
      * Writes the complete {@link PrinterCommand} to the given {@link OutputStream}.
      *
      * @param out   the {@link OutputStream} to where the {@link PrinterCommand} gets written to.
      */
-    abstract void writeTo(final OutputStream out) throws IOException;
+    public abstract void writeTo(final OutputStream out) throws IOException;
 }

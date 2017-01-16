@@ -50,12 +50,12 @@ public final class PjlCommand extends PrinterCommand {
     }
 
     @Override
-    String getTextualDescription() {
+    public String getTextualDescription() {
         return "PJL Command";
     }
 
     @Override
-    void accept(PrinterCommandVisitor visitor) {
+    public void accept(PrinterCommandVisitor visitor) {
         visitor.handle(this);
     }
 
@@ -80,7 +80,7 @@ public final class PjlCommand extends PrinterCommand {
     }
 
     @Override
-    String toCommandString() {
+    public String toCommandString() {
         // We currently do not parse the PJL-Commands, so we use a static "command string" for all
         // PJL commands.... Remember: The primary use of the toCommandString() method is to provide a
         // "key" for HashMaps....
@@ -88,17 +88,17 @@ public final class PjlCommand extends PrinterCommand {
     }
 
     @Override
-    String toDisplayString() {
+    public String toDisplayString() {
         return this.getCommand();
     }
 
     @Override
-    byte[] toByteArray() {
+    public byte[] toByteArray() {
         return this.getCommand().getBytes(ISO_8859_1);
     }
 
     @Override
-    void writeTo(OutputStream out) throws IOException {
+    public void writeTo(OutputStream out) throws IOException {
         out.write(this.toByteArray());
     }
 

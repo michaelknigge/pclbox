@@ -137,7 +137,7 @@ public final class ParameterizedPclCommand extends Pcl5Command {
     }
 
     @Override
-    void accept(PrinterCommandVisitor visitor) {
+    public void accept(PrinterCommandVisitor visitor) {
         visitor.handle(this);
     }
 
@@ -185,7 +185,7 @@ public final class ParameterizedPclCommand extends Pcl5Command {
     }
 
     @Override
-    String toCommandString() {
+    public String toCommandString() {
         final StringBuilder sb = new StringBuilder();
         sb.append((char) this.getParameterizedCharacter());
 
@@ -199,7 +199,7 @@ public final class ParameterizedPclCommand extends Pcl5Command {
     }
 
     @Override
-    String toDisplayString() {
+    public String toDisplayString() {
         final StringBuilder sb = new StringBuilder();
         sb.append((char) this.getParameterizedCharacter());
 
@@ -214,7 +214,7 @@ public final class ParameterizedPclCommand extends Pcl5Command {
     }
 
     @Override
-    byte[] toByteArray() {
+    public byte[] toByteArray() {
         final String asString = this.toDisplayString();
         final byte[] asByteArray = asString.getBytes(ISO_8859_1);
 
@@ -235,7 +235,7 @@ public final class ParameterizedPclCommand extends Pcl5Command {
     }
 
     @Override
-    void writeTo(OutputStream out) throws IOException {
+    public void writeTo(OutputStream out) throws IOException {
         out.write(this.toByteArray());
     }
 }

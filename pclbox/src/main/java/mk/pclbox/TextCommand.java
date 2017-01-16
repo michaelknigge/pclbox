@@ -73,12 +73,12 @@ public final class TextCommand extends PrinterCommand {
     }
 
     @Override
-    String getTextualDescription() {
+    public String getTextualDescription() {
         return "Text";
     }
 
     @Override
-    void accept(PrinterCommandVisitor visitor) {
+    public void accept(PrinterCommandVisitor visitor) {
         visitor.handle(this);
     }
 
@@ -103,24 +103,24 @@ public final class TextCommand extends PrinterCommand {
     }
 
     @Override
-    String toCommandString() {
+    public String toCommandString() {
         // The primary use of the toCommandString() method is to provide a "key" for HashMaps....
         // So we use a static string as a "placeholder" for all TextCommands
         return "TEXT";
     }
 
     @Override
-    String toDisplayString() {
+    public String toDisplayString() {
         return new String(this.getText(), ISO_8859_1);
     }
 
     @Override
-    byte[] toByteArray() {
+    public byte[] toByteArray() {
         return this.getText().clone();
     }
 
     @Override
-    void writeTo(OutputStream out) throws IOException {
+    public void writeTo(OutputStream out) throws IOException {
         out.write(this.getText());
     }
 }

@@ -31,7 +31,7 @@ abstract class Pcl5Command extends PrinterCommand {
     }
 
     @Override
-    String getTextualDescription() {
+    public String getTextualDescription() {
         return Pcl5Commands.getCommandDescriptionFor(this);
     }
 }

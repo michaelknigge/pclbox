@@ -88,7 +88,7 @@ public final class ControlCharacterCommand extends PrinterCommand {
     }
 
     @Override
-    String getTextualDescription() {
+    public String getTextualDescription() {
         switch (this.getControlCharacter()) {
         case CARRIAGE_RETURN:
             return "Carriage Return";
@@ -110,7 +110,7 @@ public final class ControlCharacterCommand extends PrinterCommand {
     }
 
     @Override
-    void accept(PrinterCommandVisitor visitor) {
+    public void accept(PrinterCommandVisitor visitor) {
         visitor.handle(this);
     }
 
@@ -135,22 +135,22 @@ public final class ControlCharacterCommand extends PrinterCommand {
     }
 
     @Override
-    String toCommandString() {
+    public String toCommandString() {
         return String.format("0x%02X", this.getControlCharacter());
     }
 
     @Override
-    String toDisplayString() {
+    public String toDisplayString() {
         return String.format("0x%02X", this.getControlCharacter());
     }
 
     @Override
-    byte[] toByteArray() {
+    public byte[] toByteArray() {
         return new byte[] { this.getControlCharacter() };
     }
 
     @Override
-    void writeTo(OutputStream out) throws IOException {
+    public void writeTo(OutputStream out) throws IOException {
         out.write(this.getControlCharacter());
     }
 }

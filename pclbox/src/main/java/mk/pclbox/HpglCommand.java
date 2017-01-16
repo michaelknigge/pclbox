@@ -63,12 +63,12 @@ public final class HpglCommand extends PrinterCommand {
     }
 
     @Override
-    String getTextualDescription() {
+    public String getTextualDescription() {
         return HpglCommands.getCommandDescriptionFor(this);
     }
 
     @Override
-    void accept(PrinterCommandVisitor visitor) {
+    public void accept(PrinterCommandVisitor visitor) {
         visitor.handle(this);
     }
 
@@ -95,17 +95,17 @@ public final class HpglCommand extends PrinterCommand {
     }
 
     @Override
-    String toCommandString() {
+    public String toCommandString() {
         return this.getCommand();
     }
 
     @Override
-    String toDisplayString() {
+    public String toDisplayString() {
         return this.getCommand() + this.getParameters();
     }
 
     @Override
-    byte[] toByteArray() {
+    public byte[] toByteArray() {
         final byte[] cmd = this.getCommand().getBytes(ISO_8859_1);
         final byte[] parm = this.getParameters().getBytes(ISO_8859_1);
         final byte[] result = new byte[cmd.length + parm.length];
@@ -117,7 +117,7 @@ public final class HpglCommand extends PrinterCommand {
     }
 
     @Override
-    void writeTo(OutputStream out) throws IOException {
+    public void writeTo(OutputStream out) throws IOException {
         out.write(this.toByteArray());
     }
 }

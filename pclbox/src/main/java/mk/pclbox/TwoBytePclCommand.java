@@ -53,7 +53,7 @@ public final class TwoBytePclCommand extends Pcl5Command {
     }
 
     @Override
-    void accept(PrinterCommandVisitor visitor) {
+    public void accept(PrinterCommandVisitor visitor) {
         visitor.handle(this);
     }
 
@@ -83,22 +83,22 @@ public final class TwoBytePclCommand extends Pcl5Command {
     }
 
     @Override
-    String toCommandString() {
+    public String toCommandString() {
         return new String(new byte[] { (byte) this.getOperationCharacter() }, ISO_8859_1);
     }
 
     @Override
-    String toDisplayString() {
+    public String toDisplayString() {
         return new String(new byte[] { (byte) this.getOperationCharacter() }, ISO_8859_1);
     }
 
     @Override
-    byte[] toByteArray() {
+    public byte[] toByteArray() {
         return new byte[] { (byte) this.getOperationCharacter() };
     }
 
     @Override
-    void writeTo(OutputStream out) throws IOException {
+    public void writeTo(OutputStream out) throws IOException {
         out.write(this.getOperationCharacter());
     }
 }
