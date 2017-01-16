@@ -57,8 +57,6 @@ public abstract class PrinterCommand {
     /**
      * Returns a textual description of the {@link PrinterCommand}.
      *
-     * @param command   the {@link PrinterCommand} for which a textual description shall be returned.
-     *
      * @return a textual description the the {@link PrinterCommand}.
      */
     public abstract String getTextualDescription();
@@ -99,6 +97,8 @@ public abstract class PrinterCommand {
      * Writes the complete {@link PrinterCommand} to the given {@link OutputStream}.
      *
      * @param out   the {@link OutputStream} to where the {@link PrinterCommand} gets written to.
+     *
+     * @throws IOException if an I/O error occurs.
      */
     public abstract void writeTo(final OutputStream out) throws IOException;
 }
