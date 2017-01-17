@@ -72,13 +72,13 @@ public final class ControlCharacterCommandTest extends TestCase {
      * Checks the method getTextualDescription.
      */
     public void testGetTextualDescription() {
-        assertEquals("Backspace", new ControlCharacterCommand(1, (byte) 8));
-        assertEquals("Horizontal Tab", new ControlCharacterCommand(1, (byte) 9));
-        assertEquals("Line Feed", new ControlCharacterCommand(1, (byte) 10));
-        assertEquals("Form Feed", new ControlCharacterCommand(1, (byte) 12));
-        assertEquals("Carriage Return", new ControlCharacterCommand(1, (byte) 13));
-        assertEquals("Shift Out", new ControlCharacterCommand(1, (byte) 14));
-        assertEquals("Shift In", new ControlCharacterCommand(1, (byte) 15));
+        assertEquals("Backspace", new ControlCharacterCommand(1, (byte) 8).getTextualDescription());
+        assertEquals("Horizontal Tab", new ControlCharacterCommand(1, (byte) 9).getTextualDescription());
+        assertEquals("Line Feed", new ControlCharacterCommand(1, (byte) 10).getTextualDescription());
+        assertEquals("Form Feed", new ControlCharacterCommand(1, (byte) 12).getTextualDescription());
+        assertEquals("Carriage Return", new ControlCharacterCommand(1, (byte) 13).getTextualDescription());
+        assertEquals("Shift Out", new ControlCharacterCommand(1, (byte) 14).getTextualDescription());
+        assertEquals("Shift In", new ControlCharacterCommand(1, (byte) 15).getTextualDescription());
 
         assertEquals(
                 "Unknown Control Character 0x33",
