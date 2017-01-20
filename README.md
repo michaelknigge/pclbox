@@ -1,8 +1,8 @@
 # pclbox [![Build Status](https://travis-ci.org/michaelknigge/pclbox.svg?branch=master)](https://travis-ci.org/michaelknigge/pclbox) [![codecov.io](https://codecov.io/github/michaelknigge/pclbox/coverage.svg?branch=master)](https://codecov.io/github/michaelknigge/pclbox?branch=master) [![Coverity Status](https://scan.coverity.com/projects/10949/badge.svg)](https://scan.coverity.com/projects/10949)
 
-Java library for parsing [PCL](https://en.wikipedia.org/wiki/Printer_Command_Language) printer data streams. The library supports [PCL](https://en.wikipedia.org/wiki/Printer_Command_Language) up to version 5 as well as [PJL](https://en.wikipedia.org/wiki/Printer_Job_Language) and [HP/GL2](https://en.wikipedia.org/wiki/HPGL). [PCL](https://en.wikipedia.org/wiki/Printer_Command_Language) version 6 (aka PCL-XL) is currently not supported.
+Java library for parsing [PCL](https://en.wikipedia.org/wiki/Printer_Command_Language) printer data streams. The library supports [PCL](https://en.wikipedia.org/wiki/Printer_Command_Language) up to version 5 as well as [PJL](https://en.wikipedia.org/wiki/Printer_Job_Language) and [HP-GL/2](https://en.wikipedia.org/wiki/HPGL). [PCL](https://en.wikipedia.org/wiki/Printer_Command_Language) version 6 (aka PCL-XL) is currently not supported.
 
-Note that the support of [HP/GL2](https://en.wikipedia.org/wiki/HPGL) is somehow limited. pclbox requires that the [HP/GL2](https://en.wikipedia.org/wiki/HPGL) commands are terminated by a semicolon, which is not required by the specification (the specification requires that only the last command is terminated by a semicolon). 
+Note that the support of [HP-GL/2](https://en.wikipedia.org/wiki/HPGL) is somehow limited. pclbox requires that the [HP-GL/2](https://en.wikipedia.org/wiki/HPGL) commands are terminated by a semicolon, which is not required by the specification (the specification requires that only the last command is terminated by a semicolon). 
 
 # Dependencies
 pclbox has no runtime dependencies on other libraries. This was a design decision and will (hopefully) never change.
