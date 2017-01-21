@@ -20,8 +20,8 @@ subprojects {
     apply plugin: 'maven-publish'
     apply plugin: 'com.jfrog.bintray'
     apply plugin: 'net.researchgate.release'
-	
-	version = "1.0"
+
+    version = "1.0"
 
     check.dependsOn jacocoTestReport
 
@@ -125,9 +125,9 @@ subprojects {
                     classifier = 'javadoc'
                 }
 
-                groupId 'mk.pclbox'
+                groupId 'pclbox'
                 artifactId 'pclbox'
-                version '1.0'
+                version '${project.version}'
             }
         }
     }
