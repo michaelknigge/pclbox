@@ -1,7 +1,5 @@
 package mk.pclbox;
 
-import java.io.EOFException;
-
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -18,6 +16,7 @@ import java.io.EOFException;
  * limitations under the License.
  */
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -40,7 +39,7 @@ public final class PclParser implements AutoCloseable {
      *
      * @param inputFile   the {@link File} that contains the PCL data stream.
      * @param commandHandler   the {@link PrinterCommandHandler} that is invoked for every {@link PrinterCommand}.
-     * 
+     *
      * @throws FileNotFoundException  if the file does not exist, is a directory rather than a regular file,
      *     or for some other reason cannot be opened for reading.
      */
@@ -54,7 +53,7 @@ public final class PclParser implements AutoCloseable {
      *
      * @param inputFileName   the name of the file that contains the PCL data stream.
      * @param commandHandler   the {@link PrinterCommandHandler} that is invoked for every {@link PrinterCommand}.
-     * 
+     *
      * @throws FileNotFoundException  if the file does not exist, is a directory rather than a regular file,
      *     or for some other reason cannot be opened for reading.
      */
@@ -146,7 +145,7 @@ public final class PclParser implements AutoCloseable {
 
     /**
      * Parses the data stream. For every parsed {@link PrinterCommand} the {@link PrinterCommandHandler} is invoked.
-     * 
+     *
      * @throws EOFException if the end of the stream was reached unexpectedly.
      * @throws IOException if an I/O error occurs.
      * @throws PclException if a PCL, PJL or HP/GL2 command if corrupt.

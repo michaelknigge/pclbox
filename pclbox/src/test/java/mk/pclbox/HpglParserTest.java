@@ -1,9 +1,5 @@
 package mk.pclbox;
 
-import java.io.ByteArrayInputStream;
-import java.io.EOFException;
-import java.io.UnsupportedEncodingException;
-
 /*
  * Copyright 2017 Michael Knigge
  *
@@ -19,6 +15,10 @@ import java.io.UnsupportedEncodingException;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import java.io.ByteArrayInputStream;
+import java.io.EOFException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * JUnit-Tests for {@link HpglParser}.
