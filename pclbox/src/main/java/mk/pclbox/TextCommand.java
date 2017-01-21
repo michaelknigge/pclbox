@@ -74,7 +74,7 @@ public final class TextCommand extends PrinterCommand {
 
     @Override
     public String getTextualDescription() {
-        return "Text";
+        return "Printable text";
     }
 
     @Override
