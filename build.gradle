@@ -127,7 +127,7 @@ subprojects {
 
                 groupId 'pclbox'
                 artifactId 'pclbox'
-                version '${project.version}'
+                version "${project.version}"
             }
         }
     }
