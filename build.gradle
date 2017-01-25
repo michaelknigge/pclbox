@@ -125,7 +125,7 @@ subprojects {
                     classifier = 'javadoc'
                 }
 
-                groupId 'pclbox'
+                groupId 'de.textmode.pclbox'
                 artifactId 'pclbox'
                 version "${project.version}"
             }
