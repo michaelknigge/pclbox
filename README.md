@@ -8,7 +8,7 @@ Note that the support of [HP-GL/2](https://en.wikipedia.org/wiki/HPGL) is someho
 pclbox has no runtime dependencies on other libraries. This was a design decision and will (hopefully) never change.
 
 # Usage
-At first, add pclbox to your build file. If you use Maven, add the following to your build file:
+Because pclbox is available at [jcenter](https://bintray.com/bintray/jcenter) it is very easy to use pclbox in your projects. At first, add pclbox to your build file. If you use Maven, add the following to your build file:
 
 ```xml
 <dependency>
