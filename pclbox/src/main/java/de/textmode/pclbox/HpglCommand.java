@@ -54,7 +54,7 @@ public final class HpglCommand extends PrinterCommand {
     }
 
     /**
-     * Returns the parameters of thethe HP/GL command.
+     * Returns the parameters of the HP/GL command.
      *
      * @return the parameters of the HP/GL command or an empty string if the command has no parameters.
      */
