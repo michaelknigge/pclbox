@@ -8,7 +8,26 @@ Note that the support of [HP-GL/2](https://en.wikipedia.org/wiki/HPGL) is someho
 pclbox has no runtime dependencies on other libraries. This was a design decision and will (hopefully) never change.
 
 # Usage
-You need to create a `PrinterCommandHandler` and pass this, together with a `File` or `InputStream`, to the constructor of the `PclParser`. Then invoke the method `parse` of the `PclParser`. This will parse the complete PCL data stream.
+Because pclbox is available at [jcenter](https://bintray.com/bintray/jcenter) it is very easy to use pclbox in your projects. At first, add pclbox to your build file. If you use Maven, add the following to your build file:
+
+```xml
+<dependency>
+  <groupId>de.textmode.pclbox</groupId>
+  <artifactId>pclbox</artifactId>
+  <version>1.0</version>
+  <type>pom</type>
+</dependency>
+```
+
+If you use Gradle, add this:
+
+```
+dependencies {
+    compile 'de.textmode.pclbox:pclbox:1.0'
+}
+```
+
+In your Java code you need to create a `PrinterCommandHandler` and pass this, together with a `File` or `InputStream`, to the constructor of the `PclParser`. Then invoke the method `parse` of the `PclParser`. This will parse the complete PCL data stream.
 
 For every parsed command, the method `handlePrinterCommand` of the `PrinterCommandHandler` gets invoked. This method receives a `PrinterCommand` that can be passed to an own implementation of the `PrinterCommandVisitor`.
 
