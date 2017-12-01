@@ -94,11 +94,12 @@ public final class TwoBytePclCommand extends Pcl5Command {
 
     @Override
     public byte[] toByteArray() {
-        return new byte[] { (byte) this.getOperationCharacter() };
+        return new byte[] { (byte) 0x1B, (byte) this.getOperationCharacter() };
     }
 
     @Override
     public void writeTo(OutputStream out) throws IOException {
+        out.write((char) 0x1B);
         out.write(this.getOperationCharacter());
     }
 }
