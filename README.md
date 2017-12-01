@@ -14,7 +14,7 @@ Because pclbox is available at [jcenter](https://bintray.com/bintray/jcenter) it
 <dependency>
   <groupId>de.textmode.pclbox</groupId>
   <artifactId>pclbox</artifactId>
-  <version>1.0</version>
+  <version>2.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -23,7 +23,7 @@ If you use Gradle, add this:
 
 ```
 dependencies {
-    compile 'de.textmode.pclbox:pclbox:1.0'
+    compile 'de.textmode.pclbox:pclbox:2.0'
 }
 ```
 
