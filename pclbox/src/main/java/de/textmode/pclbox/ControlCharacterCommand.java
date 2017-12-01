@@ -110,7 +110,7 @@ public final class ControlCharacterCommand extends PrinterCommand {
     }
 
     @Override
-    public void accept(PrinterCommandVisitor visitor) {
+    public void accept(PrinterCommandVisitor visitor) throws IOException {
         visitor.handle(this);
     }
 

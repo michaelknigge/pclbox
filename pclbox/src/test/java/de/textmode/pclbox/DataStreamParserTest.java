@@ -16,6 +16,8 @@ package de.textmode.pclbox;
  * limitations under the License.
  */
 
+import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,10 +47,10 @@ public abstract class DataStreamParserTest extends TestCase implements PrinterCo
     }
 
     /**
-     * Adds ths {@link PrinterCommand} to the internal {@link List} of collected {@link PrinterCommand}.
+     * Adds this {@link PrinterCommand} to the internal {@link List} of collected {@link PrinterCommand}.
      */
     @Override
-    public void handlePrinterCommand(PrinterCommand command) {
+    public void handlePrinterCommand(PrinterCommand command) throws IOException {
         assert command != null;
         this.commands.add(command);
     }

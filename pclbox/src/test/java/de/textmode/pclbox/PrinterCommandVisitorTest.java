@@ -18,6 +18,7 @@ package de.textmode.pclbox;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * JUnit-Tests for {@link PrinterCommandVisitor}.
@@ -27,7 +28,7 @@ public final class PrinterCommandVisitorTest extends DataStreamParserTest {
     private static final CountingVisitor VISITOR = new CountingVisitor();
 
     @Override
-    public void handlePrinterCommand(PrinterCommand command) {
+    public void handlePrinterCommand(PrinterCommand command) throws IOException {
         command.accept(VISITOR);
     }
 

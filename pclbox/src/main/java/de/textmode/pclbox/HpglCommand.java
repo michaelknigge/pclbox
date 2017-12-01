@@ -68,7 +68,7 @@ public final class HpglCommand extends PrinterCommand {
     }
 
     @Override
-    public void accept(PrinterCommandVisitor visitor) {
+    public void accept(PrinterCommandVisitor visitor) throws IOException {
         visitor.handle(this);
     }
 

@@ -137,7 +137,7 @@ public final class ParameterizedPclCommand extends Pcl5Command {
     }
 
     @Override
-    public void accept(PrinterCommandVisitor visitor) {
+    public void accept(PrinterCommandVisitor visitor) throws IOException {
         visitor.handle(this);
     }
 

@@ -66,8 +66,10 @@ public abstract class PrinterCommand {
      * method of the {@link PrinterCommandVisitor}.
      *
      * @param visitor   a {@link PrinterCommandVisitor}.
+     *
+     * @throws IOException if an I/O error occurs.
      */
-    public abstract void accept(PrinterCommandVisitor visitor);
+    public abstract void accept(PrinterCommandVisitor visitor) throws IOException;
 
     /**
      * Returns a short a {@link String} representation of the {@link PrinterCommand}. This String contains

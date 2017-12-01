@@ -16,6 +16,8 @@ package de.textmode.pclbox;
  * limitations under the License.
  */
 
+import java.io.IOException;
+
 /**
  * Visitor for all concrete implementations of {@link PrinterCommand}.
  */
@@ -23,43 +25,55 @@ public interface PrinterCommandVisitor {
 
     /**
      * Handle method for {@link TextCommand} objects.
-     * 
+     *
      * @param command   a {@link TextCommand} to be handled.
+     *
+     * @throws IOException if an I/O error occurs.
      */
-    void handle(final TextCommand command);
+    void handle(final TextCommand command) throws IOException;
 
     /**
      * Handle method for {@link ControlCharacterCommand} objects.
-     * 
+     *
      * @param command   a {@link ControlCharacterCommand} to be handled.
+     *
+     * @throws IOException if an I/O error occurs.
      */
-    void handle(final ControlCharacterCommand command);
+    void handle(final ControlCharacterCommand command) throws IOException;
 
     /**
      * Handle method for {@link TwoBytePclCommand} objects.
-     * 
+     *
      * @param command   a {@link TwoBytePclCommand} to be handled.
+     *
+     * @throws IOException if an I/O error occurs.
      */
-    void handle(final TwoBytePclCommand command);
+    void handle(final TwoBytePclCommand command) throws IOException;
 
     /**
      * Handle method for {@link ParameterizedPclCommand} objects.
-     * 
+     *
      * @param command   a {@link ParameterizedPclCommand} to be handled.
+     *
+     * @throws IOException if an I/O error occurs.
      */
-    void handle(final ParameterizedPclCommand command);
+    void handle(final ParameterizedPclCommand command) throws IOException;
 
     /**
      * Handle method for {@link PjlCommand} objects.
-     * 
+     *
      * @param command   a {@link PjlCommand} to be handled.
+     *
+     * @throws IOException if an I/O error occurs.
      */
-    void handle(final PjlCommand command);
+    void handle(final PjlCommand command) throws IOException;
 
     /**
      * Handle method for {@link HpglCommand} objects.
-     * 
+     *
      * @param command   a {@link HpglCommand} to be handled.
+     *
+     * @throws IOException if an I/O error occurs.
      */
-    void handle(final HpglCommand command);
+    void handle(final HpglCommand command) throws IOException;
 }

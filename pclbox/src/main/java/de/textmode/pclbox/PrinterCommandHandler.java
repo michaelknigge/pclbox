@@ -16,6 +16,8 @@ package de.textmode.pclbox;
  * limitations under the License.
  */
 
+import java.io.IOException;
+
 /**
  * This is the handler interface for every constructed {@link PrinterCommand}.
  */
@@ -23,8 +25,10 @@ public interface PrinterCommandHandler {
 
     /**
      * Handles the {@link PrinterCommand}.
-     * 
-     * @param command   a concrete {@link PrinterCommand} to be handled. 
+     *
+     * @param command   a concrete {@link PrinterCommand} to be handled.
+     *
+     * @throws IOException if an I/O error occurs.
      */
-    void handlePrinterCommand(final PrinterCommand command);
+    void handlePrinterCommand(final PrinterCommand command) throws IOException;
 }

@@ -18,23 +18,6 @@ package de.textmode.pclbox;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
-/*
- * Copyright 2017 Michael Knigge
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
@@ -56,7 +39,7 @@ public final class TextCommand extends PrinterCommand {
      * @param offset   position within the data stream
      * @param text  the text
      */
-    public TextCommand(long offset, final byte[] text) {
+    public TextCommand(final long offset, final byte[] text) {
         super(offset);
         this.text = text.clone();
     }
@@ -78,7 +61,7 @@ public final class TextCommand extends PrinterCommand {
     }
 
     @Override
-    public void accept(PrinterCommandVisitor visitor) {
+    public void accept(final PrinterCommandVisitor visitor) throws IOException {
         visitor.handle(this);
     }
 
@@ -120,7 +103,7 @@ public final class TextCommand extends PrinterCommand {
     }
 
     @Override
-    public void writeTo(OutputStream out) throws IOException {
+    public void writeTo(final OutputStream out) throws IOException {
         out.write(this.getText());
     }
 }
