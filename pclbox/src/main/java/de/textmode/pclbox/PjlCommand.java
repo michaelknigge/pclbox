@@ -94,7 +94,7 @@ public final class PjlCommand extends PrinterCommand {
 
     @Override
     public byte[] toByteArray() {
-        return this.getCommand().getBytes(ISO_8859_1);
+        return (this.getCommand() + "\n").getBytes(ISO_8859_1);
     }
 
     @Override
