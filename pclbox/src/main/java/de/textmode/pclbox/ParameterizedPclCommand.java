@@ -228,7 +228,7 @@ public final class ParameterizedPclCommand extends Pcl5Command {
         System.arraycopy(asByteArray, 0, result, 1, asByteArray.length);
 
         if (this.dataSection != null) {
-            System.arraycopy(this.dataSection, 0, result, asByteArray.length, this.dataSection.length);
+            System.arraycopy(this.dataSection, 0, result, asByteArray.length + 1, this.dataSection.length);
         }
 
         return result;
