@@ -111,7 +111,7 @@ public final class HpglCommand extends PrinterCommand {
         final byte[] result = new byte[cmd.length + parm.length];
 
         System.arraycopy(cmd, 0, result, 0, cmd.length);
-        System.arraycopy(parm, 0, result, cmd.length - 1, parm.length);
+        System.arraycopy(parm, 0, result, cmd.length, parm.length);
 
         return result;
     }
