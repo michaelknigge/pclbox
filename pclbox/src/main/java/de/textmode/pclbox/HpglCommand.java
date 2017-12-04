@@ -107,7 +107,7 @@ public final class HpglCommand extends PrinterCommand {
     @Override
     public byte[] toByteArray() {
         final byte[] cmd = this.getCommand().getBytes(ISO_8859_1);
-        final byte[] parm = this.getParameters().getBytes(ISO_8859_1);
+        final byte[] parm = (this.getParameters() + ";").getBytes(ISO_8859_1);
         final byte[] result = new byte[cmd.length + parm.length];
 
         System.arraycopy(cmd, 0, result, 0, cmd.length);
