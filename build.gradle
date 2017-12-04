@@ -71,6 +71,16 @@ subprojects {
         failOnUnversionedFiles = false
     }
 
+    jar {
+        manifest {
+            attributes("Specification-Title": "Java library for parsing PCL printer data streams",
+                 "Implementation-Title": "pclbox",
+                 "Implementation-Version": version,
+                 "Implementation-Vendor": "https://github.com/michaelknigge/pclbox",
+                 "Created-By": System.getProperty('java.version') + ' (' + System.getProperty('java.vendor') + ')')
+        }
+    }
+
     bintray {
         user = project.hasProperty('bintray.user') ? project.property('bintray.user') : System.getenv('BINTRAY_USER')
         key = project.hasProperty('bintray.key') ? project.property('bintray.key') : System.getenv('BINTRAY_KEY')
