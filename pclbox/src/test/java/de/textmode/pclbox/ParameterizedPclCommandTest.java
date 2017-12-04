@@ -31,6 +31,15 @@ public final class ParameterizedPclCommandTest extends TestCase {
     private static final ParameterizedPclCommand DUPLEX_AT_1 = new ParameterizedPclCommand(1, '&', 'l', "1", 'S');
     private static final ParameterizedPclCommand DUPLEX_AT_2 = new ParameterizedPclCommand(2, '&', 'l', "1", 'S');
 
+    private static final ParameterizedPclCommand END_RASTER_GRAPHICS_1 =
+            new ParameterizedPclCommand(0, '*', 'r', "0", 'B');
+
+    private static final ParameterizedPclCommand END_RASTER_GRAPHICS_2 =
+            new ParameterizedPclCommand(0, '*', 'r', "0", 'C');
+
+    private static final ParameterizedPclCommand DISABLE_UNDERLINE =
+            new ParameterizedPclCommand(0, '&', 'd', "0", '@');
+
     private static final ParameterizedPclCommand UEL_AT_0 = new ParameterizedPclCommand(0, '%', 0x00, "-12345", 'X');
 
     private static final ParameterizedPclCommand TRANSPARENT_DATA_0 =
@@ -140,6 +149,10 @@ public final class ParameterizedPclCommandTest extends TestCase {
         assertEquals("&p0X", TRANSPARENT_DATA_0.toDisplayString());
         assertEquals("&p1X", TRANSPARENT_DATA_1.toDisplayString());
         assertEquals("&p2X", TRANSPARENT_DATA_2.toDisplayString());
+
+        assertEquals("*rB", END_RASTER_GRAPHICS_1.toDisplayString());
+        assertEquals("*rC", END_RASTER_GRAPHICS_2.toDisplayString());
+        assertEquals("&d@", DISABLE_UNDERLINE.toDisplayString());
     }
 
     /**

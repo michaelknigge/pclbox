@@ -207,10 +207,26 @@ public final class ParameterizedPclCommand extends Pcl5Command {
             sb.append((char) this.getGroupCharacter());
         }
 
-        sb.append(this.getValue());
+        // There are some PCL-Commands that are usually written without
+        // the value....
+        if (!isWithoutValue()) {
+            sb.append(this.getValue());
+        }
+
         sb.append((char) this.getTerminationCharacter());
 
         return sb.toString();
+    }
+
+    /**
+     * Checks if this {@link ParameterizedPclCommand} should be written without the value.
+     *
+     * @return true if this {@link ParameterizedPclCommand} should be written without the value.
+     */
+    private boolean isWithoutValue() {
+        return (this.toCommandString().equals("*rB") && this.getValue().equals("0"))
+                || (this.toCommandString().equals("*rC") && this.getValue().equals("0"))
+                || (this.toCommandString().equals("&d@") && this.getValue().equals("0"));
     }
 
     @Override
