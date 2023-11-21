@@ -183,4 +183,25 @@ public final class ParameterizedPclCommandTest extends TestCase {
         TRANSPARENT_DATA_2.writeTo(baos6);
         assertTrue(Arrays.equals(TRANSPARENT_DATA_2.toByteArray(), baos6.toByteArray()));
     }
+
+    /**
+     * Checks that the properitary command "Data Container" (by Oce) is handled as expected.
+     */
+    public void testProperitaryCommandDataContainer() throws Exception {
+        final Pcl5Command pc = new ParameterizedPclCommand(123, '&', 'p', "<ABC>", 'A');
+
+        assertEquals("&pA", pc.toCommandString());
+        assertEquals("ImageStream Data Container", pc.getTextualDescription());
+        assertEquals("<esc>&p<ABC>A@123", pc.toString());
+        assertEquals("&p<ABC>A", pc.toDisplayString());
+
+        final byte[] pclExpected = new byte[] { 27, '&', 'p', '<', 'A', 'B', 'C', '>', 'A'};
+        final byte[] pclActual = pc.toByteArray();
+        assertTrue(Arrays.equals(pclExpected, pclActual));
+
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        pc.writeTo(baos);
+        assertTrue(Arrays.equals(pclExpected, baos.toByteArray()));
+
+    }
 }

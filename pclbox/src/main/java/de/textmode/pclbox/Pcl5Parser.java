@@ -186,6 +186,13 @@ final class Pcl5Parser extends DataStreamParser {
                     "The byte at offset %1$d is invalid (unexpected escape)", this.getInputStream().tell() - 1));
         }
 
+        //
+        if (parameterizedCharacter == '&' && groupCharacter == 'p' && readByte == '<') {
+            this.getPrinterCommandHandler().handlePrinterCommand(parseOceImageStreamDataContainer(offset));
+
+            return this.getInputStream().read();
+        }
+
         final StringBuilder sb = new StringBuilder();
         long currentCommandOffset = offset;
         while (readByte != ESCAPE && readByte != END_OF_STREAM) {
@@ -273,6 +280,36 @@ final class Pcl5Parser extends DataStreamParser {
         }
 
         return readByte;
+    }
+
+    /**
+     * Parses the proprietary PCL-Command ImageStream Data Container from Oce.
+     */
+    private PrinterCommand parseOceImageStreamDataContainer(final long offset) throws IOException, PclException {
+        // "&", "p" and "<" are already consumed. Now we need to read the remaining
+        // part of this command (which is up to ">A").
+        final StringBuilder sb = new StringBuilder();
+        sb.append("<");
+
+        int readByte;
+        do {
+            readByte = this.getInputStream().read();
+            sb.append(Character.toString((char) readByte));
+        } while (readByte != '>');
+
+        readByte = this.getInputStream().read();
+        if (readByte != 'A') {
+            throw new PclException(String.format(
+                    "The byte value of the character at offset %1$d is invalid.",
+                    this.getInputStream().tell() - 1));
+        }
+
+        return new ParameterizedPclCommand(
+                offset,
+                '&',
+                'p',
+                sb.toString(),
+                'A');
     }
 
     /**

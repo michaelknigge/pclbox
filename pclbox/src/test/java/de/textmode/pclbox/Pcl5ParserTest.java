@@ -358,4 +358,18 @@ public final class Pcl5ParserTest extends DataStreamParserTest {
                         new TwoBytePclCommand(34, 'E')),
                 this.getCommands());
     }
+
+    /**
+     * Checks that the properitary command "Data Container" (by Oce) is parsed as expected.
+     */
+    public void testProperitaryCommandDataContainer() throws Exception {
+        this.getPcl5ParserFor("~E~&p<ABC>A~E").parse();
+
+        assertEquals(
+                buildExpected(
+                        new TwoBytePclCommand(0, 'E'),
+                        new ParameterizedPclCommand(2, '&', 'p', "<ABC>", 'A'),
+                        new TwoBytePclCommand(11, 'E')),
+                this.getCommands());
+    }
 }

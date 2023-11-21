@@ -91,6 +91,7 @@ final class Pcl5Commands {
         MAPPINGS.put("&lY", "Set Vertical Tab Absolute (Line)");
         MAPPINGS.put("&lZ", "Top Offset Registration (Decipoints)");
         MAPPINGS.put("&nW", "Paper Type");
+        MAPPINGS.put("&pA", "ImageStream Data Container");
         MAPPINGS.put("&pC", "Palette Control");
         MAPPINGS.put("&pI", "Palette Control ID");
         MAPPINGS.put("&pS", "Select Palette");
