@@ -1,144 +1,182 @@
-defaultTasks 'clean', 'javadoc', 'test', 'check', 'checkstyleMain', 'checkstyleTest', 'assemble'
+plugins {
+    id 'net.researchgate.release' version '3.1.0' apply false
+    id 'com.github.spotbugs' version '6.5.11' apply false
 
-buildscript {
+    id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
+}
+
+defaultTasks 'clean',
+        'javadoc',
+        'test',
+        'check',
+        'checkstyleMain',
+        'checkstyleTest',
+        'assemble'
+
+
+nexusPublishing {
     repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-        classpath 'net.researchgate:gradle-release:2.4.0'
+        sonatype {
+            nexusUrl.set(
+                    uri('https://ossrh-staging-api.central.sonatype.com/service/local/')
+            )
+
+            snapshotRepositoryUrl.set(
+                    uri('https://central.sonatype.com/repository/maven-snapshots/')
+            )
+
+            username.set(
+                    providers.gradleProperty('mavenCentralUsername')
+            )
+
+            password.set(
+                    providers.gradleProperty('mavenCentralPassword')
+            )
+        }
     }
 }
 
+
 subprojects {
+
     apply plugin: 'java'
     apply plugin: 'eclipse'
     apply plugin: 'checkstyle'
     apply plugin: 'jacoco'
-    apply plugin: 'findbugs'
-    apply plugin: 'maven'
     apply plugin: 'maven-publish'
-    apply plugin: 'com.jfrog.bintray'
+    apply plugin: 'signing'
+
     apply plugin: 'net.researchgate.release'
+    apply plugin: 'com.github.spotbugs'
 
-    version = "2.3"
 
-    check.dependsOn jacocoTestReport
+    group = 'de.textmode.pclbox'
+    version = '2.4'
 
-    bintrayUpload.dependsOn 'jar', 'sourceJar', 'javadocJar'
-
-    tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
-        sourceCompatibility = '1.7'
-        targetCompatibility = '1.7'
-    }
-    
-    javadoc {
-        options.encoding = 'UTF-8'
-    }
-    
     repositories {
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
-        testCompile group: 'junit', name: 'junit', version: '4.12'
+        testImplementation 'junit:junit:4.13.2'
     }
 
-    configurations {
-        checkstyleConfig
+    java {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+
+        withSourcesJar()
+        withJavadocJar()
     }
 
-    dependencies {
-        checkstyleConfig ("com.puppycrawl.tools:checkstyle:7.1") {
-            transitive = false
-        }
-    }    
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+        options.release = 8
+    }
+
+    tasks.withType(Javadoc).configureEach {
+        options.encoding = 'UTF-8'
+    }
 
     checkstyle {
         toolVersion = '7.1'
-        configFile = new File(rootDir, "config/checkstyle.xml")
+        configFile = rootProject.file('config/checkstyle.xml')
     }
 
-    jacocoTestReport {
+    tasks.named('jacocoTestReport') {
         reports {
-            xml.enabled = true
-            html.enabled = true
+            xml.required = true
+            html.required = true
         }
+    }
+
+    tasks.named('check') {
+        dependsOn tasks.named('jacocoTestReport')
     }
 
     release {
         failOnUnversionedFiles = false
     }
 
-    jar {
+    tasks.named('jar') {
         manifest {
-            attributes("Specification-Title": "Java library for parsing PCL printer data streams",
-                 "Implementation-Title": "pclbox",
-                 "Implementation-Version": version,
-                 "Implementation-Vendor": "https://github.com/michaelknigge/pclbox",
-                 "Created-By": System.getProperty('java.version') + ' (' + System.getProperty('java.vendor') + ')')
+            attributes(
+                    'Specification-Title': 'Java library for parsing PCL printer data streams',
+                    'Implementation-Title': 'pclbox',
+                    'Implementation-Version': project.version,
+                    'Implementation-Vendor': 'https://github.com/michaelknigge/pclbox',
+
+                    'Created-By':
+                            "${System.getProperty('java.version')} " +
+                            "(${System.getProperty('java.vendor')})"
+            )
         }
-    }
-
-    bintray {
-        user = project.hasProperty('bintray.user') ? project.property('bintray.user') : System.getenv('BINTRAY_USER')
-        key = project.hasProperty('bintray.key') ? project.property('bintray.key') : System.getenv('BINTRAY_KEY')
-
-        publications = ['maven']
-        publish = true
-        pkg {
-            repo = 'maven'
-            name = 'pclbox'
-            licenses = ['Apache-2.0']
-            vcsUrl = 'https://github.com/michaelknigge/pclbox.git'
-            websiteUrl = 'https://github.com/michaelknigge/pclbox'
-            issueTrackerUrl = 'https://github.com/michaelknigge/pclbox/issues'
-            labels = ['pcl','pjl','hpgl']
-            publicDownloadNumbers = true
-
-            githubRepo = 'michaelknigge/pclbox'
-
-            version {
-                name = project.version
-                desc = "pclbox version ${project.version}"
-                released = new Date()
-                vcsTag = "${project.version}"
-
-                gpg {
-                    sign = true
-                }
-            }
-        }
-    }
-
-    task sourceJar(type: Jar) {
-        classifier = 'sources'
-        from sourceSets.main.allJava
-    }
-
-    task javadocJar (type: Jar, dependsOn: javadoc) {
-        classifier = 'javadoc'
-        from javadoc.destinationDir
     }
 
     publishing {
+
         publications {
-            maven(MavenPublication) {
+
+            mavenJava(MavenPublication) {
+
                 from components.java
 
-                artifact sourceJar {
-                    classifier 'sources'
-                }
+                groupId = 'de.textmode.pclbox'
+                artifactId = 'pclbox'
+                version = project.version
 
-                artifact (javadocJar) {
-                    classifier = 'javadoc'
-                }
 
-                groupId 'de.textmode.pclbox'
-                artifactId 'pclbox'
-                version "${project.version}"
+                pom {
+                    name = 'pclbox'
+
+                    description = 'Java library for parsing PCL printer data streams'
+                    url = 'https://github.com/michaelknigge/pclbox'
+
+                    licenses {
+                        license {
+                            name = 'Apache License, Version 2.0'
+                            url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution = 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = 'michaelknigge'
+                            name = 'Michael Knigge'
+                        }
+                    }
+
+
+                    scm {
+                        connection = 'scm:git:git://github.com/michaelknigge/pclbox.git'
+                        developerConnection = 'scm:git:ssh://git@github.com/michaelknigge/pclbox.git'
+                        url = 'https://github.com/michaelknigge/pclbox'
+                    }
+
+
+                    issueManagement {
+                        system = 'GitHub'
+                        url = 'https://github.com/michaelknigge/pclbox/issues'
+                    }
+                }
             }
         }
+    }
+
+
+    signing {
+
+        def signingKey = providers.gradleProperty('signingKey').orNull
+        def signingPassword = providers.gradleProperty('signingPassword').orNull
+
+        if (signingKey != null) {
+            useInMemoryPgpKeys(
+                    signingKey,
+                    signingPassword
+            )
+        }
+
+        sign publishing.publications.mavenJava
     }
 }
