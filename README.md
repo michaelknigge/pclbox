@@ -8,13 +8,13 @@ Note that the support of [HP-GL/2](https://en.wikipedia.org/wiki/HPGL) is someho
 pclbox has no runtime dependencies on other libraries. This was a design decision and will (hopefully) never change.
 
 # Usage
-Because pclbox is available at [jcenter](https://bintray.com/bintray/jcenter) it is very easy to use pclbox in your projects. At first, add pclbox to your build file. If you use Maven, add the following to your build file:
+Because pclbox is available at [Maven Central](https://central.sonatype.com/artifact/de.textmode.pclbox/pclbox), it is very easy to use pclbox in your projects. At first, add pclbox to your build file. If you use Maven, add the following to your build file:
 
 ```xml
 <dependency>
   <groupId>de.textmode.pclbox</groupId>
   <artifactId>pclbox</artifactId>
-  <version>2.2</version>
+  <version>2.5</version>
   <type>pom</type>
 </dependency>
 ```
@@ -23,7 +23,7 @@ If you use Gradle, add this:
 
 ```
 dependencies {
-    compile 'de.textmode.pclbox:pclbox:2.2'
+    implementation 'de.textmode.pclbox:pclbox:2.5'
 }
 ```
 
