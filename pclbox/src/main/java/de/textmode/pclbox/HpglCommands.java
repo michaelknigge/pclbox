@@ -35,6 +35,7 @@ final class HpglCommands {
         MAPPINGS.put("AP", "Automatic Pen Operations");
         MAPPINGS.put("AR", "Arc Relative Three Point");
         MAPPINGS.put("AS", "Acceleration Select");
+        MAPPINGS.put("AT", "Absolute Arc Three Point");
         MAPPINGS.put("BF", "Buffer Plot");
         MAPPINGS.put("BL", "Buffer Label");
         MAPPINGS.put("BP", "Begin Plot");
@@ -117,6 +118,8 @@ final class HpglCommands {
         MAPPINGS.put("PS", "Plot Size");
         MAPPINGS.put("PT", "Pen Thickness");
         MAPPINGS.put("PU", "Pen Up");
+        MAPPINGS.put("PW", "Pen Width");
+        MAPPINGS.put("QL", "Quality Level");
         MAPPINGS.put("RA", "Fill Rectangle Absolute");
         MAPPINGS.put("RO", "Rotate Coordinate System");
         MAPPINGS.put("RP", "Replot");
